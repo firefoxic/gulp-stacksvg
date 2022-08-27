@@ -1,0 +1,50 @@
+{
+  "name": "gulp-svgstore",
+  "version": "9.0.0",
+  "description": "Combine svg files into one with <symbol> elements",
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "scripts": {
+    "test": "gulp build && mocha test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/w0rm/gulp-svgstore"
+  },
+  "author": {
+    "name": "Andrey Kuzmin",
+    "email": "unsoundscapes@gmail.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/w0rm/gulp-svgstore/issues"
+  },
+  "homepage": "https://github.com/w0rm/gulp-svgstore",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.10",
+    "fancy-log": "^1.3.3",
+    "plugin-error": "^1.0.1",
+    "vinyl": "^2.2.1"
+  },
+  "devDependencies": {
+    "finalhandler": "^1.1.2",
+    "gulp": "^4.0.2",
+    "gulp-inject": "^5.0.5",
+    "mocha": "^9.0.1",
+    "puppeteer": "^10.0.0",
+    "serve-static": "^1.14.1",
+    "sinon": "^11.1.1"
+  },
+  "engines": {
+    "node": ">=10.0"
+  },
+  "engineStrict": true,
+  "keywords": [
+    "gulpplugin",
+    "svg",
+    "icon",
+    "sprite"
+  ]
+}
