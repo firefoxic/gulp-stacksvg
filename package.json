@@ -23,19 +23,19 @@
   },
   "homepage": "https://github.com/firefoxic/gulp-stacksvg",
   "dependencies": {
-    "cheerio": "^1.0.0-rc.10",
-    "fancy-log": "^1.3.3",
-    "plugin-error": "^1.0.1",
+    "cheerio": "^1.0.0-rc.12",
+    "fancy-log": "^2.0.0",
+    "plugin-error": "^2.0.0",
     "vinyl": "^2.2.1"
   },
   "devDependencies": {
-    "finalhandler": "^1.1.2",
+    "finalhandler": "^1.2.0",
     "gulp": "^4.0.2",
     "gulp-inject": "^5.0.5",
-    "mocha": "^9.0.1",
-    "puppeteer": "^10.0.0",
-    "serve-static": "^1.14.1",
-    "sinon": "^11.1.1"
+    "mocha": "^10.0.0",
+    "puppeteer": "^16.2.0",
+    "serve-static": "^1.15.0",
+    "sinon": "^14.0.0"
   },
   "engines": {
     "node": ">=10.0"
