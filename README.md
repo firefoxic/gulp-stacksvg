@@ -1,9 +1,7 @@
 gulp-stacksvg ![Build Status](https://github.com/firefoxic/gulp-stacksvg/actions/workflows/test.yml/badge.svg?branch=main)
 =============
 
-<img align="right" width="130" height="175"
-     title="SVG Superman"
-     src="https://raw.githubusercontent.com/firefoxic/gulp-stacksvg/master/svg-superman.png">
+<img align="right" width="130" height="175" title="SVG Superman" src="https://raw.githubusercontent.com/firefoxic/gulp-stacksvg/master/svg-superman.png">
 
 Combine svg files into one with `<symbol>` elements.
 Read more about this in [CSS Tricks article](http://css-tricks.com/svg-symbol-good-choice-icons/).
@@ -45,21 +43,21 @@ const svgmin = require('gulp-svgmin');
 const path = require('path');
 
 gulp.task('stacksvg', () => {
-    return gulp
-        .src('test/src/*.svg')
-        .pipe(svgmin((file) => {
-            const prefix = path.basename(file.relative, path.extname(file.relative));
-            return {
-                plugins: [{
-                    cleanupIDs: {
-                        prefix: prefix + '-',
-                        minify: true
-                    }
-                }]
-            }
-        }))
-        .pipe(stacksvg())
-        .pipe(gulp.dest('test/dest'));
+	return gulp
+		.src('test/src/*.svg')
+		.pipe(svgmin((file) => {
+			const prefix = path.basename(file.relative, path.extname(file.relative));
+			return {
+				plugins: [{
+					cleanupIDs: {
+						prefix: prefix + '-',
+						minify: true
+					}
+				}]
+			}
+		}))
+		.pipe(stacksvg())
+		.pipe(gulp.dest('test/dest'));
 });
 ```
 
@@ -84,18 +82,18 @@ const stacksvg = require('gulp-stacksvg');
 const inject = require('gulp-inject');
 
 gulp.task('stacksvg', () => {
-    const svgs = gulp
-        .src('test/src/*.svg')
-        .pipe(stacksvg({ inlineSvg: true }));
+	const svgs = gulp
+		.src('test/src/*.svg')
+		.pipe(stacksvg({ inlineSvg: true }));
 
-    function fileContents (filePath, file) {
-        return file.contents.toString();
-    }
+	function fileContents (filePath, file) {
+		return file.contents.toString();
+	}
 
-    return gulp
-        .src('test/src/inline-svg.html')
-        .pipe(inject(svgs, { transform: fileContents }))
-        .pipe(gulp.dest('test/dest'));
+	return gulp
+		.src('test/src/inline-svg.html')
+		.pipe(inject(svgs, { transform: fileContents }))
+		.pipe(gulp.dest('test/dest'));
 });
 ```
 
@@ -112,11 +110,11 @@ const rename = require('gulp-rename');
 const stacksvg = require('gulp-stacksvg');
 
 gulp.task('default', () => {
-    return gulp
-        .src('src/svg/**/*.svg', { base: 'src/svg' })
-        .pipe(rename({prefix: 'icon-'}))
-        .pipe(stacksvg())
-        .pipe(gulp.dest('dest'));
+	return gulp
+		.src('src/svg/**/*.svg', { base: 'src/svg' })
+		.pipe(rename({prefix: 'icon-'}))
+		.pipe(stacksvg())
+		.pipe(gulp.dest('dest'));
 });
 ```
 
@@ -131,15 +129,15 @@ const rename = require('gulp-rename');
 const stacksvg = require('gulp-stacksvg');
 
 gulp.task('default', () => {
-    return gulp
-        .src('src/svg/**/*.svg', { base: 'src/svg' })
-        .pipe(rename((file) => {
-            const name = file.dirname.split(path.sep);
-            name.push(file.basename);
-            file.basename = name.join('-');
-        }))
-        .pipe(stacksvg())
-        .pipe(gulp.dest('dest'));
+	return gulp
+		.src('src/svg/**/*.svg', { base: 'src/svg' })
+		.pipe(rename((file) => {
+			const name = file.dirname.split(path.sep);
+			name.push(file.basename);
+			file.basename = name.join('-');
+		}))
+		.pipe(stacksvg())
+		.pipe(gulp.dest('dest'));
 });
 ```
 
@@ -171,16 +169,16 @@ const stacksvg = require('gulp-stacksvg');
 const cheerio = require('gulp-cheerio');
 
 gulp.task('stacksvg', () => {
-    return gulp
-        .src('test/src/*.svg')
-        .pipe(cheerio({
-            run: ($) => {
-                $('[fill]').removeAttr('fill');
-            },
-            parserOptions: { xmlMode: true }
-        }))
-        .pipe(stacksvg({ inlineSvg: true })
-        .pipe(gulp.dest('test/dest'));
+	return gulp
+		.src('test/src/*.svg')
+		.pipe(cheerio({
+			run: ($) => {
+				$('[fill]').removeAttr('fill');
+			},
+			parserOptions: { xmlMode: true }
+		}))
+		.pipe(stacksvg({ inlineSvg: true })
+		.pipe(gulp.dest('test/dest'));
 });
 ```
 
@@ -196,16 +194,16 @@ const stacksvg = require('gulp-stacksvg');
 const cheerio = require('gulp-cheerio');
 
 gulp.task('stacksvg', () => {
-    return gulp
-        .src('test/src/*.svg')
-        .pipe(stacksvg({ inlineSvg: true }))
-        .pipe(cheerio({
-            run: ($) => {
-                $('svg').attr('style', 'display:none');
-            },
-            parserOptions: { xmlMode: true }
-        }))
-        .pipe(gulp.dest('test/dest'));
+	return gulp
+		.src('test/src/*.svg')
+		.pipe(stacksvg({ inlineSvg: true }))
+		.pipe(cheerio({
+			run: ($) => {
+				$('svg').attr('style', 'display:none');
+			},
+			parserOptions: { xmlMode: true }
+		}))
+		.pipe(gulp.dest('test/dest'));
 });
 ```
 
@@ -223,26 +221,26 @@ const through2 = require('through2');
 const cheerio = require('cheerio');
 
 gulp.task('metadata', () => {
-    return gulp
-        .src('test/src/*.svg')
-        .pipe(stacksvg())
-        .pipe(through2.obj(function (file, encoding, cb) {
-            const $ = cheerio.load(file.contents.toString(), {xmlMode: true});
-            const data = $('svg > symbol').map(() => {
-                return {
-                    name: $(this).attr('id'),
-                    viewBox: $(this).attr('viewBox')
-                };
-            }).get();
-            const jsonFile = new Vinyl({
-                path: 'metadata.json',
-                contents: Buffer.from(JSON.stringify(data))
-            });
-            this.push(jsonFile);
-            this.push(file);
-            cb();
-        }))
-        .pipe(gulp.dest('test/dest'));
+	return gulp
+		.src('test/src/*.svg')
+		.pipe(stacksvg())
+		.pipe(through2.obj(function (file, encoding, cb) {
+			const $ = cheerio.load(file.contents.toString(), {xmlMode: true});
+			const data = $('svg > symbol').map(() => {
+				return {
+					name: $(this).attr('id'),
+					viewBox: $(this).attr('viewBox')
+				};
+			}).get();
+			const jsonFile = new Vinyl({
+				path: 'metadata.json',
+				contents: Buffer.from(JSON.stringify(data))
+			});
+			this.push(jsonFile);
+			this.push(file);
+			cb();
+		}))
+		.pipe(gulp.dest('test/dest'));
 });
 ```
 
@@ -260,7 +258,7 @@ If you don't have the source file or an SVG Editor (Adobe Illustrator etc.), you
 
 ```
 <defs>
-    <path d="M28.4 30.5l5.3 5c0-.1 7-6.9 7-6.9l-4-6.8-8.3 8.7z" id="a"/>
+	<path d="M28.4 30.5l5.3 5c0-.1 7-6.9 7-6.9l-4-6.8-8.3 8.7z" id="a"/>
 </defs>
 <clipPath id="b"><use overflow="visible" xlink:href="#a"/></clipPath>
 ```
@@ -269,8 +267,8 @@ Becomes:
 
 ```
 <defs>
-    <path d="M28.4 30.5l5.3 5c0-.1 7-6.9 7-6.9l-4-6.8-8.3 8.7z" id="a"/>
-    <clipPath id="b"><use overflow="visible" xlink:href="#a"/></clipPath>
+	<path d="M28.4 30.5l5.3 5c0-.1 7-6.9 7-6.9l-4-6.8-8.3 8.7z" id="a"/>
+	<clipPath id="b"><use overflow="visible" xlink:href="#a"/></clipPath>
 </defs>
 ```
 
@@ -278,7 +276,7 @@ Or you can go further and reduce the size by removing the `<use>` element, like 
 
 ```
 <defs>
-    <clipPath id="b"><path d="M28.4 30.5l5.3 5c0-.1 7-6.9 7-6.9l-4-6.8-8.3 8.7z"/></clipPath>
+	<clipPath id="b"><path d="M28.4 30.5l5.3 5c0-.1 7-6.9 7-6.9l-4-6.8-8.3 8.7z"/></clipPath>
 </defs>
 ```
 
