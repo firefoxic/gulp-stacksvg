@@ -9,7 +9,7 @@ const PluginError = require(`plugin-error`)
 const puppeteer = require(`puppeteer`)
 const sandbox = require(`sinon`).createSandbox()
 const serveStatic = require(`serve-static`)
-const stacksvg = require(`./index`)
+const stacksvg = require(`../index.js`)
 const Vinyl = require(`vinyl`)
 
 describe(`gulp-stacksvg usage test`, () => {
