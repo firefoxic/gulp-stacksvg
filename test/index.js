@@ -46,14 +46,14 @@ describe(`gulp-stacksvg usage test`, () => {
 	it(`stored image should equal original svg`, () => {
 		let screenshot1
 
-		return page.goto(`http://localhost:${port}/inline-svg.html`)
+		return page.goto(`http://localhost:${port}/src/index.html`)
 			.then(() => page.evaluate(() => document.title))
 			.then((title) => {
 				assert.strictEqual(title, `gulp-stacksvg`, `Test page is not loaded`)
 			})
 			.then(() => page.screenshot())
 			.then((data) => { screenshot1 = data })
-			.then(() => page.goto(`http://localhost:${port}/dest/inline-svg.html`))
+			.then(() => page.goto(`http://localhost:${port}/dest/index.html`))
 			.then(() => page.screenshot())
 			.then((screenshot2) => {
 				assert(screenshot1.toString() === screenshot2.toString(), `Screenshots are different`)

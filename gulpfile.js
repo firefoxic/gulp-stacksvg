@@ -17,7 +17,7 @@ function inline () {
 	const svgs = gulp.src(`test/src/*.svg`)
 		.pipe(stacksvg({ inlineSvg: true }))
 
-	return gulp.src(`test/src/inline-svg.html`)
+	return gulp.src(`test/index.html`)
 		.pipe(inject(svgs, { transform: fileContents }))
 		.pipe(gulp.dest(`test/dest`))
 }
