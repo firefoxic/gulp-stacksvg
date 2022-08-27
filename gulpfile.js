@@ -1,11 +1,11 @@
-const svgstore = require('./index')
+const stacksvg = require('./index')
 const gulp = require('gulp')
 const inject = require('gulp-inject')
 
 gulp.task('external', () =>
   gulp
     .src('test/src/*.svg')
-    .pipe(svgstore())
+    .pipe(stacksvg())
     .pipe(gulp.dest('test/dest'))
 )
 
@@ -16,7 +16,7 @@ gulp.task('inline', () => {
 
   const svgs = gulp
     .src('test/src/*.svg')
-    .pipe(svgstore({ inlineSvg: true }))
+    .pipe(stacksvg({ inlineSvg: true }))
 
   return gulp
     .src('test/src/inline-svg.html')

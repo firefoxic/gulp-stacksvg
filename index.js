@@ -50,7 +50,7 @@ module.exports = function (config) {
   stream._transform = function transform (file, _, cb) {
 
     if (file.isStream()) {
-      return cb(new PluginError('gulp-svgstore', 'Streams are not supported!'))
+      return cb(new PluginError('gulp-stacksvg', 'Streams are not supported!'))
     }
 
     if (file.isNull()) return cb()
@@ -66,7 +66,7 @@ module.exports = function (config) {
     const $symbol = $('<symbol/>')
 
     if (idAttr in ids) {
-      return cb(new PluginError('gulp-svgstore', 'File name should be unique: ' + idAttr))
+      return cb(new PluginError('gulp-stacksvg', 'File name should be unique: ' + idAttr))
     }
 
     ids[idAttr] = true
@@ -74,7 +74,7 @@ module.exports = function (config) {
     if (!fileName) {
       fileName = path.basename(file.base)
       if (fileName === '.' || !fileName) {
-        fileName = 'svgstore.svg'
+        fileName = 'stacksvg.svg'
       } else {
         fileName = fileName.split(path.sep).shift() + '.svg'
       }

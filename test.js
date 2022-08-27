@@ -9,10 +9,10 @@ const PluginError = require('plugin-error')
 const puppeteer = require('puppeteer')
 const sandbox = require('sinon').createSandbox()
 const serveStatic = require('serve-static')
-const svgstore = require('./index')
+const stacksvg = require('./index')
 const Vinyl = require('vinyl')
 
-describe('gulp-svgstore usage test', () => {
+describe('gulp-stacksvg usage test', () => {
   let browser
   let port
   let page
@@ -49,7 +49,7 @@ describe('gulp-svgstore usage test', () => {
     return page.goto('http://localhost:' + port + '/inline-svg.html')
       .then(() => page.evaluate(() => document.title))
       .then((title) => {
-        assert.strictEqual(title, 'gulp-svgstore', 'Test page is not loaded')
+        assert.strictEqual(title, 'gulp-stacksvg', 'Test page is not loaded')
       })
       .then(() => page.screenshot())
       .then((data) => { screenshot1 = data })
@@ -61,12 +61,12 @@ describe('gulp-svgstore usage test', () => {
   })
 })
 
-describe('gulp-svgstore unit test', () => {
+describe('gulp-stacksvg unit test', () => {
   beforeEach(() => { sandbox.stub(fancyLog, 'info') })
   afterEach(() => { sandbox.restore() })
 
   it('should not create empty svg file', (done) => {
-    const stream = svgstore()
+    const stream = stacksvg()
     let isEmpty = true
 
     stream.on('data', () => { isEmpty = false })
@@ -80,7 +80,7 @@ describe('gulp-svgstore unit test', () => {
   })
 
   it('should correctly merge svg files', (done) => {
-    const stream = svgstore({ inlineSvg: true })
+    const stream = stacksvg({ inlineSvg: true })
 
     stream.on('data', (file) => {
       const result = file.contents.toString()
@@ -107,7 +107,7 @@ describe('gulp-svgstore unit test', () => {
   })
 
   it('should not include null or invalid files', (done) => {
-    const stream = svgstore({ inlineSvg: true })
+    const stream = stacksvg({ inlineSvg: true })
 
     stream.on('data', (file) => {
       const result = file.contents.toString()
@@ -138,7 +138,7 @@ describe('gulp-svgstore unit test', () => {
   })
 
   it('should merge defs to parent svg file', (done) => {
-    const stream = svgstore({ inlineSvg: true })
+    const stream = stacksvg({ inlineSvg: true })
 
     stream.on('data', (file) => {
       const result = file.contents.toString()
@@ -165,7 +165,7 @@ describe('gulp-svgstore unit test', () => {
   })
 
   it('should emit error if files have the same name', (done) => {
-      const stream = svgstore()
+      const stream = stacksvg()
 
       stream.on('error', (error) => {
         assert.ok(error instanceof PluginError)
@@ -180,7 +180,7 @@ describe('gulp-svgstore unit test', () => {
   })
 
   it('should generate result filename based on base path of the first file', (done) => {
-      const stream = svgstore()
+      const stream = stacksvg()
 
       stream.on('data', (file) => {
         assert.strictEqual(file.relative, 'icons.svg')
@@ -202,11 +202,11 @@ describe('gulp-svgstore unit test', () => {
       stream.end()
   })
 
-  it('should generate svgstore.svg if base path of the 1st file is dot', (done) => {
-      const stream = svgstore()
+  it('should generate stacksvg.svg if base path of the 1st file is dot', (done) => {
+      const stream = stacksvg()
 
       stream.on('data', (file) => {
-        assert.strictEqual(file.relative, 'svgstore.svg')
+        assert.strictEqual(file.relative, 'stacksvg.svg')
         done()
       })
 
@@ -226,7 +226,7 @@ describe('gulp-svgstore unit test', () => {
   })
 
   it('should include all namespace into final svg', (done) => {
-      const stream = svgstore()
+      const stream = stacksvg()
 
       stream.on('data', (file) => {
         const $resultSvg = cheerio.load(file.contents.toString(), { xmlMode: true })('svg')
@@ -259,7 +259,7 @@ describe('gulp-svgstore unit test', () => {
   })
 
   it('should not include duplicate namespaces into final svg', (done) => {
-      const stream = svgstore({ inlineSvg: true })
+      const stream = stacksvg({ inlineSvg: true })
 
       stream.on('data', (file) => {
         assert.strictEqual(
@@ -288,7 +288,7 @@ describe('gulp-svgstore unit test', () => {
   })
 
   it('should transfer svg presentation attributes to a wrapping g element', (done) => {
-      const stream = svgstore({ inlineSvg: true })
+      const stream = stacksvg({ inlineSvg: true })
       const attrs = 'stroke="currentColor" stroke-width="2" stroke-linecap="round" style="fill:#0000"';
 
       stream.on('data', (file) => {
@@ -312,7 +312,7 @@ describe('gulp-svgstore unit test', () => {
   })
 
   it('Warn about duplicate namespace value under different name', (done) => {
-      const stream = svgstore()
+      const stream = stacksvg()
 
       stream.on('data', () => {
         assert.strictEqual(
@@ -347,7 +347,7 @@ describe('gulp-svgstore unit test', () => {
   })
 
   it('Strong warn about duplicate namespace name with different value', (done) => {
-      const stream = svgstore()
+      const stream = stacksvg()
 
       stream.on('data', () => {
         assert.strictEqual(
