@@ -42,22 +42,22 @@ const stacksvg = require(`gulp-stacksvg`)
 const svgmin = require(`gulp-svgmin`)
 const path = require(`path`)
 
-gulp.task(`stacksvg`, () => gulp
-	.src(`test/src/*.svg`)
-	.pipe(svgmin((file) => {
-		const prefix = path.basename(file.relative, path.extname(file.relative))
-		return {
-			plugins: [{
-				cleanupIDs: {
-					prefix: `${prefix }-`,
-					minify: true
-				}
-			}]
-		}
-	}))
-	.pipe(stacksvg())
-	.pipe(gulp.dest(`test/dest`))
-)
+function combineSVG () {
+	return gulp.src(`test/src/*.svg`)
+		.pipe(svgmin((file) => {
+			const prefix = path.basename(file.relative, path.extname(file.relative))
+			return {
+				plugins: [{
+					cleanupIDs: {
+						prefix: `${prefix }-`,
+						minify: true
+					}
+				}]
+			}
+		}))
+		.pipe(stacksvg())
+		.pipe(gulp.dest(`test/dest`))
+}
 ```
 
 ### Inlining stacksvg result into html body
@@ -80,7 +80,7 @@ const gulp = require(`gulp`)
 const stacksvg = require(`gulp-stacksvg`)
 const inject = require(`gulp-inject`)
 
-gulp.task(`stacksvg`, () => {
+function inlineSvg () {
 	const svgs = gulp
 		.src(`test/src/*.svg`)
 		.pipe(stacksvg({ inlineSvg: true }))
@@ -89,11 +89,10 @@ gulp.task(`stacksvg`, () => {
 		return file.contents.toString()
 	}
 
-	return gulp
-		.src(`test/src/inline-svg.html`)
+	return gulp.src(`test/src/inline-svg.html`)
 		.pipe(inject(svgs, { transform: fileContents }))
 		.pipe(gulp.dest(`test/dest`))
-})
+}
 ```
 
 ### Generating id attributes
@@ -108,12 +107,12 @@ const gulp = require(`gulp`)
 const rename = require(`gulp-rename`)
 const stacksvg = require(`gulp-stacksvg`)
 
-gulp.task(`default`, () => gulp
-	.src(`src/svg/**/*.svg`, { base: `src/svg` })
-	.pipe(rename({prefix: `icon-`}))
-	.pipe(stacksvg())
-	.pipe(gulp.dest(`dest`))
-)
+function generateIdAttrs () {
+	return gulp.src(`src/svg/**/*.svg`, { base: `src/svg` })
+		.pipe(rename({prefix: `icon-`}))
+		.pipe(stacksvg())
+		.pipe(gulp.dest(`dest`))
+}
 ```
 
 If you need to have nested directories that may have files with the same name, please
@@ -126,16 +125,16 @@ const path = require(`path`)
 const rename = require(`gulp-rename`)
 const stacksvg = require(`gulp-stacksvg`)
 
-gulp.task(`default`, () => gulp
-	.src(`src/svg/**/*.svg`, { base: `src/svg` })
-	.pipe(rename((file) => {
-		const name = file.dirname.split(path.sep)
-		name.push(file.basename)
-		file.basename = name.join(`-`)
-	}))
-	.pipe(stacksvg())
-	.pipe(gulp.dest(`dest`))
-)
+function generateIdAttrs () {
+	return gulp.src(`src/svg/**/*.svg`, { base: `src/svg` })
+		.pipe(rename((file) => {
+			const name = file.dirname.split(path.sep)
+			name.push(file.basename)
+			file.basename = name.join(`-`)
+		}))
+		.pipe(stacksvg())
+		.pipe(gulp.dest(`dest`))
+}
 ```
 
 ### Using svg as external file
@@ -165,17 +164,17 @@ const gulp = require(`gulp`)
 const stacksvg = require(`gulp-stacksvg`)
 const cheerio = require(`gulp-cheerio`)
 
-gulp.task(`stacksvg`, () => gulp
-	.src(`test/src/*.svg`)
-	.pipe(cheerio({
-		run: ($) => {
-			$(`[fill]`).removeAttr(`fill`)
-		},
-		parserOptions: { xmlMode: true }
-	}))
-	.pipe(stacksvg({ inlineSvg: true }))
-	.pipe(gulp.dest(`test/dest`))
-)
+function transformSvgSources () {
+	return gulp.src(`test/src/*.svg`)
+		.pipe(cheerio({
+			run: ($) => {
+				$(`[fill]`).removeAttr(`fill`)
+			},
+			parserOptions: { xmlMode: true }
+		}))
+		.pipe(stacksvg({ inlineSvg: true }))
+		.pipe(gulp.dest(`test/dest`))
+}
 ```
 
 ### Transform combined svg
@@ -189,17 +188,17 @@ const gulp = require(`gulp`)
 const stacksvg = require(`gulp-stacksvg`)
 const cheerio = require(`gulp-cheerio`)
 
-gulp.task(`stacksvg`, () => gulp
-	.src(`test/src/*.svg`)
-	.pipe(stacksvg({ inlineSvg: true }))
-	.pipe(cheerio({
-		run: ($) => {
-			$(`svg`).attr(`style`, `display:none`)
-		},
-		parserOptions: { xmlMode: true }
-	}))
-	.pipe(gulp.dest(`test/dest`))
-)
+function transformCombinedSvg () {
+	return gulp.src(`test/src/*.svg`)
+		.pipe(stacksvg({ inlineSvg: true }))
+		.pipe(cheerio({
+			run: ($) => {
+				$(`svg`).attr(`style`, `display:none`)
+			},
+			parserOptions: { xmlMode: true }
+		}))
+		.pipe(gulp.dest(`test/dest`))
+}
 ```
 
 ## Extracting metadata from combined svg
@@ -215,25 +214,25 @@ const stacksvg = require(`gulp-stacksvg`)
 const through2 = require(`through2`)
 const cheerio = require(`cheerio`)
 
-gulp.task(`metadata`, () => gulp
-	.src(`test/src/*.svg`)
-	.pipe(stacksvg())
-	.pipe(through2.obj(function (file, encoding, cb) {
-		const $ = cheerio.load(file.contents.toString(), {xmlMode: true})
-		const data = $(`svg > symbol`).map(() => ({
-			name: $(this).attr(`id`),
-			viewBox: $(this).attr(`viewBox`)
-		})).get()
-		const jsonFile = new Vinyl({
-			path: `metadata.json`,
-			contents: Buffer.from(JSON.stringify(data))
-		})
-		this.push(jsonFile)
-		this.push(file)
-		cb()
-	}))
-	.pipe(gulp.dest(`test/dest`))
-)
+function metadata () {
+	return gulp.src(`test/src/*.svg`)
+		.pipe(stacksvg())
+		.pipe(through2.obj(function (file, encoding, cb) {
+			const $ = cheerio.load(file.contents.toString(), {xmlMode: true})
+			const data = $(`svg > symbol`).map(() => ({
+				name: $(this).attr(`id`),
+				viewBox: $(this).attr(`viewBox`)
+			})).get()
+			const jsonFile = new Vinyl({
+				path: `metadata.json`,
+				contents: Buffer.from(JSON.stringify(data))
+			})
+			this.push(jsonFile)
+			this.push(file)
+			cb()
+		}))
+		.pipe(gulp.dest(`test/dest`))
+}
 ```
 
 ## Possible rendering issues with Clipping Paths in SVG

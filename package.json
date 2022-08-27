@@ -8,7 +8,7 @@
 	],
 	"scripts": {
 		"lint": "eslint ./",
-		"test": "gulp build && mocha test.js"
+		"test": "gulp && mocha test.js"
 	},
 	"repository": {
 		"type": "git",
