@@ -38,7 +38,7 @@
     "sinon": "^14.0.0"
   },
   "engines": {
-    "node": ">=10.0"
+    "node": "16"
   },
   "engineStrict": true,
   "keywords": [
