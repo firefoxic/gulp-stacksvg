@@ -1,6 +1,9 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>gulp-stacksvg</title>
 	<style>
 		html,
@@ -8,18 +11,40 @@
 			margin: 0;
 			padding: 0;
 		}
-
 		.svg {
+			display: inline-block;
 			width: 100px;
 			height: 100px;
+		}
+		.circle {
+			background: url("./icons.svg#circle") no-repeat center / contain;
+		}
+		.circle-with-gradient {
+			background: url("./icons.svg#circle-with-gradient") no-repeat center / contain;
+		}
+		.namespace {
+			background: url("./icons.svg#namespace") no-repeat center / contain;
+		}
+		.square {
+			background: url("./icons.svg#square") no-repeat center / contain;
 		}
 	</style>
 </head>
 
 <body>
-	<img class="svg" src="./icons.svg#circle">
-	<img class="svg" src="./icons.svg#circle-with-gradient">
-	<img class="svg" src="./icons.svg#namespace">
+	<div>
+		<img class="svg" src="./icons.svg#circle">
+		<img class="svg" src="./icons.svg#circle-with-gradient">
+		<img class="svg" src="./icons.svg#namespace">
+		<img class="svg" src="./icons.svg#square">
+	</div>
+
+	<div>
+		<span class="svg circle"></span>
+		<span class="svg circle-with-gradient"></span>
+		<span class="svg namespace"></span>
+		<span class="svg square"></span>
+	</div>
 </body>
 
 </html>
