@@ -80,7 +80,7 @@ module.exports = function () {
 	let fileName
 	const ids = {}
 
-	let resultSvg = `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs/></svg>`
+	let resultSvg = `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>:root{visibility:hidden}:target{visibility:visible}</style><defs/></svg>`
 
 	const $ = cheerio.load(resultSvg, { xmlMode: true })
 	const $combinedSvg = $(`svg`)
@@ -103,7 +103,7 @@ module.exports = function () {
 		const idAttr = path.basename(file.relative, path.extname(file.relative))
 		const viewBoxAttr = $svg.attr(`viewBox`)
 		const preserveAspectRatioAttr = $svg.attr(`preserveAspectRatio`)
-		const $symbol = $(`<symbol/>`)
+		const $icon = $(`<svg/>`)
 
 		if (idAttr in ids) {
 			return cb(new PluginError(`gulp-stacksvg`, `File name should be unique: ${ idAttr}`))
@@ -124,12 +124,12 @@ module.exports = function () {
 			isEmpty = false
 		}
 
-		$symbol.attr(`id`, idAttr)
+		$icon.attr(`id`, idAttr)
 		if (viewBoxAttr) {
-			$symbol.attr(`viewBox`, viewBoxAttr)
+			$icon.attr(`viewBox`, viewBoxAttr)
 		}
 		if (preserveAspectRatioAttr) {
-			$symbol.attr(`preserveAspectRatio`, preserveAspectRatioAttr)
+			$icon.attr(`preserveAspectRatio`, preserveAspectRatioAttr)
 		}
 
 		const attrs = $svg[0].attribs
@@ -168,11 +168,11 @@ module.exports = function () {
 
 		if ($groupWrap) {
 			$groupWrap.append($svg.contents())
-			$symbol.append($groupWrap)
+			$icon.append($groupWrap)
 		} else {
-			$symbol.append($svg.contents())
+			$icon.append($svg.contents())
 		}
-		$combinedSvg.append($symbol)
+		$combinedSvg.append($icon)
 		cb()
 	}
 

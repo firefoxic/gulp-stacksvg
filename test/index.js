@@ -84,7 +84,7 @@ describe(`gulp-stacksvg unit test`, () => {
 
 		stream.on(`data`, (file) => {
 			const result = file.contents.toString()
-			const target = `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><symbol id="circle" viewBox="0 0 4 4" preserveAspectRatio="xMinYMid meet"><circle cx="2" cy="2" r="1"/></symbol><symbol id="square"><rect x="1" y="1" width="2" height="2"/></symbol></svg>`
+			const target = `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>:root{visibility:hidden}:target{visibility:visible}</style><svg id="circle" viewBox="0 0 4 4" preserveAspectRatio="xMinYMid meet"><circle cx="2" cy="2" r="1"/></svg><svg id="square"><rect x="1" y="1" width="2" height="2"/></svg></svg>`
 			assert.strictEqual(result, target)
 			done()
 		})
@@ -107,7 +107,7 @@ describe(`gulp-stacksvg unit test`, () => {
 
 		stream.on(`data`, (file) => {
 			const result = file.contents.toString()
-			const target = `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><symbol id="circle" viewBox="0 0 4 4"><circle cx="2" cy="2" r="1"/></symbol></svg>`
+			const target = `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>:root{visibility:hidden}:target{visibility:visible}</style><svg id="circle" viewBox="0 0 4 4"><circle cx="2" cy="2" r="1"/></svg></svg>`
 			assert.strictEqual(result, target)
 			done()
 		})
@@ -135,7 +135,7 @@ describe(`gulp-stacksvg unit test`, () => {
 
 		stream.on(`data`, (file) => {
 			const result = file.contents.toString()
-			const target = `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><circle id="circ" cx="2" cy="2" r="1"/></defs><symbol id="circle" viewBox="0 0 4 4"/></svg>`
+			const target = `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>:root{visibility:hidden}:target{visibility:visible}</style><defs><circle id="circ" cx="2" cy="2" r="1"/></defs><svg id="circle" viewBox="0 0 4 4"/></svg>`
 			assert.strictEqual(result, target)
 			done()
 		})
@@ -236,7 +236,7 @@ describe(`gulp-stacksvg unit test`, () => {
 		const stream = stacksvg()
 
 		stream.on(`data`, (file) => {
-			assert.strictEqual(`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><symbol id="rect"/><symbol id="sandwich"/></svg>`, file.contents.toString())
+			assert.strictEqual(`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>:root{visibility:hidden}:target{visibility:visible}</style><svg id="rect"/><svg id="sandwich"/></svg>`, file.contents.toString())
 			done()
 		})
 
@@ -259,7 +259,7 @@ describe(`gulp-stacksvg unit test`, () => {
 
 		stream.on(`data`, (file) => {
 			assert.strictEqual(
-				`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><symbol id="rect"><g ${attrs}><rect width="1" height="1"/></g></symbol></svg>`,
+				`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>:root{visibility:hidden}:target{visibility:visible}</style><svg id="rect"><g ${attrs}><rect width="1" height="1"/></g></svg></svg>`,
 				file.contents.toString()
 			)
 			done()

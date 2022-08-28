@@ -3,18 +3,15 @@ gulp-stacksvg ![Build Status](https://github.com/firefoxic/gulp-stacksvg/actions
 
 <img align="right" width="130" height="175" title="SVG Superman" src="https://raw.githubusercontent.com/firefoxic/gulp-stacksvg/master/svg-superman.png">
 
-Combine svg files into one with `<symbol>` elements.
-Read more about this in [CSS Tricks article](http://css-tricks.com/svg-symbol-good-choice-icons/).
-
-If you need similar plugin for grunt,
-I encourage you to check [grunt-stacksvg](https://github.com/FWeinb/grunt-stacksvg).
+Combine svg files into one with stack method.
+Read more about this in [the Simurai article](https://simurai.com/blog/2012/04/02/svg-stacks).
 
 ### Options
 
 The following options are set automatically based on file data:
 
-* `id` attribute of the `<symbol>` element is set to the name of corresponding file;
-* result filename is the name of base directory of the first file.
+* the `id` attribute of the stack fragment is set to the name of the corresponding file;
+* the resulting filename is the base directory name of the first file.
 
 If your workflow is different, please use `gulp-rename` to rename sources or result.
 
@@ -26,7 +23,7 @@ npm install gulp-stacksvg --save-dev
 
 ## Usage
 
-The following script will combine all svg sources into single svg file with `<symbol>` elements.
+The following script will combine all svg sources into single svg file with stack method.
 The name of result svg is the base directory name of the first file `src.svg`.
 
 Additionally pass through [gulp-svgmin](https://github.com/ben-eb/gulp-svgmin)
@@ -62,7 +59,7 @@ You just don't have to want it.
 
 ### Generating id attributes
 
-Id of symbol element is calculated from file name. You cannot pass files with the same name,
+Id of the stack fragment is calculated from file name. You cannot pass files with the same name,
 because id should be unique.
 
 If you need to add prefix to each id, please use `gulp-rename`:
@@ -134,7 +131,7 @@ function transformSvgSources () {
 
 You can extract data with cheerio.
 
-The following example extracts viewBox and id from each symbol in combined svg.
+The following example extracts viewBox and id from each stack fragment.
 
 ```js
 const gulp = require(`gulp`)
@@ -148,7 +145,7 @@ function metadata () {
 		.pipe(stacksvg())
 		.pipe(through2.obj(function (file, encoding, cb) {
 			const $ = cheerio.load(file.contents.toString(), {xmlMode: true})
-			const data = $(`svg > symbol`).map(() => ({
+			const data = $(`svg > svg`).map(() => ({
 				name: $(this).attr(`id`),
 				viewBox: $(this).attr(`viewBox`)
 			})).get()
