@@ -1,6 +1,5 @@
 const stacksvg = require(`./index`)
 const gulp = require(`gulp`)
-const inject = require(`gulp-inject`)
 
 function external () {
 	return gulp
@@ -9,19 +8,4 @@ function external () {
 		.pipe(gulp.dest(`test/dest`))
 }
 
-function inline () {
-	function fileContents(_, file) {
-		return file.contents.toString(`utf8`)
-	}
-
-	const svgs = gulp.src(`test/src/*.svg`)
-		.pipe(stacksvg({ inlineSvg: true }))
-
-	return gulp.src(`test/index.html`)
-		.pipe(inject(svgs, { transform: fileContents }))
-		.pipe(gulp.dest(`test/dest`))
-}
-
-exports.default = (done) => {
-	gulp.series([external, inline])(done)
-}
+exports.default = external

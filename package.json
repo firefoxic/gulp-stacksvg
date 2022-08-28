@@ -33,7 +33,6 @@
 		"eslint": "^8.22.0",
 		"finalhandler": "^1.2.0",
 		"gulp": "^4.0.2",
-		"gulp-inject": "^5.0.5",
 		"mocha": "^10.0.0",
 		"puppeteer": "^16.2.0",
 		"serve-static": "^1.15.0",

@@ -80,11 +80,11 @@ describe(`gulp-stacksvg unit test`, () => {
 	})
 
 	it(`should correctly merge svg files`, (done) => {
-		const stream = stacksvg({ inlineSvg: true })
+		const stream = stacksvg()
 
 		stream.on(`data`, (file) => {
 			const result = file.contents.toString()
-			const target = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><symbol id="circle" viewBox="0 0 4 4" preserveAspectRatio="xMinYMid meet"><circle cx="2" cy="2" r="1"/></symbol><symbol id="square"><rect x="1" y="1" width="2" height="2"/></symbol></svg>`
+			const target = `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><symbol id="circle" viewBox="0 0 4 4" preserveAspectRatio="xMinYMid meet"><circle cx="2" cy="2" r="1"/></symbol><symbol id="square"><rect x="1" y="1" width="2" height="2"/></symbol></svg>`
 			assert.strictEqual(result, target)
 			done()
 		})
@@ -103,11 +103,11 @@ describe(`gulp-stacksvg unit test`, () => {
 	})
 
 	it(`should not include null or invalid files`, (done) => {
-		const stream = stacksvg({ inlineSvg: true })
+		const stream = stacksvg()
 
 		stream.on(`data`, (file) => {
 			const result = file.contents.toString()
-			const target = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><symbol id="circle" viewBox="0 0 4 4"><circle cx="2" cy="2" r="1"/></symbol></svg>`
+			const target = `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><symbol id="circle" viewBox="0 0 4 4"><circle cx="2" cy="2" r="1"/></symbol></svg>`
 			assert.strictEqual(result, target)
 			done()
 		})
@@ -131,11 +131,11 @@ describe(`gulp-stacksvg unit test`, () => {
 	})
 
 	it(`should merge defs to parent svg file`, (done) => {
-		const stream = stacksvg({ inlineSvg: true })
+		const stream = stacksvg()
 
 		stream.on(`data`, (file) => {
 			const result = file.contents.toString()
-			const target = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><circle id="circ" cx="2" cy="2" r="1"/></defs><symbol id="circle" viewBox="0 0 4 4"/></svg>`
+			const target = `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><circle id="circ" cx="2" cy="2" r="1"/></defs><symbol id="circle" viewBox="0 0 4 4"/></svg>`
 			assert.strictEqual(result, target)
 			done()
 		})
@@ -220,12 +220,12 @@ describe(`gulp-stacksvg unit test`, () => {
 		})
 
 		stream.write(new Vinyl({
-			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg"><rect width="1" height="1"/></svg>`),
+			contents: Buffer.from(`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg"><rect width="1" height="1"/></svg>`),
 			path: `rect.svg`
 		}))
 
 		stream.write(new Vinyl({
-			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50 50"><rect id="a" width="50" height="10"/><use y="20" xlink:href="#a"/><use y="40" xlink:href="#a"/></svg>`),
+			contents: Buffer.from(`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50 50"><rect id="a" width="50" height="10"/><use y="20" xlink:href="#a"/><use y="40" xlink:href="#a"/></svg>`),
 			path: `sandwich.svg`
 		}))
 
@@ -233,20 +233,20 @@ describe(`gulp-stacksvg unit test`, () => {
 	})
 
 	it(`should not include duplicate namespaces into final svg`, (done) => {
-		const stream = stacksvg({ inlineSvg: true })
+		const stream = stacksvg()
 
 		stream.on(`data`, (file) => {
-			assert.strictEqual(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><symbol id="rect"/><symbol id="sandwich"/></svg>`, file.contents.toString())
+			assert.strictEqual(`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><symbol id="rect"/><symbol id="sandwich"/></svg>`, file.contents.toString())
 			done()
 		})
 
 		stream.write(new Vinyl({
-			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"/>`),
+			contents: Buffer.from(`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"/>`),
 			path: `rect.svg`
 		}))
 
 		stream.write(new Vinyl({
-			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"/>`),
+			contents: Buffer.from(`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"/>`),
 			path: `sandwich.svg`
 		}))
 
@@ -254,19 +254,19 @@ describe(`gulp-stacksvg unit test`, () => {
 	})
 
 	it(`should transfer svg presentation attributes to a wrapping g element`, (done) => {
-		const stream = stacksvg({ inlineSvg: true })
+		const stream = stacksvg()
 		const attrs = `stroke="currentColor" stroke-width="2" stroke-linecap="round" style="fill:#0000"`
 
 		stream.on(`data`, (file) => {
 			assert.strictEqual(
-				`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><symbol id="rect"><g ${attrs}><rect width="1" height="1"/></g></symbol></svg>`,
+				`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><symbol id="rect"><g ${attrs}><rect width="1" height="1"/></g></symbol></svg>`,
 				file.contents.toString()
 			)
 			done()
 		})
 
 		stream.write(new Vinyl({
-			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" ${attrs}><rect width="1" height="1"/></svg>`),
+			contents: Buffer.from(`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" ${attrs}><rect width="1" height="1"/></svg>`),
 			path: `rect.svg`
 		}))
 
@@ -285,12 +285,12 @@ describe(`gulp-stacksvg unit test`, () => {
 		})
 
 		stream.write(new Vinyl({
-			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:lk="http://www.w3.org/1999/xlink"><rect id="a" width="1" height="1"/><use y="2" lk:href="#a"/></svg>`),
+			contents: Buffer.from(`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:lk="http://www.w3.org/1999/xlink"><rect id="a" width="1" height="1"/><use y="2" lk:href="#a"/></svg>`),
 			path: `rect.svg`
 		}))
 
 		stream.write(new Vinyl({
-			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50 50"><rect id="a" width="50" height="10"/><use y="20" xlink:href="#a"/><use y="40" xlink:href="#a"/></svg>`),
+			contents: Buffer.from(`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50 50"><rect id="a" width="50" height="10"/><use y="20" xlink:href="#a"/><use y="40" xlink:href="#a"/></svg>`),
 			path: `sandwich.svg`
 		}))
 
@@ -309,12 +309,12 @@ describe(`gulp-stacksvg unit test`, () => {
 		})
 
 		stream.write(new Vinyl({
-			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1998/xlink"><rect id="a" width="1" height="1"/><use y="2" xlink:href="#a"/></svg>`),
+			contents: Buffer.from(`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1998/xlink"><rect id="a" width="1" height="1"/><use y="2" xlink:href="#a"/></svg>`),
 			path: `rect.svg`
 		}))
 
 		stream.write(new Vinyl({
-			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"viewBox="0 0 50 50"><rect id="a" width="50" height="10"/><use y="20" xlink:href="#a"/><use y="40" xlink:href="#a"/></svg>`),
+			contents: Buffer.from(`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"viewBox="0 0 50 50"><rect id="a" width="50" height="10"/><use y="20" xlink:href="#a"/><use y="40" xlink:href="#a"/></svg>`),
 			path: `sandwich.svg`
 		}))
 

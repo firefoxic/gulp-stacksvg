@@ -18,10 +18,6 @@ The following options are set automatically based on file data:
 
 If your workflow is different, please use `gulp-rename` to rename sources or result.
 
-The only available option is:
-
-* inlineSvg — output only `<svg>` element without `<?xml ?>` and `DOCTYPE` to use inline, default: `false`.
-
 ## Install
 
 ```sh
@@ -60,40 +56,9 @@ function combineSVG () {
 }
 ```
 
-### Inlining stacksvg result into html body
+### Inlining stacksvg result into markup
 
-To inline combined svg into html body I suggest using [gulp-inject](https://github.com/klei/gulp-inject).
-The following gulp task will inject svg into
-
-In your html file (using [`sr-only` from html5-boilerplate](https://github.com/h5bp/html5-boilerplate/blob/master/dist/css/style.css#L112) to fix the gradients):
-
-```html
-<div class="sr-only">
-  <!-- inject:svg --><!-- endinject -->
-</div>
-```
-
-In your gulp tasks:
-
-```js
-const gulp = require(`gulp`)
-const stacksvg = require(`gulp-stacksvg`)
-const inject = require(`gulp-inject`)
-
-function inlineSvg () {
-	const svgs = gulp
-		.src(`test/src/*.svg`)
-		.pipe(stacksvg({ inlineSvg: true }))
-
-	function fileContents (filePath, file) {
-		return file.contents.toString()
-	}
-
-	return gulp.src(`test/src/inline-svg.html`)
-		.pipe(inject(svgs, { transform: fileContents }))
-		.pipe(gulp.dest(`test/dest`))
-}
-```
+You just don't have to want it.
 
 ### Generating id attributes
 
@@ -137,18 +102,6 @@ function generateIdAttrs () {
 }
 ```
 
-### Using svg as external file
-
-There is a problem with `<use xlink:href="external.svg#icon-name">` in Internet Explorer,
-so you should either inline everything into body with a
-[simple script like this](https://gist.github.com/firefoxic/621a56a353f7b2a6b0db) or
-polyfill with [svg4everybody](https://github.com/jonathantneal/svg4everybody).
-
-## PNG sprite fallback for unsupported browsers
-
-[gulp-svgfallback](https://github.com/firefoxic/gulp-svgfallback) is a gulp plugin that generates png
-sprite and css file with background offsets from svg sources. Please check it and leave feedback.
-
 ## Transform svg sources or combined svg
 
 To transform either svg sources or combined svg you may pipe your files through
@@ -172,31 +125,7 @@ function transformSvgSources () {
 			},
 			parserOptions: { xmlMode: true }
 		}))
-		.pipe(stacksvg({ inlineSvg: true }))
-		.pipe(gulp.dest(`test/dest`))
-}
-```
-
-### Transform combined svg
-
-The following example sets `style="display:none"` on the combined svg:
-(beware if you use gradients and masks, display:none breaks those and just show
-nothing, best method is to use the [method show above](#inlining-stacksvg-result-into-html-body) )
-
-```js
-const gulp = require(`gulp`)
-const stacksvg = require(`gulp-stacksvg`)
-const cheerio = require(`gulp-cheerio`)
-
-function transformCombinedSvg () {
-	return gulp.src(`test/src/*.svg`)
-		.pipe(stacksvg({ inlineSvg: true }))
-		.pipe(cheerio({
-			run: ($) => {
-				$(`svg`).attr(`style`, `display:none`)
-			},
-			parserOptions: { xmlMode: true }
-		}))
+		.pipe(stacksvg())
 		.pipe(gulp.dest(`test/dest`))
 }
 ```

@@ -1,0 +1,31 @@
+<html>
+
+<head>
+	<title>gulp-stacksvg</title>
+	<style>
+		html,
+		body {
+			margin: 0;
+			padding: 0;
+		}
+
+		.svg {
+			width: 100px;
+			height: 100px;
+		}
+	</style>
+</head>
+
+<body>
+	<svg class="svg">
+		<use href="src.svg#circle" />
+	</svg>
+	<svg class="svg">
+		<use href="src.svg#circle-with-gradient" />
+	</svg>
+	<svg class="svg">
+		<use href="src.svg#namespace" />
+	</svg>
+</body>
+
+</html>
