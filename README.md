@@ -6,11 +6,13 @@ gulp-stacksvg ![Build Status](https://github.com/firefoxic/gulp-stacksvg/actions
 Combine svg files into one with stack method.
 Read more about this in [the Simurai article](https://simurai.com/blog/2012/04/02/svg-stacks).
 
-### Options
+### Avalable options
 
-The `id` attribute of the stack fragment is set to the name of the corresponding file automatically.
-
-The `output` option sets the stack file name. The default value is `stack.svg`. You can pass to this option either a name with the `.svg` extension or without it.
+| Option      | Description                                                                          | Default     |
+|-------------|--------------------------------------------------------------------------------------|-------------|
+| `output`    | Sets the stack file name. Accepts values ​​both with and without the `.svg` extension. | `stack.svg` |
+| `separator` | Replaces the directory separator for the `id` attribute.                             | `_`         |
+| `spacer`    | Joins space-separated words for the `id` attribute.                                  | `-`         |
 
 ## Install
 

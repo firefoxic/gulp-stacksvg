@@ -292,6 +292,120 @@ describe(`gulp-stacksvg unit test`, () => {
 		stream.end()
 	})
 
+	it(`should replace the space with the hyphen when spacer is not passed`, (done) => {
+		const stream = stacksvg()
+
+		stream.on(`data`, (file) => {
+			strictEqual(
+				`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>:root{visibility:hidden}:target{visibility:visible}</style><svg id="icon-like"/></svg>`,
+				file.contents.toString()
+			)
+			done()
+		})
+
+		stream.write(new Vinyl({
+			contents: Buffer.from(`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"/>`),
+			path: `icon like.svg`
+		}))
+
+		stream.end()
+	})
+
+	it(`should replace the space with the passed spacer option`, (done) => {
+		const stream = stacksvg({ spacer: `--` })
+
+		stream.on(`data`, (file) => {
+			strictEqual(
+				`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>:root{visibility:hidden}:target{visibility:visible}</style><svg id="icon--like"/></svg>`,
+				file.contents.toString()
+			)
+			done()
+		})
+
+		stream.write(new Vinyl({
+			contents: Buffer.from(`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"/>`),
+			path: `icon like.svg`
+		}))
+
+		stream.end()
+	})
+
+	it(`Should remove the space if an empty string is passed to spacer option`, (done) => {
+		const stream = stacksvg({ spacer: `` })
+
+		stream.on(`data`, (file) => {
+			strictEqual(
+				`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>:root{visibility:hidden}:target{visibility:visible}</style><svg id="iconlike"/></svg>`,
+				file.contents.toString()
+			)
+			done()
+		})
+
+		stream.write(new Vinyl({
+			contents: Buffer.from(`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"/>`),
+			path: `icon like.svg`
+		}))
+
+		stream.end()
+	})
+
+	it(`should replace the directory separator with the underscore`, (done) => {
+		const stream = stacksvg()
+
+		stream.on(`data`, (file) => {
+			strictEqual(
+				`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>:root{visibility:hidden}:target{visibility:visible}</style><svg id="icons_like"/></svg>`,
+				file.contents.toString()
+			)
+			done()
+		})
+
+		stream.write(new Vinyl({
+			contents: Buffer.from(`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"/>`),
+			path: `icons/like.svg`
+		}))
+
+		stream.end()
+	})
+
+	it(`should replace the directory separator with the passed separator option`, (done) => {
+		const stream = stacksvg({ separator: `__` })
+
+		stream.on(`data`, (file) => {
+			strictEqual(
+				`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>:root{visibility:hidden}:target{visibility:visible}</style><svg id="icons__like"/></svg>`,
+				file.contents.toString()
+			)
+			done()
+		})
+
+		stream.write(new Vinyl({
+			contents: Buffer.from(`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"/>`),
+			path: `icons/like.svg`
+		}))
+
+		stream.end()
+	})
+
+	it(`should remove the directory separator if an empty string is passed to separator option`, (done) => {
+		const stream = stacksvg({ separator: `` })
+
+		stream.on(`data`, (file) => {
+			strictEqual(
+				`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>:root{visibility:hidden}:target{visibility:visible}</style><svg id="iconslike"/></svg>`,
+				file.contents.toString()
+			)
+			done()
+		})
+
+		stream.write(new Vinyl({
+			contents: Buffer.from(`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"/>`),
+			path: `icons/like.svg`
+		}))
+
+		stream.end()
+	})
+
 	it(`Warn about duplicate namespace value under different name`, (done) => {
 		const stream = stacksvg()
 

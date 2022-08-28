@@ -1,5 +1,5 @@
 import { load } from "cheerio"
-import { basename, extname } from "path"
+import { basename, extname, sep } from "path"
 import { Transform } from "stream"
 import fancyLog from "fancy-log"
 import PluginError from "plugin-error"
@@ -77,13 +77,16 @@ export function stacksvg (options) {
 
 	options = options || {}
 
-	const namespaces = {}
-	let isEmpty = true
-	let fileName = options.output || `stack.svg`
-	fileName = fileName.endsWith(`.svg`) ? fileName : `${fileName}.svg`
 	const ids = {}
+	const namespaces = {}
+	const separator = options.separator ?? `_`
+	const spacer = options.spacer ?? `-`
 
 	let resultSvg = `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>:root{visibility:hidden}:target{visibility:visible}</style><defs/></svg>`
+	let isEmpty = true
+	let fileName = options.output || `stack.svg`
+
+	fileName = fileName.endsWith(`.svg`) ? fileName : `${fileName}.svg`
 
 	const $ = load(resultSvg, { xmlMode: true })
 	const $combinedSvg = $(`svg`)
@@ -103,7 +106,10 @@ export function stacksvg (options) {
 
 		if ($svg.length === 0) {return cb()}
 
-		const idAttr = basename(file.relative, extname(file.relative))
+		const idAttr = basename(
+			file.relative.split(sep).join(separator).replace(/\s/g, spacer),
+			extname(file.relative)
+		)
 		const viewBoxAttr = $svg.attr(`viewBox`)
 		const widthAttr = $svg.attr(`width`)
 		const heightAttr = $svg.attr(`height`)
