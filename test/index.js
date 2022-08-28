@@ -1,28 +1,30 @@
 /* global describe, it, before, after, beforeEach, afterEach */
 
-const assert = require(`assert`)
-const cheerio = require(`cheerio`)
-const fancyLog = require(`fancy-log`)
-const finalhandler = require(`finalhandler`)
-const http = require(`http`)
-const PluginError = require(`plugin-error`)
-const puppeteer = require(`puppeteer`)
-const sandbox = require(`sinon`).createSandbox()
-const serveStatic = require(`serve-static`)
-const stacksvg = require(`../index.js`)
-const Vinyl = require(`vinyl`)
+import { stacksvg } from "../index.js"
+import assert, { strictEqual, ok } from "assert"
+import { load } from "cheerio"
+import fancyLog from "fancy-log"
+import finalhandler from "finalhandler"
+import { createServer } from "http"
+import PluginError from "plugin-error"
+import { launch } from "puppeteer"
+import { createSandbox } from "sinon"
+import serveStatic from "serve-static"
+import Vinyl from "vinyl"
+
+const sandbox = createSandbox()
 
 describe(`gulp-stacksvg usage test`, () => {
 	let browser
 	let port
 	let page
 
-	const server = http.createServer((req, res) => {
+	const server = createServer((req, res) => {
 		serveStatic(`test`)(req, res, finalhandler(req, res))
 	})
 
 	before(() => Promise.all([
-		puppeteer.launch()
+		launch()
 			.then((b) => { browser = b })
 			.then(() => browser.newPage())
 			.then((p) => { page = p }),
@@ -49,7 +51,7 @@ describe(`gulp-stacksvg usage test`, () => {
 		return page.goto(`http://localhost:${port}/src/index.html`)
 			.then(() => page.evaluate(() => document.title))
 			.then((title) => {
-				assert.strictEqual(title, `gulp-stacksvg`, `Test page is not loaded`)
+				strictEqual(title, `gulp-stacksvg`, `Test page is not loaded`)
 			})
 			.then(() => page.screenshot())
 			.then((data) => { screenshot1 = data })
@@ -72,7 +74,7 @@ describe(`gulp-stacksvg unit test`, () => {
 		stream.on(`data`, () => { isEmpty = false })
 
 		stream.on(`end`, () => {
-			assert.ok(isEmpty, `Created empty svg`)
+			ok(isEmpty, `Created empty svg`)
 			done()
 		})
 
@@ -85,7 +87,7 @@ describe(`gulp-stacksvg unit test`, () => {
 		stream.on(`data`, (file) => {
 			const result = file.contents.toString()
 			const target = `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>:root{visibility:hidden}:target{visibility:visible}</style><svg id="circle" viewBox="0 0 4 4" preserveAspectRatio="xMinYMid meet"><circle cx="2" cy="2" r="1"/></svg><svg id="square"><rect x="1" y="1" width="2" height="2"/></svg></svg>`
-			assert.strictEqual(result, target)
+			strictEqual(result, target)
 			done()
 		})
 
@@ -108,7 +110,7 @@ describe(`gulp-stacksvg unit test`, () => {
 		stream.on(`data`, (file) => {
 			const result = file.contents.toString()
 			const target = `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>:root{visibility:hidden}:target{visibility:visible}</style><svg id="circle" viewBox="0 0 4 4"><circle cx="2" cy="2" r="1"/></svg></svg>`
-			assert.strictEqual(result, target)
+			strictEqual(result, target)
 			done()
 		})
 
@@ -136,7 +138,7 @@ describe(`gulp-stacksvg unit test`, () => {
 		stream.on(`data`, (file) => {
 			const result = file.contents.toString()
 			const target = `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>:root{visibility:hidden}:target{visibility:visible}</style><defs><circle id="circ" cx="2" cy="2" r="1"/></defs><svg id="circle" viewBox="0 0 4 4"/></svg>`
-			assert.strictEqual(result, target)
+			strictEqual(result, target)
 			done()
 		})
 
@@ -152,8 +154,8 @@ describe(`gulp-stacksvg unit test`, () => {
 		const stream = stacksvg()
 
 		stream.on(`error`, (error) => {
-			assert.ok(error instanceof PluginError)
-			assert.strictEqual(error.message, `File name should be unique: circle`)
+			ok(error instanceof PluginError)
+			strictEqual(error.message, `File name should be unique: circle`)
 			done()
 		})
 
@@ -167,7 +169,7 @@ describe(`gulp-stacksvg unit test`, () => {
 		const stream = stacksvg()
 
 		stream.on(`data`, (file) => {
-			assert.strictEqual(file.relative, `icons.svg`)
+			strictEqual(file.relative, `icons.svg`)
 			done()
 		})
 
@@ -190,7 +192,7 @@ describe(`gulp-stacksvg unit test`, () => {
 		const stream = stacksvg()
 
 		stream.on(`data`, (file) => {
-			assert.strictEqual(file.relative, `stacksvg.svg`)
+			strictEqual(file.relative, `stacksvg.svg`)
 			done()
 		})
 
@@ -213,9 +215,9 @@ describe(`gulp-stacksvg unit test`, () => {
 		const stream = stacksvg()
 
 		stream.on(`data`, (file) => {
-			const $resultSvg = cheerio.load(file.contents.toString(), { xmlMode: true })(`svg`)
-			assert.strictEqual($resultSvg.attr(`xmlns`), `http://www.w3.org/2000/svg`)
-			assert.strictEqual($resultSvg.attr(`xmlns:xlink`), `http://www.w3.org/1999/xlink`)
+			const $resultSvg = load(file.contents.toString(), { xmlMode: true })(`svg`)
+			strictEqual($resultSvg.attr(`xmlns`), `http://www.w3.org/2000/svg`)
+			strictEqual($resultSvg.attr(`xmlns:xlink`), `http://www.w3.org/1999/xlink`)
 			done()
 		})
 
@@ -236,7 +238,7 @@ describe(`gulp-stacksvg unit test`, () => {
 		const stream = stacksvg()
 
 		stream.on(`data`, (file) => {
-			assert.strictEqual(`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>:root{visibility:hidden}:target{visibility:visible}</style><svg id="rect"/><svg id="sandwich"/></svg>`, file.contents.toString())
+			strictEqual(`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>:root{visibility:hidden}:target{visibility:visible}</style><svg id="rect"/><svg id="sandwich"/></svg>`, file.contents.toString())
 			done()
 		})
 
@@ -258,7 +260,7 @@ describe(`gulp-stacksvg unit test`, () => {
 		const attrs = `stroke="currentColor" stroke-width="2" stroke-linecap="round" style="fill:#0000"`
 
 		stream.on(`data`, (file) => {
-			assert.strictEqual(
+			strictEqual(
 				`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>:root{visibility:hidden}:target{visibility:visible}</style><svg id="rect"><g ${attrs}><rect width="1" height="1"/></g></svg></svg>`,
 				file.contents.toString()
 			)
@@ -277,7 +279,7 @@ describe(`gulp-stacksvg unit test`, () => {
 		const stream = stacksvg()
 
 		stream.on(`data`, () => {
-			assert.strictEqual(
+			strictEqual(
 				`Same namespace value under different names : xmlns:lk and xmlns:xlink.\nKeeping both.`,
 				fancyLog.info.getCall(0).args[0]
 			)
@@ -301,7 +303,7 @@ describe(`gulp-stacksvg unit test`, () => {
 		const stream = stacksvg()
 
 		stream.on(`data`, () => {
-			assert.strictEqual(
+			strictEqual(
 				`xmlns:xlink namespace appeared multiple times with different value. Keeping the first one : "http://www.w3.org/1998/xlink".\nEach namespace must be unique across files.`,
 				fancyLog.info.getCall(0).args[0]
 			)

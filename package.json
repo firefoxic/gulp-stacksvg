@@ -1,6 +1,7 @@
 {
 	"name": "gulp-stacksvg",
 	"version": "0.0.0",
+	"type": "module",
 	"description": "Combine svg files into one with stack method",
 	"main": "index.js",
 	"files": [
@@ -8,7 +9,7 @@
 	],
 	"scripts": {
 		"lint": "eslint ./",
-		"test": "gulp && mocha test/index.js"
+		"test": "gulp build && mocha ./test/index.js"
 	},
 	"repository": {
 		"type": "git",

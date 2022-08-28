@@ -1,11 +1,10 @@
-const stacksvg = require(`./index`)
-const gulp = require(`gulp`)
+import { stacksvg } from "./index.js"
+import gulp from "gulp"
 
-function external () {
-	return gulp
-		.src(`test/src/icons/**/*.svg`)
+const { src, dest } = gulp
+
+export function build () {
+	return src(`test/src/icons/**/*.svg`)
 		.pipe(stacksvg())
-		.pipe(gulp.dest(`test/dest`))
+		.pipe(dest(`test/dest`))
 }
-
-exports.default = external

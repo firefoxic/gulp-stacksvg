@@ -30,15 +30,17 @@ Additionally pass through [gulp-svgmin](https://github.com/ben-eb/gulp-svgmin)
 to minify svg and ensure unique ids.
 
 ```js
-const gulp = require(`gulp`)
-const stacksvg = require(`gulp-stacksvg`)
-const svgmin = require(`gulp-svgmin`)
-const path = require(`path`)
+import { stacksvg } from "gulp-stacksvg"
+import { basename, extname } from "path"
+import svgmin from "gulp-svgmin"
+import gulp from "gulp"
+
+const { src, dest } = gulp
 
 function combineSVG () {
-	return gulp.src(`test/src/*.svg`)
+	return src(`test/src/*.svg`)
 		.pipe(svgmin((file) => {
-			const prefix = path.basename(file.relative, path.extname(file.relative))
+			const prefix = basename(file.relative, extname(file.relative))
 			return {
 				plugins: [{
 					cleanupIDs: {
@@ -49,7 +51,7 @@ function combineSVG () {
 			}
 		}))
 		.pipe(stacksvg())
-		.pipe(gulp.dest(`test/dest`))
+		.pipe(dest(`test/dest`))
 }
 ```
 
@@ -65,15 +67,17 @@ because id should be unique.
 If you need to add prefix to each id, please use `gulp-rename`:
 
 ```js
-const gulp = require(`gulp`)
-const rename = require(`gulp-rename`)
-const stacksvg = require(`gulp-stacksvg`)
+import { stacksvg } from "gulp-stacksvg"
+import rename from "gulp-rename"
+import gulp from "gulp"
+
+const { src, dest } = gulp
 
 function generateIdAttrs () {
-	return gulp.src(`src/svg/**/*.svg`, { base: `src/svg` })
+	return src(`src/svg/**/*.svg`, { base: `src/svg` })
 		.pipe(rename({prefix: `icon-`}))
 		.pipe(stacksvg())
-		.pipe(gulp.dest(`dest`))
+		.pipe(dest(`dest`))
 }
 ```
 
@@ -82,20 +86,22 @@ use `gulp-rename`. The following example will concatenate relative path with the
 e.g. `src/svg/one/two/three/circle.svg` becomes `one-two-three-circle`.
 
 ```js
-const gulp = require(`gulp`)
-const path = require(`path`)
-const rename = require(`gulp-rename`)
-const stacksvg = require(`gulp-stacksvg`)
+import { stacksvg } from "gulp-stacksvg"
+import { sep } from "path"
+import rename from "gulp-rename"
+import gulp from "gulp"
+
+const { src, dest } = gulp
 
 function generateIdAttrs () {
-	return gulp.src(`src/svg/**/*.svg`, { base: `src/svg` })
+	return src(`src/svg/**/*.svg`, { base: `src/svg` })
 		.pipe(rename((file) => {
-			const name = file.dirname.split(path.sep)
+			const name = file.dirname.split(sep)
 			name.push(file.basename)
 			file.basename = name.join(`-`)
 		}))
 		.pipe(stacksvg())
-		.pipe(gulp.dest(`dest`))
+		.pipe(dest(`dest`))
 }
 ```
 
@@ -110,12 +116,14 @@ An example below removes all fill attributes from svg sources before combining t
 Please note that you have to set `xmlMode: true` to parse svgs as xml file.
 
 ```js
-const gulp = require(`gulp`)
-const stacksvg = require(`gulp-stacksvg`)
-const cheerio = require(`gulp-cheerio`)
+import { stacksvg } from "gulp-stacksvg"
+import cheerio from "gulp-cheerio"
+import gulp from "gulp"
+
+const { src, dest } = gulp
 
 function transformSvgSources () {
-	return gulp.src(`test/src/*.svg`)
+	return src(`test/src/*.svg`)
 		.pipe(cheerio({
 			run: ($) => {
 				$(`[fill]`).removeAttr(`fill`)
@@ -123,7 +131,7 @@ function transformSvgSources () {
 			parserOptions: { xmlMode: true }
 		}))
 		.pipe(stacksvg())
-		.pipe(gulp.dest(`test/dest`))
+		.pipe(dest(`test/dest`))
 }
 ```
 
@@ -134,17 +142,19 @@ You can extract data with cheerio.
 The following example extracts viewBox and id from each stack fragment.
 
 ```js
-const gulp = require(`gulp`)
-const Vinyl = require(`vinyl`)
-const stacksvg = require(`gulp-stacksvg`)
-const through2 = require(`through2`)
-const cheerio = require(`cheerio`)
+import { stacksvg } from "gulp-stacksvg"
+import { obj } from "through2"
+import { load } from "cheerio"
+import Vinyl from "vinyl"
+import gulp from "gulp"
+
+const { src, dest } = gulp
 
 function metadata () {
-	return gulp.src(`test/src/*.svg`)
+	return src(`test/src/*.svg`)
 		.pipe(stacksvg())
-		.pipe(through2.obj(function (file, encoding, cb) {
-			const $ = cheerio.load(file.contents.toString(), {xmlMode: true})
+		.pipe(obj(function (file, encoding, cb) {
+			const $ = load(file.contents.toString(), {xmlMode: true})
 			const data = $(`svg > svg`).map(() => ({
 				name: $(this).attr(`id`),
 				viewBox: $(this).attr(`viewBox`)
@@ -157,7 +167,7 @@ function metadata () {
 			this.push(file)
 			cb()
 		}))
-		.pipe(gulp.dest(`test/dest`))
+		.pipe(dest(`test/dest`))
 }
 ```
 

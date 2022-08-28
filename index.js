@@ -1,9 +1,9 @@
-const cheerio = require(`cheerio`)
-const path = require(`path`)
-const Stream = require(`stream`)
-const fancyLog = require(`fancy-log`)
-const PluginError = require(`plugin-error`)
-const Vinyl = require(`vinyl`)
+import { load } from "cheerio"
+import { basename, extname, sep } from "path"
+import { Transform } from "stream"
+import fancyLog from "fancy-log"
+import PluginError from "plugin-error"
+import Vinyl from "vinyl"
 
 const presentationAttributes = new Set([
 	`alignment-baseline`,
@@ -73,7 +73,7 @@ const presentationAttributes = new Set([
 	`writing-mode`
 ])
 
-module.exports = function () {
+export function stacksvg () {
 
 	const namespaces = {}
 	let isEmpty = true
@@ -82,12 +82,12 @@ module.exports = function () {
 
 	let resultSvg = `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>:root{visibility:hidden}:target{visibility:visible}</style><defs/></svg>`
 
-	const $ = cheerio.load(resultSvg, { xmlMode: true })
+	const $ = load(resultSvg, { xmlMode: true })
 	const $combinedSvg = $(`svg`)
 	const $combinedDefs = $(`defs`)
-	const stream = new Stream.Transform({ objectMode: true })
+	const stream = new Transform({ objectMode: true })
 
-	stream._transform = function transform(file, _, cb) {
+	stream._transform = function transform (file, _, cb) {
 
 		if (file.isStream()) {
 			return cb(new PluginError(`gulp-stacksvg`, `Streams are not supported!`))
@@ -96,11 +96,11 @@ module.exports = function () {
 		if (file.isNull()) {return cb()}
 
 
-		const $svg = cheerio.load(file.contents.toString(), { xmlMode: true })(`svg`)
+		const $svg = load(file.contents.toString(), { xmlMode: true })(`svg`)
 
 		if ($svg.length === 0) {return cb()}
 
-		const idAttr = path.basename(file.relative, path.extname(file.relative))
+		const idAttr = basename(file.relative, extname(file.relative))
 		const viewBoxAttr = $svg.attr(`viewBox`)
 		const widthAttr = $svg.attr(`width`)
 		const heightAttr = $svg.attr(`height`)
@@ -108,17 +108,17 @@ module.exports = function () {
 		const $icon = $(`<svg/>`)
 
 		if (idAttr in ids) {
-			return cb(new PluginError(`gulp-stacksvg`, `File name should be unique: ${ idAttr}`))
+			return cb(new PluginError(`gulp-stacksvg`, `File name should be unique: ${idAttr}`))
 		}
 
 		ids[idAttr] = true
 
 		if (!fileName) {
-			fileName = path.basename(file.base)
+			fileName = basename(file.base)
 			if (fileName === `.` || !fileName) {
 				fileName = `stacksvg.svg`
 			} else {
-				fileName = `${fileName.split(path.sep).shift() }.svg`
+				fileName = `${fileName.split(sep).shift()}.svg`
 			}
 		}
 
@@ -144,7 +144,9 @@ module.exports = function () {
 
 				if (storedNs !== undefined) {
 					if (storedNs !== attrNs) {
-						fancyLog.info(`${attrName } namespace appeared multiple times with different value. Keeping the first one : "${storedNs}".\nEach namespace must be unique across files.`)
+						fancyLog.info(
+							`${attrName} namespace appeared multiple times with different value. Keeping the first one : "${storedNs}".\nEach namespace must be unique across files.`
+						)
 					}
 				} else {
 					for (let nsName in namespaces) {
@@ -180,7 +182,7 @@ module.exports = function () {
 		cb()
 	}
 
-	stream._flush = function flush(cb) {
+	stream._flush = function flush (cb) {
 		if (isEmpty) {return cb()}
 		if ($combinedDefs.contents().length === 0) {
 			$combinedDefs.remove()
