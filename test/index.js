@@ -165,47 +165,64 @@ describe(`gulp-stacksvg unit test`, () => {
 		stream.end()
 	})
 
-	it(`should generate result filename based on base path of the first file`, (done) => {
+	it(`should generate stack.svg if output filename is not passed`, (done) => {
 		const stream = stacksvg()
 
 		stream.on(`data`, (file) => {
-			strictEqual(file.relative, `icons.svg`)
+			strictEqual(file.relative, `stack.svg`)
 			done()
 		})
 
 		stream.write(new Vinyl({
 			contents: Buffer.from(`<svg/>`),
-			path: `src/icons/circle.svg`,
-			base: `src/icons`
+			path: `circle.svg`
 		}))
 
 		stream.write(new Vinyl({
 			contents: Buffer.from(`<svg/>`),
-			path: `src2/icons2/square.svg`,
-			base: `src2/icons2`
+			path: `square.svg`
 		}))
 
 		stream.end()
 	})
 
-	it(`should generate stacksvg.svg if base path of the 1st file is dot`, (done) => {
-		const stream = stacksvg()
+	it(`should add .svg if passed output doesn't end with this`, (done) => {
+		const stream = stacksvg({ output: `test`})
 
 		stream.on(`data`, (file) => {
-			strictEqual(file.relative, `stacksvg.svg`)
+			strictEqual(file.relative, `test.svg`)
 			done()
 		})
 
 		stream.write(new Vinyl({
 			contents: Buffer.from(`<svg/>`),
-			path: `circle.svg`,
-			base: `.`
+			path: `circle.svg`
 		}))
 
 		stream.write(new Vinyl({
 			contents: Buffer.from(`<svg/>`),
-			path: `src2/icons2/square.svg`,
-			base: `src2`
+			path: `square.svg`
+		}))
+
+		stream.end()
+	})
+
+	it(`should not add .svg if passed output ends with this`, (done) => {
+		const stream = stacksvg({ output: `test.svg`})
+
+		stream.on(`data`, (file) => {
+			strictEqual(file.relative, `test.svg`)
+			done()
+		})
+
+		stream.write(new Vinyl({
+			contents: Buffer.from(`<svg/>`),
+			path: `circle.svg`
+		}))
+
+		stream.write(new Vinyl({
+			contents: Buffer.from(`<svg/>`),
+			path: `square.svg`
 		}))
 
 		stream.end()

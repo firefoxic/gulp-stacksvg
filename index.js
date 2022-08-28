@@ -1,5 +1,5 @@
 import { load } from "cheerio"
-import { basename, extname, sep } from "path"
+import { basename, extname } from "path"
 import { Transform } from "stream"
 import fancyLog from "fancy-log"
 import PluginError from "plugin-error"
@@ -73,11 +73,14 @@ const presentationAttributes = new Set([
 	`writing-mode`
 ])
 
-export function stacksvg () {
+export function stacksvg (options) {
+
+	options = options || {}
 
 	const namespaces = {}
 	let isEmpty = true
-	let fileName
+	let fileName = options.output || `stack.svg`
+	fileName = fileName.endsWith(`.svg`) ? fileName : `${fileName}.svg`
 	const ids = {}
 
 	let resultSvg = `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>:root{visibility:hidden}:target{visibility:visible}</style><defs/></svg>`
@@ -112,15 +115,6 @@ export function stacksvg () {
 		}
 
 		ids[idAttr] = true
-
-		if (!fileName) {
-			fileName = basename(file.base)
-			if (fileName === `.` || !fileName) {
-				fileName = `stacksvg.svg`
-			} else {
-				fileName = `${fileName.split(sep).shift()}.svg`
-			}
-		}
 
 		if (file && isEmpty) {
 			isEmpty = false

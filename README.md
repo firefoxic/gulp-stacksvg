@@ -8,12 +8,9 @@ Read more about this in [the Simurai article](https://simurai.com/blog/2012/04/0
 
 ### Options
 
-The following options are set automatically based on file data:
+The `id` attribute of the stack fragment is set to the name of the corresponding file automatically.
 
-* the `id` attribute of the stack fragment is set to the name of the corresponding file;
-* the resulting filename is the base directory name of the first file.
-
-If your workflow is different, please use `gulp-rename` to rename sources or result.
+The `output` option sets the stack file name. The default value is `stack.svg`. You can pass to this option either a name with the `.svg` extension or without it.
 
 ## Install
 
