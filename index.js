@@ -102,6 +102,8 @@ module.exports = function () {
 
 		const idAttr = path.basename(file.relative, path.extname(file.relative))
 		const viewBoxAttr = $svg.attr(`viewBox`)
+		const widthAttr = $svg.attr(`width`)
+		const heightAttr = $svg.attr(`height`)
 		const preserveAspectRatioAttr = $svg.attr(`preserveAspectRatio`)
 		const $icon = $(`<svg/>`)
 
@@ -127,6 +129,8 @@ module.exports = function () {
 		$icon.attr(`id`, idAttr)
 		if (viewBoxAttr) {
 			$icon.attr(`viewBox`, viewBoxAttr)
+		} else if (widthAttr && heightAttr) {
+			$icon.attr(`viewBox`, `0 0 ${widthAttr.replace(/[^0-9]/g,``)} ${heightAttr.replace(/[^0-9]/g,``)}`)
 		}
 		if (preserveAspectRatioAttr) {
 			$icon.attr(`preserveAspectRatio`, preserveAspectRatioAttr)
