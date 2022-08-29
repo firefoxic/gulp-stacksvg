@@ -1,6 +1,6 @@
 {
 	"name": "gulp-stacksvg",
-	"version": "0.0.0",
+	"version": "1.0.0",
 	"type": "module",
 	"description": "Combine svg files into one with stack method",
 	"main": "index.js",
