@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [v1.0.1] — 2022–08–29
+
+### Changed
+
+- The contents of `defs` tags are no longer transferring to `defs` of the root element, since there is no need for this.
+- Optional namespace `xmlns:xlink` is now added only if it is necessary.
+- The content of the icons does not turn into the `g` tag and the attributes remain on the `svg` tag, except deprecated and interfering.
+- Slightly improved code readability.
+
 ## [v1.0.0] — 2022–08–29
 
 ### Changed
@@ -40,6 +49,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Just forked the [gulp-svgstore](https://github.com/w0rm/gulp-svgstore) project.
 
-[Unreleased]: https://github.com/firefoxic/gulp-stacksvg/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/firefoxic/gulp-stacksvg/compare/v1.0.1...HEAD
+[v1.0.1]: https://github.com/firefoxic/gulp-stacksvg/releases/tag/v1.0.1
 [v1.0.0]: https://github.com/firefoxic/gulp-stacksvg/releases/tag/v1.0.0
 [v0.0.1]: https://github.com/firefoxic/gulp-stacksvg/releases/tag/v0.0.1
