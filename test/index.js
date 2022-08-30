@@ -132,24 +132,6 @@ describe(`gulp-stacksvg unit test`, () => {
 		stream.end()
 	})
 
-	it(`should merge defs to parent svg file`, (done) => {
-		const stream = stacksvg()
-
-		stream.on(`data`, (file) => {
-			const result = file.contents.toString()
-			const target = `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>:root{visibility:hidden}:target{visibility:visible}</style><defs><circle id="circ" cx="2" cy="2" r="1"/></defs><svg id="circle" viewBox="0 0 4 4"/></svg>`
-			strictEqual(result, target)
-			done()
-		})
-
-		stream.write(new Vinyl({
-			contents: Buffer.from(`<svg viewBox="0 0 4 4"><defs><circle id="circ" cx="2" cy="2" r="1"/></svg></defs><circle cx="2" cy="2" r="1"/></svg>`),
-			path: `circle.svg`
-		}))
-
-		stream.end()
-	})
-
 	it(`should emit error if files have the same name`, (done) => {
 		const stream = stacksvg()
 

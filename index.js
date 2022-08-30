@@ -82,7 +82,7 @@ export function stacksvg (options) {
 	const separator = options.separator ?? `_`
 	const spacer = options.spacer ?? `-`
 
-	let resultSvg = `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>:root{visibility:hidden}:target{visibility:visible}</style><defs/></svg>`
+	let resultSvg = `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>:root{visibility:hidden}:target{visibility:visible}</style></svg>`
 	let isEmpty = true
 	let fileName = options.output || `stack.svg`
 
@@ -90,7 +90,6 @@ export function stacksvg (options) {
 
 	const $ = load(resultSvg, { xmlMode: true })
 	const $combinedSvg = $(`svg`)
-	const $combinedDefs = $(`defs`)
 	const stream = new Transform({ objectMode: true })
 
 	stream._transform = function transform (file, _, cb) {
@@ -159,12 +158,6 @@ export function stacksvg (options) {
 			}
 		}
 
-		const $defs = $svg.find(`defs`)
-		if ($defs.length > 0) {
-			$combinedDefs.append($defs.contents())
-			$defs.remove()
-		}
-
 		let $groupWrap = null
 		for (let [name, value] of Object.entries($svg.attr())) {
 			if (!presentationAttributes.has(name)) {continue}
@@ -183,9 +176,8 @@ export function stacksvg (options) {
 	}
 
 	stream._flush = function flush (cb) {
-		if (isEmpty) {return cb()}
-		if ($combinedDefs.contents().length === 0) {
-			$combinedDefs.remove()
+		if (isEmpty) {
+			return cb()
 		}
 		for (let nsName in namespaces) {
 			$combinedSvg.attr(nsName, namespaces[nsName])
