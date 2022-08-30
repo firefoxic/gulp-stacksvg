@@ -5,81 +5,23 @@ import fancyLog from "fancy-log"
 import PluginError from "plugin-error"
 import Vinyl from "vinyl"
 
-const presentationAttributes = new Set([
-	`alignment-baseline`,
-	`baseline-shift`,
-	`clip-path`,
-	`clip-rule`,
-	`clip`,
-	`color-interpolation-filters`,
-	`color-interpolation`,
-	`color-profile`,
-	`color-rendering`,
-	`color`,
-	`cursor`,
-	`d`,
-	`direction`,
-	`display`,
-	`dominant-baseline`,
+const excessAttrs = [
 	`enable-background`,
-	`fill-opacity`,
-	`fill-rule`,
-	`fill`,
-	`filter`,
-	`flood-color`,
-	`flood-opacity`,
-	`font-family`,
-	`font-size-adjust`,
-	`font-size`,
-	`font-stretch`,
-	`font-style`,
-	`font-variant`,
-	`font-weight`,
-	`glyph-orientation-horizontal`,
-	`glyph-orientation-vertical`,
-	`image-rendering`,
-	`kerning`,
-	`letter-spacing`,
-	`lighting-color`,
-	`marker-end`,
-	`marker-mid`,
-	`marker-start`,
-	`mask`,
-	`opacity`,
-	`overflow`,
-	`pointer-events`,
-	`shape-rendering`,
-	`solid-color`,
-	`solid-opacity`,
-	`stop-color`,
-	`stop-opacity`,
-	`stroke-dasharray`,
-	`stroke-dashoffset`,
-	`stroke-linecap`,
-	`stroke-linejoin`,
-	`stroke-miterlimit`,
-	`stroke-opacity`,
-	`stroke-width`,
-	`stroke`,
-	`style`,
-	`text-anchor`,
-	`text-decoration`,
-	`text-rendering`,
-	`transform`,
-	`unicode-bidi`,
-	`vector-effect`,
-	`visibility`,
-	`word-spacing`,
-	`writing-mode`
-])
+	`height`,
+	`version`,
+	`width`,
+	`x`,
+	`xml:space`,
+	`y`
+]
 
 export function stacksvg ({ output = `stack.svg`, separator = `_`, spacer = `-` } = {}) {
 
 	let isEmpty = true
 	const ids = {}
 	const namespaces = {}
-	const $ = load(`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg"><style>:root{visibility:hidden}:target{visibility:visible}</style></svg>`, { xmlMode: true })
-	const $rootSvg = $(`svg`)
+	const $stack = load(`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg"><style>:root{visibility:hidden}:target{visibility:visible}</style></svg>`, { xmlMode: true })
+	const $rootSvg = $stack(`svg`)
 	const stream = new Transform({ objectMode: true })
 
 	function transform (file, _, cb) {
@@ -92,48 +34,42 @@ export function stacksvg ({ output = `stack.svg`, separator = `_`, spacer = `-` 
 			return cb()
 		}
 
-		const $svg = load(file.contents.toString(), { xmlMode: true })(`svg`)
+		const $icon = load(file.contents.toString(), { xmlMode: true })(`svg`)
 
-		if ($svg.length === 0) {
+		if ($icon.length === 0) {
 			return cb()
+		}
+
+		if (file && isEmpty) {
+			isEmpty = false
 		}
 
 		const idAttr = basename(
 			file.relative.split(sep).join(separator).replace(/\s/g, spacer),
 			extname(file.relative)
 		)
-		const viewBoxAttr = $svg.attr(`viewBox`)
-		const widthAttr = $svg.attr(`width`)?.replace(/[^0-9]/g, ``)
-		const heightAttr = $svg.attr(`height`)?.replace(/[^0-9]/g, ``)
-		const preserveAspectRatioAttr = $svg.attr(`preserveAspectRatio`)
-		const $fragment = $(`<svg/>`)
 
 		if (idAttr in ids) {
 			return cb(new PluginError(`gulp-stacksvg`, `File name should be unique: ${idAttr}`))
 		}
 
 		ids[idAttr] = true
+		$icon.attr(`id`, idAttr)
 
-		if (file && isEmpty) {
-			isEmpty = false
+		const viewBoxAttr = $icon.attr(`viewBox`)
+		const widthAttr = $icon.attr(`width`)?.replace(/[^0-9]/g, ``)
+		const heightAttr = $icon.attr(`height`)?.replace(/[^0-9]/g, ``)
+
+		if (!viewBoxAttr && widthAttr && heightAttr) {
+			$icon.attr(`viewBox`, `0 0 ${widthAttr} ${heightAttr}`)
 		}
 
-		$fragment.attr(`id`, idAttr)
+		excessAttrs.forEach((attr) => $icon.removeAttr(attr))
 
-		if (viewBoxAttr) {
-			$fragment.attr(`viewBox`, viewBoxAttr)
-		} else if (widthAttr && heightAttr) {
-			$fragment.attr(`viewBox`, `0 0 ${widthAttr} ${heightAttr}`)
-		}
-
-		if (preserveAspectRatioAttr) {
-			$fragment.attr(`preserveAspectRatio`, preserveAspectRatioAttr)
-		}
-
-		const attrs = $svg[0].attribs
+		const attrs = $icon[0].attribs
 
 		for (let attrName in attrs) {
-			if (attrName.match(/xmlns:.+/)) {
+			if (attrName.startsWith(`xmlns`)) {
 				const storedNs = namespaces[attrName]
 				const attrNs = attrs[attrName]
 
@@ -149,25 +85,12 @@ export function stacksvg ({ output = `stack.svg`, separator = `_`, spacer = `-` 
 					}
 					namespaces[attrName] = attrNs
 				}
+
+				$icon.removeAttr(attrName)
 			}
 		}
 
-		let $groupWrap = null
-
-		for (let [name, value] of Object.entries($svg.attr())) {
-			if (!presentationAttributes.has(name)) { continue}
-			if (!$groupWrap) { $groupWrap = $(`<g/>`)}
-			$groupWrap.attr(name, value)
-		}
-
-		if ($groupWrap) {
-			$groupWrap.append($svg.contents())
-			$fragment.append($groupWrap)
-		} else {
-			$fragment.append($svg.contents())
-		}
-
-		$rootSvg.append($fragment)
+		$rootSvg.append($icon)
 		cb()
 	}
 
@@ -182,7 +105,7 @@ export function stacksvg ({ output = `stack.svg`, separator = `_`, spacer = `-` 
 
 		output = output.endsWith(`.svg`) ? output : `${output}.svg`
 
-		const file = new Vinyl({ path: output, contents: Buffer.from($.xml()) })
+		const file = new Vinyl({ path: output, contents: Buffer.from($stack.xml()) })
 
 		this.push(file)
 		cb()

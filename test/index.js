@@ -86,7 +86,7 @@ describe(`gulp-stacksvg unit test`, () => {
 
 		stream.on(`data`, (file) => {
 			const result = file.contents.toString()
-			const target = `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg"><style>:root{visibility:hidden}:target{visibility:visible}</style><svg id="circle" viewBox="0 0 4 4" preserveAspectRatio="xMinYMid meet"><circle cx="2" cy="2" r="1"/></svg><svg id="square"><rect x="1" y="1" width="2" height="2"/></svg></svg>`
+			const target = `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg"><style>:root{visibility:hidden}:target{visibility:visible}</style><svg viewBox="0 0 4 4" preserveAspectRatio="xMinYMid meet" id="circle"><circle cx="2" cy="2" r="1"/></svg><svg id="square"><rect x="1" y="1" width="2" height="2"/></svg></svg>`
 			strictEqual(result, target)
 			done()
 		})
@@ -109,7 +109,7 @@ describe(`gulp-stacksvg unit test`, () => {
 
 		stream.on(`data`, (file) => {
 			const result = file.contents.toString()
-			const target = `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg"><style>:root{visibility:hidden}:target{visibility:visible}</style><svg id="circle" viewBox="0 0 4 4"><circle cx="2" cy="2" r="1"/></svg></svg>`
+			const target = `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg"><style>:root{visibility:hidden}:target{visibility:visible}</style><svg viewBox="0 0 4 4" id="circle"><circle cx="2" cy="2" r="1"/></svg></svg>`
 			strictEqual(result, target)
 			done()
 		})
@@ -249,26 +249,6 @@ describe(`gulp-stacksvg unit test`, () => {
 		stream.write(new Vinyl({
 			contents: Buffer.from(`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"/>`),
 			path: `sandwich.svg`
-		}))
-
-		stream.end()
-	})
-
-	it(`should transfer svg presentation attributes to a wrapping g element`, (done) => {
-		const stream = stacksvg()
-		const attrs = `stroke="currentColor" stroke-width="2" stroke-linecap="round" style="fill:#0000"`
-
-		stream.on(`data`, (file) => {
-			strictEqual(
-				`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>:root{visibility:hidden}:target{visibility:visible}</style><svg id="rect"><g ${attrs}><rect width="1" height="1"/></g></svg></svg>`,
-				file.contents.toString()
-			)
-			done()
-		})
-
-		stream.write(new Vinyl({
-			contents: Buffer.from(`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" ${attrs}><rect width="1" height="1"/></svg>`),
-			path: `rect.svg`
 		}))
 
 		stream.end()
