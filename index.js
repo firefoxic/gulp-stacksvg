@@ -82,7 +82,7 @@ export function stacksvg (options) {
 	const separator = options.separator ?? `_`
 	const spacer = options.spacer ?? `-`
 
-	let resultSvg = `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>:root{visibility:hidden}:target{visibility:visible}</style></svg>`
+	let resultSvg = `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg"><style>:root{visibility:hidden}:target{visibility:visible}</style></svg>`
 	let isEmpty = true
 	let fileName = options.output || `stack.svg`
 
