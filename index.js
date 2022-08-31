@@ -40,17 +40,17 @@ export function stacksvg ({ output = `stack.svg`, separator = `_`, spacer = `-` 
 			isEmpty = false
 		}
 
-		const idAttr = basename(
+		const iconId = basename(
 			file.relative.split(sep).join(separator).replace(/\s/g, spacer),
 			extname(file.relative)
 		)
 
-		if (idAttr in ids) {
-			return cb(new PluginError(`gulp-stacksvg`, `File name should be unique: ${idAttr}`))
+		if (iconId in ids) {
+			return cb(new PluginError(`gulp-stacksvg`, `File name should be unique: ${iconId}`))
 		}
 
-		ids[idAttr] = true
-		icon.setAttribute(`id`, idAttr)
+		ids[iconId] = true
+		icon.setAttribute(`id`, iconId)
 
 		const viewBoxAttr = icon.getAttribute(`viewBox`)
 		const widthAttr = icon.getAttribute(`width`)?.replace(/[^0-9]/g, ``)
