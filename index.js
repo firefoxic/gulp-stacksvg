@@ -1,4 +1,4 @@
-import { load } from "cheerio"
+import { parse } from "node-html-parser"
 import { basename, extname, sep } from "path"
 import { Transform } from "stream"
 import fancyLog from "fancy-log"
@@ -20,8 +20,8 @@ export function stacksvg ({ output = `stack.svg`, separator = `_`, spacer = `-` 
 	let isEmpty = true
 	const ids = {}
 	const namespaces = {}
-	const $stack = load(`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg"><style>:root{visibility:hidden}:target{visibility:visible}</style></svg>`, { xmlMode: true })
-	const $rootSvg = $stack(`svg`)
+	const stack = parse(`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg"><style>:root{visibility:hidden}:target{visibility:visible}</style></svg>`)
+	const rootSvg = stack.querySelector(`svg`)
 	const stream = new Transform({ objectMode: true })
 
 	function transform (file, _, cb) {
@@ -30,15 +30,11 @@ export function stacksvg ({ output = `stack.svg`, separator = `_`, spacer = `-` 
 			return cb(new PluginError(`gulp-stacksvg`, `Streams are not supported!`))
 		}
 
-		if (file.isNull()) {
+		if (file.isNull() || !parse(file.contents.toString()).querySelector(`svg`)) {
 			return cb()
 		}
 
-		const $icon = load(file.contents.toString(), { xmlMode: true })(`svg`)
-
-		if ($icon.length === 0) {
-			return cb()
-		}
+		const icon = parse(file.contents.toString()).querySelector(`svg`)
 
 		if (file && isEmpty) {
 			isEmpty = false
@@ -54,19 +50,19 @@ export function stacksvg ({ output = `stack.svg`, separator = `_`, spacer = `-` 
 		}
 
 		ids[idAttr] = true
-		$icon.attr(`id`, idAttr)
+		icon.setAttribute(`id`, idAttr)
 
-		const viewBoxAttr = $icon.attr(`viewBox`)
-		const widthAttr = $icon.attr(`width`)?.replace(/[^0-9]/g, ``)
-		const heightAttr = $icon.attr(`height`)?.replace(/[^0-9]/g, ``)
+		const viewBoxAttr = icon.getAttribute(`viewBox`)
+		const widthAttr = icon.getAttribute(`width`)?.replace(/[^0-9]/g, ``)
+		const heightAttr = icon.getAttribute(`height`)?.replace(/[^0-9]/g, ``)
 
 		if (!viewBoxAttr && widthAttr && heightAttr) {
-			$icon.attr(`viewBox`, `0 0 ${widthAttr} ${heightAttr}`)
+			icon.setAttribute(`viewBox`, `0 0 ${widthAttr} ${heightAttr}`)
 		}
 
-		excessAttrs.forEach((attr) => $icon.removeAttr(attr))
+		excessAttrs.forEach((attr) => icon.removeAttribute(attr))
 
-		const attrs = $icon[0].attribs
+		const attrs = icon._attrs
 
 		for (let attrName in attrs) {
 			if (attrName.startsWith(`xmlns`)) {
@@ -86,11 +82,11 @@ export function stacksvg ({ output = `stack.svg`, separator = `_`, spacer = `-` 
 					namespaces[attrName] = attrNs
 				}
 
-				$icon.removeAttr(attrName)
+				icon.removeAttribute(attrName)
 			}
 		}
 
-		$rootSvg.append($icon)
+		rootSvg.appendChild(icon)
 		cb()
 	}
 
@@ -100,12 +96,12 @@ export function stacksvg ({ output = `stack.svg`, separator = `_`, spacer = `-` 
 		}
 
 		for (let nsName in namespaces) {
-			$rootSvg.attr(nsName, namespaces[nsName])
+			rootSvg.setAttribute(nsName, namespaces[nsName])
 		}
 
 		output = output.endsWith(`.svg`) ? output : `${output}.svg`
 
-		const file = new Vinyl({ path: output, contents: Buffer.from($stack.xml()) })
+		const file = new Vinyl({ path: output, contents: Buffer.from(stack.toString()) })
 
 		this.push(file)
 		cb()

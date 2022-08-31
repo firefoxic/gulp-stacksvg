@@ -29,8 +29,8 @@
 	},
 	"homepage": "https://github.com/firefoxic/gulp-stacksvg",
 	"dependencies": {
-		"cheerio": "^1.0.0-rc.12",
 		"fancy-log": "^2.0.0",
+		"node-html-parser": "^5.4.2",
 		"plugin-error": "^2.0.0",
 		"vinyl": "^2.2.1"
 	},
