@@ -61,6 +61,23 @@ export function stacksvg ({ output = `stack.svg`, separator = `_`, spacer = `-` 
 		}
 
 		excessAttrs.forEach((attr) => icon.removeAttribute(attr))
+		icon.querySelectorAll(`[id]`).forEach(changeInnerId)
+
+		function changeInnerId (targetElem, suffix) {
+			let oldId = targetElem.id
+			let newId = `${iconId}_${suffix}`
+			targetElem.setAttribute(`id`, newId)
+			icon.querySelectorAll(`*`).forEach(updateUsingId)
+
+			function updateUsingId (elem) {
+				if (~elem.rawAttrs.search(`#${oldId}`)) {
+					for (let attr in elem._attrs) {
+						let attrValue = elem._attrs[attr].replace(`#${oldId}`, `#${newId}`)
+						elem.setAttribute(attr, attrValue)
+					}
+				}
+			}
+		}
 
 		const attrs = icon._attrs
 
