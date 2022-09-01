@@ -1,0 +1,48 @@
+:root {
+	font-family: system-ui, sans-serif;
+	text-align: center;
+}
+
+body {
+	margin: 0 auto;
+	padding: 1em;
+	max-width: max-content;
+}
+
+.icon {
+	display: inline-block;
+	width: 80px;
+	height: 80px;
+	transition: all 0.2s;
+}
+
+.filled {
+	--fill: hsl(42 100% 55%);
+}
+
+.filled:hover {
+	--fill: hsl(12 100% 55%);
+}
+
+.mask {
+	/* stylelint-disable-next-line */
+	-webkit-mask: var(--icon) no-repeat center / contain;
+	mask: var(--icon) no-repeat center / contain;
+	background-color: var(--fill, hsl(0 0% 0%));
+}
+
+.background {
+	background: var(--icon) no-repeat center / contain;
+}
+
+.heart {
+	--icon: url("./stack.svg#heart");
+}
+
+.sun {
+	--icon: url("./stack.svg#sun");
+}
+
+.thumbup {
+	--icon: url("./stack.svg#thumbup");
+}

@@ -5,11 +5,61 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>gulp-stacksvg</title>
+	<link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
-	<a href="./src/index.html">Original</a>
-	<a href="./dest/index.html">Result</a>
+
+	<h1>Drawing stack fragments</h1>
+
+	<table>
+		<tbody>
+			<tr>
+				<th></th>
+				<th>Styles</th>
+				<th>Markup</th>
+			</tr>
+			<tr>
+				<th>Dynamic</th>
+				<td>
+					<p>mask</p>
+					<div>
+						<span class="icon mask filled heart"></span>
+						<span class="icon mask filled sun"></span>
+						<span class="icon mask filled thumbup"></span>
+					</div>
+				</td>
+				<td>
+					<p>use</p>
+					<div>
+						<svg class="icon filled"><use href="./stack.svg#heart"/></svg>
+						<svg class="icon filled"><use href="./stack.svg#sun"/></svg>
+						<svg class="icon filled"><use href="./stack.svg#thumbup"/></svg>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<th>Static</th>
+				<td>
+					<p>background</p>
+					<div>
+						<span class="icon background heart"></span>
+						<span class="icon background sun"></span>
+						<span class="icon background thumbup"></span>
+					</div>
+				</td>
+				<td>
+					<p>img</p>
+					<div>
+						<img class="icon" src="./stack.svg#heart" alt="">
+						<img class="icon" src="./stack.svg#sun" alt="">
+						<img class="icon" src="./stack.svg#thumbup" alt="">
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
 </body>
 
 </html>
