@@ -1,7 +1,5 @@
 # gulp-stacksvg
 
-<img align="right" width="130" height="175" title="SVG Superman" src="https://raw.githubusercontent.com/firefoxic/gulp-stacksvg/master/svg-superman.png">
-
 [![Test Status][test-image]][test-url]
 [![License: MIT][license-image]][license-url]
 [![NPM version][npm-image]][npm-url]
