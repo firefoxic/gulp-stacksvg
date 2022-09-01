@@ -6,6 +6,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [v1.0.2] — 2022–09–01
+
+### Fixed
+
+- Different icons may contain the same identifiers. Previously, this was not taken into account in any way and could lead to erroneous rendering. This is now fixed, all identifiers on the stack are unique.
+
+### Added
+
+- [Demo page](https://firefoxic.github.io/gulp-stacksvg/test/).
+- Explanations to the Readme.
+
+### Changed
+
+- [`cheerio`](https://www.npmjs.com/package/cheerio) replaced with [`node-html-parser`](https://www.npmjs.com/package/node-html-parser).
+- Test icons set.
+
+### Removed
+
+- SVG Superman from the Readme.
+- Unnecessary text from the Readme.
+
 ## [v1.0.1] — 2022–08–29
 
 ### Changed
@@ -49,7 +70,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Just forked the [gulp-svgstore](https://github.com/w0rm/gulp-svgstore) project.
 
-[Unreleased]: https://github.com/firefoxic/gulp-stacksvg/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/firefoxic/gulp-stacksvg/compare/v1.0.2...HEAD
+[v1.0.2]: https://github.com/firefoxic/gulp-stacksvg/releases/tag/v1.0.2
 [v1.0.1]: https://github.com/firefoxic/gulp-stacksvg/releases/tag/v1.0.1
 [v1.0.0]: https://github.com/firefoxic/gulp-stacksvg/releases/tag/v1.0.0
 [v0.0.1]: https://github.com/firefoxic/gulp-stacksvg/releases/tag/v0.0.1
