@@ -20,7 +20,7 @@ export function stacksvg ({ output = `stack.svg`, separator = `_`, spacer = `-` 
 	let isEmpty = true
 	const ids = {}
 	const namespaces = {}
-	const stack = parse(`<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg"><style>:root{visibility:hidden}:target{visibility:visible}</style></svg>`)
+	const stack = parse(`<svg xmlns="http://www.w3.org/2000/svg"><style>:root{visibility:hidden}:target{visibility:visible}</style></svg>`)
 	const rootSvg = stack.querySelector(`svg`)
 	const stream = new Transform({ objectMode: true })
 

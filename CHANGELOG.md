@@ -6,13 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Removed
+
+- Unnecessary xml declaration. Because it turns out that not only the DTD is not needed, but also the xml declaration, since the values ​​used are the default values. Stack works without all this xml prolog. More details can be found in [supplementary material](https://oreillymedia.github.io/Using_SVG/extras/ch01-XML.html) to the book “Using SVG with CSS3 and HTML5”.
+- File existence check, which became unnecessary after the previous code optimization.
+
 ### Added
 
 - Link to [autoprefixer](https://github.com/postcss/autoprefixer).
-
-### Removed
-
-- File existence check, which became unnecessary after the previous code optimization.
 
 ## [v1.0.2] — 2022–09–01
 
