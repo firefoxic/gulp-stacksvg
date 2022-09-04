@@ -36,9 +36,7 @@ export function stacksvg ({ output = `stack.svg`, separator = `_`, spacer = `-` 
 
 		const icon = parse(file.contents.toString()).querySelector(`svg`)
 
-		if (file && isEmpty) {
-			isEmpty = false
-		}
+		isEmpty = false
 
 		const iconId = basename(
 			file.relative.split(sep).join(separator).replace(/\s/g, spacer),
