@@ -141,7 +141,7 @@ And now the icons from the external sprite are available in the styles <img widt
 ```
 
 > ⚠️ Note:  
-> For the `mask` property, we still need an autoprefixer.
+> We still need the [autoprefixer](https://github.com/postcss/autoprefixer) for the mask property.
 
 For an icon inserted via `mask`, simply change the `background`. Moreover, unlike `use`, you can draw anything in the background under the mask, for example, a gradient.
 
