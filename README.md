@@ -64,7 +64,6 @@ This method was first mentioned in a Simurai [article](https://simurai.com/blog/
 This can be done much easier. In general, the stack is arranged almost like a symbol sprite, but without changing the icon tag (it remain the `svg` tag, as in the original icon files) and with the addition of a tiny bit of style.
 
 ```xml
-<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 
 	<style>
