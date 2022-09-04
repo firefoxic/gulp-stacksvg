@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [v1.0.3] — 2022–09–04
+
 ### Removed
 
 - Unnecessary xml declaration. Because it turns out that not only the DTD is not needed, but also the xml declaration, since the values ​​used are the default values. Stack works without all this xml prolog. More details can be found in [supplementary material](https://oreillymedia.github.io/Using_SVG/extras/ch01-XML.html) to the book “Using SVG with CSS3 and HTML5”.
@@ -79,7 +81,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Just forked the [gulp-svgstore](https://github.com/w0rm/gulp-svgstore) project.
 
-[Unreleased]: https://github.com/firefoxic/gulp-stacksvg/compare/v1.0.2...HEAD
+[Unreleased]: https://github.com/firefoxic/gulp-stacksvg/compare/v1.0.3...HEAD
+[v1.0.3]: https://github.com/firefoxic/gulp-stacksvg/releases/tag/v1.0.3
 [v1.0.2]: https://github.com/firefoxic/gulp-stacksvg/releases/tag/v1.0.2
 [v1.0.1]: https://github.com/firefoxic/gulp-stacksvg/releases/tag/v1.0.1
 [v1.0.0]: https://github.com/firefoxic/gulp-stacksvg/releases/tag/v1.0.0
