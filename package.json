@@ -30,16 +30,16 @@
 	"homepage": "https://github.com/firefoxic/gulp-stacksvg",
 	"dependencies": {
 		"fancy-log": "^2.0.0",
-		"node-html-parser": "^5.4.2",
+		"node-html-parser": "^6.1.0",
 		"plugin-error": "^2.0.0",
 		"vinyl": "^2.2.1"
 	},
 	"devDependencies": {
-		"eslint": "^8.22.0",
+		"eslint": "^8.23.1",
 		"finalhandler": "^1.2.0",
 		"gulp": "^4.0.2",
 		"mocha": "^10.0.0",
-		"puppeteer": "^16.2.0",
+		"puppeteer": "^18.0.5",
 		"serve-static": "^1.15.0",
 		"sinon": "^14.0.0"
 	},
