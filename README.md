@@ -66,10 +66,7 @@ This can be done much easier. In general, the stack is arranged almost like a sy
 ```xml
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 
-	<style>
-		:root { visibility: hidden }
-		:target { visibility: visible }
-	</style>
+	<style>:root svg:not(:target) { display: none }</style>
 ```
 
 <img align="left" width="90" height="90" title="sun" src="https://raw.githubusercontent.com/firefoxic/gulp-stacksvg/main/test/stack.svg#sun-alpha">
@@ -100,10 +97,13 @@ This can be done much easier. In general, the stack is arranged almost like a sy
 </svg>
 ```
 
-The magic is in the stack inner style:
+The magic is in the stack inner style, which shows only the fragment requested by the link, hiding everything else:
 
-- `:root { visibility: hidden }` — hides the entire contents of the stack,
-- `:target { visibility: visible }` — shows only the fragment that is requested by its link.
+```css
+:root svg:not(:target) { display: none }
+```
+
+It shows only the fragment that is requested by its link.
 
 And now the icons from the external sprite are available in the styles <img width="16" height="16" title="heart" src="https://raw.githubusercontent.com/firefoxic/gulp-stacksvg/main/test/stack.svg#heart-red" alt="heart">
 
