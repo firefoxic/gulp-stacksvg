@@ -103,8 +103,6 @@ The magic is in the stack inner style, which shows only the fragment requested b
 :root svg:not(:target) { display: none }
 ```
 
-It shows only the fragment that is requested by its link.
-
 And now the icons from the external sprite are available in the styles <img width="16" height="16" title="heart" src="https://raw.githubusercontent.com/firefoxic/gulp-stacksvg/main/test/stack.svg#heart-red" alt="heart">
 
 ```html
