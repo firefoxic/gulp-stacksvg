@@ -142,6 +142,12 @@ And now the icons from the external sprite are available in the styles <img widt
 
 For an icon inserted via `mask`, simply change the `background`. Moreover, unlike `use`, you can draw anything in the background under the mask, for example, a gradient.
 
+## Useful links
+
+- [Changelog](CHANGELOG.md)
+- [License](LICENSE)
+- [SVG sprites: old-school, modern, unknown, and forgotten](https://pepelsbey.dev/articles/svg-sprites/#forgotten-stacks) by [Vadim Makeev](https://mastodon.social/@pepelsbey)
+
 [test-url]: https://github.com/firefoxic/gulp-stacksvg/actions
 [test-image]: https://github.com/firefoxic/gulp-stacksvg/actions/workflows/test.yml/badge.svg?branch=main
 
