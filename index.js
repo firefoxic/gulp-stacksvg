@@ -34,7 +34,7 @@ export function stacksvg ({ output = `stack.svg`, separator = `_`, spacer = `-` 
 			return cb()
 		}
 
-		const icon = parse(file.contents.toString()).querySelector(`svg`)
+		const icon = parse(file.contents.toString()).removeWhitespace().querySelector(`svg`)
 
 		isEmpty = false
 

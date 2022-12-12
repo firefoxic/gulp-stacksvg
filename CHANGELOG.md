@@ -6,8 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [v1.1.0] — 2022–12–12
+
 ### Added
 
+- Removing whitespace between tags when reading icon code. It will allow even well-optimized icons to be kept in source files in a readable form of formatted code.
 - Useful links section to [Readme](README.md#useful-links).
 
 ### Updated
@@ -111,7 +114,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Just forked the [gulp-svgstore](https://github.com/w0rm/gulp-svgstore) project.
 
-[Unreleased]: https://github.com/firefoxic/gulp-stacksvg/compare/v1.0.6...HEAD
+[Unreleased]: https://github.com/firefoxic/gulp-stacksvg/compare/v1.1.0...HEAD
+[v1.1.0]: https://github.com/firefoxic/gulp-stacksvg/releases/tag/v1.1.0
 [v1.0.6]: https://github.com/firefoxic/gulp-stacksvg/releases/tag/v1.0.6
 [v1.0.5]: https://github.com/firefoxic/gulp-stacksvg/releases/tag/v1.0.5
 [v1.0.4]: https://github.com/firefoxic/gulp-stacksvg/releases/tag/v1.0.4
