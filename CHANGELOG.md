@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Updated
+
+- Dependencies.
+
 ## [v1.0.6] — 2022–10–28
 
 ### Fixed
