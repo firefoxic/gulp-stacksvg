@@ -6,13 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
-## [1.0.6] — 2022–10–28
+## [v1.0.6] — 2022–10–28
 
 ### Fixed
 
 - Rendering in Safari.
 
-## [1.0.5] — 2022–10–27
+## [v1.0.5] — 2022–10–27
 
 ### Fixed
 
@@ -22,7 +22,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Dependencies.
 
-## [1.0.4] — 2022–09–22
+## [v1.0.4] — 2022–09–22
 
 ### Updated
 
