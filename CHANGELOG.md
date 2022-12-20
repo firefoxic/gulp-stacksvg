@@ -17,6 +17,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 	- Declarations of only used namespaces are now added to the root `svg` element.
 	- Namespace processing takes into account aliases for both attributes and tag names.
 
+### Fixed
+
+- Removed deprecated `xlink` namespace from [Readme](README.md#stack-under-the-hood).
+
 ## [v1.1.0] — 2022–12–12
 
 ### Added
