@@ -19,8 +19,8 @@ export function stacksvg ({ output = `stack.svg`, separator = `_`, spacer = `-` 
 
 	let isEmpty = true
 	const ids = {}
-	const namespaces = {}
-	const stack = parse(`<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style></svg>`)
+	const namespaces = new Map([[`xmlns`, `http://www.w3.org/2000/svg`]])
+	const stack = parse(`<svg><style>:root svg:not(:target){display:none}</style></svg>`)
 	const rootSvg = stack.querySelector(`svg`)
 	const stream = new Transform({ objectMode: true })
 
@@ -81,20 +81,20 @@ export function stacksvg ({ output = `stack.svg`, separator = `_`, spacer = `-` 
 
 		for (let attrName in attrs) {
 			if (attrName.startsWith(`xmlns`)) {
-				const storedNs = namespaces[attrName]
+				const storedNs = namespaces.get(attrName)
 				const attrNs = attrs[attrName]
 
-				if (storedNs !== undefined) {
+				if (storedNs) {
 					if (storedNs !== attrNs) {
 						fancyLog.info(`${attrName} namespace appeared multiple times with different value. Keeping the first one : "${storedNs}".\nEach namespace must be unique across files.`)
 					}
 				} else {
-					for (let nsName in namespaces) {
-						if (namespaces[nsName] === attrNs) {
+					for (let [nsName, nsValue] of namespaces) {
+						if (nsValue === attrNs) {
 							fancyLog.info(`Same namespace value under different names : ${nsName} and ${attrName}.\nKeeping both.`)
 						}
 					}
-					namespaces[attrName] = attrNs
+					namespaces.set(attrName, attrNs)
 				}
 
 				icon.removeAttribute(attrName)
@@ -110,8 +110,8 @@ export function stacksvg ({ output = `stack.svg`, separator = `_`, spacer = `-` 
 			return cb()
 		}
 
-		for (let nsName in namespaces) {
-			rootSvg.setAttribute(nsName, namespaces[nsName])
+		for (let [nsName, nsValue] of namespaces) {
+			rootSvg.setAttribute(nsName, nsValue)
 		}
 
 		output = output.endsWith(`.svg`) ? output : `${output}.svg`

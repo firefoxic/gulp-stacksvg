@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- The main namespace `xmlns="http://www.w3.org/2000/svg"` has been moved to the map object.
+
 ## [v1.1.0] — 2022–12–12
 
 ### Added
