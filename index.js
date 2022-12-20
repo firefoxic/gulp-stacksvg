@@ -1,7 +1,7 @@
 import { parse } from "node-html-parser"
 import { basename, extname, sep } from "path"
 import { Transform } from "stream"
-import fancyLog from "fancy-log"
+import { createHmac } from "crypto"
 import PluginError from "plugin-error"
 import Vinyl from "vinyl"
 
@@ -15,11 +15,13 @@ const excessAttrs = [
 	`y`
 ]
 
+const xlink = `http://www.w3.org/1999/xlink`
+
 export function stacksvg ({ output = `stack.svg`, separator = `_`, spacer = `-` } = {}) {
 
 	let isEmpty = true
 	const ids = {}
-	const namespaces = new Map([[`xmlns`, `http://www.w3.org/2000/svg`]])
+	const namespaces = new Map([[`http://www.w3.org/2000/svg`, `xmlns`]])
 	const stack = parse(`<svg><style>:root svg:not(:target){display:none}</style></svg>`)
 	const rootSvg = stack.querySelector(`svg`)
 	const stream = new Transform({ objectMode: true })
@@ -34,7 +36,8 @@ export function stacksvg ({ output = `stack.svg`, separator = `_`, spacer = `-` 
 			return cb()
 		}
 
-		const icon = parse(file.contents.toString()).removeWhitespace().querySelector(`svg`)
+		const iconDom = parse(file.contents.toString()).removeWhitespace()
+		const iconSvg = iconDom.querySelector(`svg`)
 
 		isEmpty = false
 
@@ -48,24 +51,24 @@ export function stacksvg ({ output = `stack.svg`, separator = `_`, spacer = `-` 
 		}
 
 		ids[iconId] = true
-		icon.setAttribute(`id`, iconId)
+		iconSvg.setAttribute(`id`, iconId)
 
-		const viewBoxAttr = icon.getAttribute(`viewBox`)
-		const widthAttr = icon.getAttribute(`width`)?.replace(/[^0-9]/g, ``)
-		const heightAttr = icon.getAttribute(`height`)?.replace(/[^0-9]/g, ``)
+		const viewBoxAttr = iconSvg.getAttribute(`viewBox`)
+		const widthAttr = iconSvg.getAttribute(`width`)?.replace(/[^0-9]/g, ``)
+		const heightAttr = iconSvg.getAttribute(`height`)?.replace(/[^0-9]/g, ``)
 
 		if (!viewBoxAttr && widthAttr && heightAttr) {
-			icon.setAttribute(`viewBox`, `0 0 ${widthAttr} ${heightAttr}`)
+			iconSvg.setAttribute(`viewBox`, `0 0 ${widthAttr} ${heightAttr}`)
 		}
 
-		excessAttrs.forEach((attr) => icon.removeAttribute(attr))
-		icon.querySelectorAll(`[id]`).forEach(changeInnerId)
+		excessAttrs.forEach((attr) => iconSvg.removeAttribute(attr))
+		iconSvg.querySelectorAll(`[id]`).forEach(changeInnerId)
 
 		function changeInnerId (targetElem, suffix) {
 			let oldId = targetElem.id
 			let newId = `${iconId}_${suffix}`
 			targetElem.setAttribute(`id`, newId)
-			icon.querySelectorAll(`*`).forEach(updateUsingId)
+			iconSvg.querySelectorAll(`*`).forEach(updateUsingId)
 
 			function updateUsingId (elem) {
 				if (~elem.rawAttrs.search(`#${oldId}`)) {
@@ -77,31 +80,44 @@ export function stacksvg ({ output = `stack.svg`, separator = `_`, spacer = `-` 
 			}
 		}
 
-		const attrs = icon._attrs
+		const attrs = iconSvg._attrs
 
 		for (let attrName in attrs) {
 			if (attrName.startsWith(`xmlns`)) {
-				const storedNs = namespaces.get(attrName)
-				const attrNs = attrs[attrName]
-
-				if (storedNs) {
-					if (storedNs !== attrNs) {
-						fancyLog.info(`${attrName} namespace appeared multiple times with different value. Keeping the first one : "${storedNs}".\nEach namespace must be unique across files.`)
+				let nsId = attrs[attrName]
+				let oldNsAlias = attrName.slice(6)
+				let newNsAlias = oldNsAlias
+				if (namespaces.has(nsId)) {
+					if (namespaces.get(nsId) !== attrName) {
+						newNsAlias = namespaces.get(nsId).slice(6)
+						changeNsAttrs(iconDom, oldNsAlias, newNsAlias)
 					}
+				} else if (nsId === xlink) {
+					newNsAlias = ``
+					changeNsAttrs(iconDom, oldNsAlias, newNsAlias)
 				} else {
-					for (let [nsName, nsValue] of namespaces) {
-						if (nsValue === attrNs) {
-							fancyLog.info(`Same namespace value under different names : ${nsName} and ${attrName}.\nKeeping both.`)
+					for (let ns of namespaces.values()) {
+						if (ns === attrName) {
+							newNsAlias = `${oldNsAlias}${getHash(nsId)}`
+							changeNsAttrs(iconDom, oldNsAlias, newNsAlias)
+							break
 						}
 					}
-					namespaces.set(attrName, attrNs)
+					iconDom.querySelectorAll(`*`).forEach((elem) => {
+						for (let name of Object.keys(elem._attrs)) {
+							if (name.startsWith(`${newNsAlias}:`)) {
+								namespaces.set(nsId, `xmlns:${newNsAlias}`)
+								break
+							}
+						}
+					})
 				}
 
-				icon.removeAttribute(attrName)
+				iconSvg.removeAttribute(attrName)
 			}
 		}
 
-		rootSvg.appendChild(icon)
+		rootSvg.appendChild(iconSvg)
 		cb()
 	}
 
@@ -110,8 +126,8 @@ export function stacksvg ({ output = `stack.svg`, separator = `_`, spacer = `-` 
 			return cb()
 		}
 
-		for (let [nsName, nsValue] of namespaces) {
-			rootSvg.setAttribute(nsName, nsValue)
+		for (let [nsId, nsAttr] of namespaces) {
+			rootSvg.setAttribute(nsAttr, nsId)
 		}
 
 		output = output.endsWith(`.svg`) ? output : `${output}.svg`
@@ -126,4 +142,23 @@ export function stacksvg ({ output = `stack.svg`, separator = `_`, spacer = `-` 
 	stream._flush = flush
 
 	return stream
+}
+
+function changeNsAttrs (elems, oldAlias, newAlias) {
+	elems.querySelectorAll(`*`).forEach((elem) => {
+		let prefix = newAlias === `` ? `` : `${newAlias}:`
+		for (let name of Object.keys(elem._attrs)) {
+			if (name.startsWith(`${oldAlias}:`)) {
+				elem.setAttribute(`${prefix}${name.slice((oldAlias.length + 1))}`, elem._attrs[name])
+				elem.removeAttribute(name)
+			}
+		}
+	})
+}
+
+function getHash (str) {
+	return createHmac(`sha1`, `xmlns`)
+		.update(str)
+		.digest(`hex`)
+		.slice(0, 7)
 }

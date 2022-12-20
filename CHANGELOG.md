@@ -9,6 +9,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 
 - The main namespace `xmlns="http://www.w3.org/2000/svg"` has been moved to the map object.
+- Improved namespace processing:
+	- Namespace values are now checked for uniqueness, since they are essential.
+	- Different aliases of the same namespace are now cast to the same name.
+	- The declaration of the deprecated namespace `http://www.w3.org/1999/xlink` and its aliases in `href` attribute prefixes are now removed.
+	- Duplicate aliases of different namespaces are now renamed.
+	- Declarations of only used namespaces are now added to the root `svg` element.
 
 ## [v1.1.0] — 2022–12–12
 

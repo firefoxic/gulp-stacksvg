@@ -2,7 +2,6 @@
 
 import { stacksvg } from "../index.js"
 import assert, { strictEqual, ok } from "assert"
-import { parse } from "node-html-parser"
 import fancyLog from "fancy-log"
 import finalhandler from "finalhandler"
 import { createServer } from "http"
@@ -228,63 +227,19 @@ describe(`gulp-stacksvg unit test`, () => {
 		stream.end()
 	})
 
-	it(`should include all namespace into final svg`, (done) => {
-		const stream = stacksvg()
-
-		stream.on(`data`, (file) => {
-			const stack = parse(file.contents.toString()).querySelector(`svg`)
-			strictEqual(stack.getAttribute(`xmlns`), `http://www.w3.org/2000/svg`)
-			strictEqual(stack.getAttribute(`xmlns:xlink`), `http://www.w3.org/1999/xlink`)
-			done()
-		})
-
-		stream.write(new Vinyl({
-			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg"><rect width="1" height="1"/></svg>`),
-			path: `rect.svg`
-		}))
-
-		stream.write(new Vinyl({
-			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50 50"><rect id="a" width="50" height="10"/><use y="20" xlink:href="#a"/><use y="40" xlink:href="#a"/></svg>`),
-			path: `sandwich.svg`
-		}))
-
-		stream.end()
-	})
-
-	it(`should not include duplicate namespaces into final svg`, (done) => {
-		const stream = stacksvg()
-
-		stream.on(`data`, (file) => {
-			strictEqual(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>:root svg:not(:target){display:none}</style><svg id="rect"></svg><svg id="sandwich"></svg></svg>`, file.contents.toString())
-			done()
-		})
-
-		stream.write(new Vinyl({
-			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"/>`),
-			path: `rect.svg`
-		}))
-
-		stream.write(new Vinyl({
-			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"/>`),
-			path: `sandwich.svg`
-		}))
-
-		stream.end()
-	})
-
 	it(`should replace the space with the hyphen when spacer is not passed`, (done) => {
 		const stream = stacksvg()
 
 		stream.on(`data`, (file) => {
 			strictEqual(
-				`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>:root svg:not(:target){display:none}</style><svg id="icon-like"></svg></svg>`,
+				`<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg id="icon-like"></svg></svg>`,
 				file.contents.toString()
 			)
 			done()
 		})
 
 		stream.write(new Vinyl({
-			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"/>`),
+			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg"/>`),
 			path: `icon like.svg`
 		}))
 
@@ -296,14 +251,14 @@ describe(`gulp-stacksvg unit test`, () => {
 
 		stream.on(`data`, (file) => {
 			strictEqual(
-				`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>:root svg:not(:target){display:none}</style><svg id="icon--like"></svg></svg>`,
+				`<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg id="icon--like"></svg></svg>`,
 				file.contents.toString()
 			)
 			done()
 		})
 
 		stream.write(new Vinyl({
-			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"/>`),
+			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg"/>`),
 			path: `icon like.svg`
 		}))
 
@@ -315,14 +270,14 @@ describe(`gulp-stacksvg unit test`, () => {
 
 		stream.on(`data`, (file) => {
 			strictEqual(
-				`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>:root svg:not(:target){display:none}</style><svg id="iconlike"></svg></svg>`,
+				`<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg id="iconlike"></svg></svg>`,
 				file.contents.toString()
 			)
 			done()
 		})
 
 		stream.write(new Vinyl({
-			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"/>`),
+			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg"/>`),
 			path: `icon like.svg`
 		}))
 
@@ -334,14 +289,14 @@ describe(`gulp-stacksvg unit test`, () => {
 
 		stream.on(`data`, (file) => {
 			strictEqual(
-				`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>:root svg:not(:target){display:none}</style><svg id="icons_like"></svg></svg>`,
+				`<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg id="icons_like"></svg></svg>`,
 				file.contents.toString()
 			)
 			done()
 		})
 
 		stream.write(new Vinyl({
-			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"/>`),
+			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg"/>`),
 			path: `icons/like.svg`
 		}))
 
@@ -353,14 +308,14 @@ describe(`gulp-stacksvg unit test`, () => {
 
 		stream.on(`data`, (file) => {
 			strictEqual(
-				`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>:root svg:not(:target){display:none}</style><svg id="icons__like"></svg></svg>`,
+				`<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg id="icons__like"></svg></svg>`,
 				file.contents.toString()
 			)
 			done()
 		})
 
 		stream.write(new Vinyl({
-			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"/>`),
+			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg"/>`),
 			path: `icons/like.svg`
 		}))
 
@@ -372,63 +327,15 @@ describe(`gulp-stacksvg unit test`, () => {
 
 		stream.on(`data`, (file) => {
 			strictEqual(
-				`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>:root svg:not(:target){display:none}</style><svg id="iconslike"></svg></svg>`,
+				`<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg id="iconslike"></svg></svg>`,
 				file.contents.toString()
 			)
 			done()
 		})
 
 		stream.write(new Vinyl({
-			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"/>`),
+			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg"/>`),
 			path: `icons/like.svg`
-		}))
-
-		stream.end()
-	})
-
-	it(`Warn about duplicate namespace value under different name`, (done) => {
-		const stream = stacksvg()
-
-		stream.on(`data`, () => {
-			strictEqual(
-				`Same namespace value under different names : xmlns:lk and xmlns:xlink.\nKeeping both.`,
-				fancyLog.info.getCall(0).args[0]
-			)
-			done()
-		})
-
-		stream.write(new Vinyl({
-			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:lk="http://www.w3.org/1999/xlink"><rect id="a" width="1" height="1"/><use y="2" lk:href="#a"/></svg>`),
-			path: `rect.svg`
-		}))
-
-		stream.write(new Vinyl({
-			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50 50"><rect id="a" width="50" height="10"/><use y="20" xlink:href="#a"/><use y="40" xlink:href="#a"/></svg>`),
-			path: `sandwich.svg`
-		}))
-
-		stream.end()
-	})
-
-	it(`Strong warn about duplicate namespace name with different value`, (done) => {
-		const stream = stacksvg()
-
-		stream.on(`data`, () => {
-			strictEqual(
-				`xmlns:xlink namespace appeared multiple times with different value. Keeping the first one : "http://www.w3.org/1998/xlink".\nEach namespace must be unique across files.`,
-				fancyLog.info.getCall(0).args[0]
-			)
-			done()
-		})
-
-		stream.write(new Vinyl({
-			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1998/xlink"><rect id="a" width="1" height="1"/><use y="2" xlink:href="#a"/></svg>`),
-			path: `rect.svg`
-		}))
-
-		stream.write(new Vinyl({
-			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"viewBox="0 0 50 50"><rect id="a" width="50" height="10"/><use y="20" xlink:href="#a"/><use y="40" xlink:href="#a"/></svg>`),
-			path: `sandwich.svg`
 		}))
 
 		stream.end()
@@ -453,6 +360,124 @@ describe(`gulp-stacksvg unit test`, () => {
 		stream.write(new Vinyl({
 			contents: Buffer.from(`<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><mask id="a"/><mask id="b"/><g><mask id="c"/></g><path mask="url(#a)"/><g><path mask="url(#b)"/><g><path mask="url(#c)"/></g></g></svg>`),
 			path: `two.svg`
+		}))
+
+		stream.end()
+	})
+
+	it(`should include all different namespaces into final svg`, (done) => {
+		const stream = stacksvg()
+
+		stream.on(`data`, (file) => {
+			strictEqual(
+				`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns1="https://example.com/ns/ns1" xmlns:ns2="https://example.com/ns/ns2"><style>:root svg:not(:target){display:none}</style><svg id="rect1"><rect ns1:width="50" ns1:height="10"></rect></svg><svg id="rect2"><rect ns2:width="50" ns2:height="10"></rect></svg></svg>`,
+				file.contents.toString())
+			done()
+		})
+
+		stream.write(new Vinyl({
+			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns1="https://example.com/ns/ns1"><rect ns1:width="50" ns1:height="10"/></svg>`),
+			path: `rect1.svg`
+		}))
+
+		stream.write(new Vinyl({
+			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns2="https://example.com/ns/ns2"><rect ns2:width="50" ns2:height="10"/></svg>`),
+			path: `rect2.svg`
+		}))
+
+		stream.end()
+	})
+
+	it(`should replace aliases of existing namespaces`, (done) => {
+		const stream = stacksvg()
+
+		stream.on(`data`, (file) => {
+			strictEqual(
+				`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns1="https://example.com/ns/ns1"><style>:root svg:not(:target){display:none}</style><svg id="rect1"><rect ns1:width="50" ns1:height="10"></rect></svg><svg id="rect2"><rect ns1:width="50" ns1:height="10"></rect></svg></svg>`,
+				file.contents.toString()
+			)
+			done()
+		})
+
+		stream.write(new Vinyl({
+			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns1="https://example.com/ns/ns1"><rect ns1:width="50" ns1:height="10"/></svg>`),
+			path: `rect1.svg`
+		}))
+
+		stream.write(new Vinyl({
+			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns2="https://example.com/ns/ns1"><rect ns2:width="50" ns2:height="10"/></svg>`),
+			path: `rect2.svg`
+		}))
+
+		stream.end()
+	})
+
+	it(`should rename duplicate aliases of different namespaces`, (done) => {
+		const stream = stacksvg()
+
+		stream.on(`data`, (file) => {
+			strictEqual(
+				`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns="https://example.com/ns/ns1" xmlns:nsf37e589="https://example.com/ns/ns2"><style>:root svg:not(:target){display:none}</style><svg id="rect1"><rect ns:width="50" ns:height="10"></rect></svg><svg id="rect2"><rect nsf37e589:width="50" nsf37e589:height="10"></rect></svg></svg>`,
+				file.contents.toString()
+			)
+			done()
+		})
+
+		stream.write(new Vinyl({
+			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns="https://example.com/ns/ns1"><rect ns:width="50" ns:height="10"/></svg>`),
+			path: `rect1.svg`
+		}))
+
+		stream.write(new Vinyl({
+			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns="https://example.com/ns/ns2"><rect ns:width="50" ns:height="10"/></svg>`),
+			path: `rect2.svg`
+		}))
+
+		stream.end()
+	})
+
+	it(`should remove "http://www.w3.org/1999/xlink" namespace`, (done) => {
+		const stream = stacksvg()
+
+		stream.on(`data`, (file) => {
+			strictEqual(
+				`<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg viewBox="0 0 50 50" id="burger"><path id="burger_0" d="m8 8h34" stroke="#000" stroke-width="8"></path><use y="17" href="#burger_0"></use><use y="34" href="#burger_0"></use></svg><svg viewBox="0 0 50 50" id="sandwich"><path id="sandwich_0" d="m8 8h34" stroke="#000" stroke-width="8"></path><use y="17" href="#sandwich_0"></use><use y="34" href="#sandwich_0"></use></svg></svg>`,
+				file.contents.toString())
+			done()
+		})
+
+		stream.write(new Vinyl({
+			contents: Buffer.from(`<svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path id="a" d="m8 8h34" stroke="#000" stroke-width="8"/><use y="17" xlink:href="#a"/><use y="34" xlink:href="#a"/></svg>`),
+			path: `burger.svg`
+		}))
+
+		stream.write(new Vinyl({
+			contents: Buffer.from(`<svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path id="a" d="m8 8h34" stroke="#000" stroke-width="8"/><use y="17" xlink:href="#a"/><use y="34" xlink:href="#a"/></svg>`),
+			path: `sandwich.svg`
+		}))
+
+		stream.end()
+	})
+
+	it(`should not add unused namespaces`, (done) => {
+		const stream = stacksvg()
+
+		stream.on(`data`, (file) => {
+			strictEqual(
+				file.contents.toString(),
+				`<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg id="rect1"><rect width="50" height="10"></rect></svg><svg id="rect2"><rect width="50" height="10"></rect></svg></svg>`
+			)
+			done()
+		})
+
+		stream.write(new Vinyl({
+			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns1="https://example.com/ns/ns1"><rect width="50" height="10"/></svg>`),
+			path: `rect1.svg`
+		}))
+
+		stream.write(new Vinyl({
+			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns2="https://example.com/ns/ns2"><rect width="50" height="10"/></svg>`),
+			path: `rect2.svg`
 		}))
 
 		stream.end()
