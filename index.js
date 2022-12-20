@@ -90,25 +90,27 @@ export function stacksvg ({ output = `stack.svg`, separator = `_`, spacer = `-` 
 				if (namespaces.has(nsId)) {
 					if (namespaces.get(nsId) !== attrName) {
 						newNsAlias = namespaces.get(nsId).slice(6)
-						changeNsAttrs(iconDom, oldNsAlias, newNsAlias)
+						changeNsAlias(iconDom, oldNsAlias, newNsAlias)
 					}
 				} else if (nsId === xlink) {
 					newNsAlias = ``
-					changeNsAttrs(iconDom, oldNsAlias, newNsAlias)
+					changeNsAlias(iconDom, oldNsAlias, newNsAlias)
 				} else {
 					for (let ns of namespaces.values()) {
 						if (ns === attrName) {
 							newNsAlias = `${oldNsAlias}${getHash(nsId)}`
-							changeNsAttrs(iconDom, oldNsAlias, newNsAlias)
+							changeNsAlias(iconDom, oldNsAlias, newNsAlias)
 							break
 						}
 					}
-					iconDom.querySelectorAll(`*`).forEach((elem) => {
-						for (let name of Object.keys(elem._attrs)) {
-							if (name.startsWith(`${newNsAlias}:`)) {
-								namespaces.set(nsId, `xmlns:${newNsAlias}`)
-								break
-							}
+					iconDom.querySelectorAll(`*`).some((elem) => {
+						if (
+							elem.rawTagName.startsWith(`${newNsAlias}:`)
+							||
+							Object.keys(elem._attrs).some((attr) => attr.startsWith(`${newNsAlias}:`))
+						) {
+							namespaces.set(nsId, `xmlns:${newNsAlias}`)
+							return true
 						}
 					})
 				}
@@ -144,9 +146,12 @@ export function stacksvg ({ output = `stack.svg`, separator = `_`, spacer = `-` 
 	return stream
 }
 
-function changeNsAttrs (elems, oldAlias, newAlias) {
+function changeNsAlias (elems, oldAlias, newAlias) {
 	elems.querySelectorAll(`*`).forEach((elem) => {
 		let prefix = newAlias === `` ? `` : `${newAlias}:`
+		if (elem.rawTagName.startsWith(`${oldAlias}:`)) {
+			elem.rawTagName = `${prefix}${elem.rawTagName.slice((oldAlias.length + 1))}`
+		}
 		for (let name of Object.keys(elem._attrs)) {
 			if (name.startsWith(`${oldAlias}:`)) {
 				elem.setAttribute(`${prefix}${name.slice((oldAlias.length + 1))}`, elem._attrs[name])

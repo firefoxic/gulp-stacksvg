@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 	- The declaration of the deprecated namespace `http://www.w3.org/1999/xlink` and its aliases in `href` attribute prefixes are now removed.
 	- Duplicate aliases of different namespaces are now renamed.
 	- Declarations of only used namespaces are now added to the root `svg` element.
+	- Namespace processing takes into account aliases for both attributes and tag names.
 
 ## [v1.1.0] — 2022–12–12
 

@@ -370,7 +370,7 @@ describe(`gulp-stacksvg unit test`, () => {
 
 		stream.on(`data`, (file) => {
 			strictEqual(
-				`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns1="https://example.com/ns/ns1" xmlns:ns2="https://example.com/ns/ns2"><style>:root svg:not(:target){display:none}</style><svg id="rect1"><rect ns1:width="50" ns1:height="10"></rect></svg><svg id="rect2"><rect ns2:width="50" ns2:height="10"></rect></svg></svg>`,
+				`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns1="https://example.com/ns/ns1" xmlns:ns2="https://example.com/ns/ns2"><style>:root svg:not(:target){display:none}</style><svg id="rect1"><rect ns1:width="50" ns1:height="10"></rect></svg><svg id="rect2"><ns2:rect width="50" height="10"></ns2:rect></svg></svg>`,
 				file.contents.toString())
 			done()
 		})
@@ -381,7 +381,7 @@ describe(`gulp-stacksvg unit test`, () => {
 		}))
 
 		stream.write(new Vinyl({
-			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns2="https://example.com/ns/ns2"><rect ns2:width="50" ns2:height="10"/></svg>`),
+			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns2="https://example.com/ns/ns2"><ns2:rect width="50" height="10"/></svg>`),
 			path: `rect2.svg`
 		}))
 
@@ -393,7 +393,7 @@ describe(`gulp-stacksvg unit test`, () => {
 
 		stream.on(`data`, (file) => {
 			strictEqual(
-				`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns1="https://example.com/ns/ns1"><style>:root svg:not(:target){display:none}</style><svg id="rect1"><rect ns1:width="50" ns1:height="10"></rect></svg><svg id="rect2"><rect ns1:width="50" ns1:height="10"></rect></svg></svg>`,
+				`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns1="https://example.com/ns/ns1"><style>:root svg:not(:target){display:none}</style><svg id="rect1"><rect ns1:width="50" ns1:height="10"></rect></svg><svg id="rect2"><ns1:rect ns1:width="50" ns1:height="10"></ns1:rect></svg></svg>`,
 				file.contents.toString()
 			)
 			done()
@@ -405,7 +405,7 @@ describe(`gulp-stacksvg unit test`, () => {
 		}))
 
 		stream.write(new Vinyl({
-			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns2="https://example.com/ns/ns1"><rect ns2:width="50" ns2:height="10"/></svg>`),
+			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns2="https://example.com/ns/ns1"><ns2:rect ns2:width="50" ns2:height="10"/></svg>`),
 			path: `rect2.svg`
 		}))
 
@@ -417,7 +417,7 @@ describe(`gulp-stacksvg unit test`, () => {
 
 		stream.on(`data`, (file) => {
 			strictEqual(
-				`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns="https://example.com/ns/ns1" xmlns:nsf37e589="https://example.com/ns/ns2"><style>:root svg:not(:target){display:none}</style><svg id="rect1"><rect ns:width="50" ns:height="10"></rect></svg><svg id="rect2"><rect nsf37e589:width="50" nsf37e589:height="10"></rect></svg></svg>`,
+				`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns="https://example.com/ns/ns1" xmlns:nsf37e589="https://example.com/ns/ns2" xmlns:ns8467673="https://example.com/ns/ns3"><style>:root svg:not(:target){display:none}</style><svg id="rect1"><rect ns:width="50" ns:height="10"></rect></svg><svg id="rect2"><rect nsf37e589:width="50" nsf37e589:height="10"></rect></svg><svg id="rect3"><ns8467673:rect width="50" height="10"></ns8467673:rect></svg></svg>`,
 				file.contents.toString()
 			)
 			done()
@@ -431,6 +431,11 @@ describe(`gulp-stacksvg unit test`, () => {
 		stream.write(new Vinyl({
 			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns="https://example.com/ns/ns2"><rect ns:width="50" ns:height="10"/></svg>`),
 			path: `rect2.svg`
+		}))
+
+		stream.write(new Vinyl({
+			contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns="https://example.com/ns/ns3"><ns:rect width="50" height="10"/></svg>`),
+			path: `rect3.svg`
 		}))
 
 		stream.end()
