@@ -43,7 +43,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Removed
 
-- Unnecessary xml declaration. Because it turns out that not only the DTD is not needed, but also the xml declaration, since the values ​​used are the default values. Stack works without all this xml prolog. More details can be found in [supplementary material](https://oreillymedia.github.io/Using_SVG/extras/ch01-XML.html) to the book “Using SVG with CSS3 and HTML5”.
+- Unnecessary XML declaration. Because it turns out that not only the DTD is not needed, but also the XML declaration, since the values ​​used are the default values. Stack works without all this XML prolog. More details can be found in [supplementary material](https://oreillymedia.github.io/Using_SVG/extras/ch01-XML.html) to the book “Using SVG with CSS3 and HTML5”.
 - File existence check, which became unnecessary after the previous code optimization.
 
 ### Added
@@ -75,7 +75,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 
-- The contents of `defs` tags are no longer transferring to `defs` of the root element, since there is no need for this.
+- The contents of `defs` tags are no longer transferring to `defs` of the root element since there is no need for this.
 - Optional namespace `xmlns:xlink` is now added only if it is necessary.
 - The content of the icons does not turn into the `g` tag and the attributes remain on the `svg` tag, except deprecated and interfering.
 - Slightly improved code readability.
@@ -98,7 +98,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 
 - Creation of skipped viewBox from icon sizes.
-- `output`, `separator` and `spacer` [options](./README.md#avalable-options).
+- `output`, `separator`, and `spacer` [options](./README.md#available-options).
 - `npm` scripts for a better workflow.
 - [LICENSE](./LICENSE) file.
 - [CHANGELOG](./CHANGELOG.md) file.

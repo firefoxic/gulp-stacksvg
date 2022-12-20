@@ -5,7 +5,7 @@
 [![NPM version][npm-image]][npm-url]
 [![Vulnerabilities count][vulnerabilities-image]][vulnerabilities-url]
 
-Combine svg icon files into one with stack method.
+Combine SVG icon files into one with the stack method.
 
 ## Installation
 
@@ -15,7 +15,7 @@ npm install gulp-stacksvg --save-dev
 
 ## Usage
 
-The following script will combine all svg sources into single svg file with stack method.
+The following script will combine all SVG sources into a single SVG file with stack method.
 
 ```js
 import { stacksvg } from "gulp-stacksvg"
@@ -30,7 +30,7 @@ function makeStack () {
 }
 ```
 
-### Avalable options
+### Available options
 
 | Option      | Description                                                                          | Default     |
 |-------------|--------------------------------------------------------------------------------------|-------------|
@@ -61,7 +61,7 @@ We can use the stack in all four possible ways:
 
 This method was first mentioned in a Simurai [article](https://simurai.com/blog/2012/04/02/svg-stacks) on April 2, 2012. But even it uses unnecessarily complex code transformations.
 
-This can be done much easier. In general, the stack is arranged almost like a symbol sprite, but without changing the icon tag (it remain the `svg` tag, as in the original icon files) and with the addition of a tiny bit of style.
+This can be done much easier. In general, the stack is arranged almost like a symbol sprite, but without changing the icon tag (it remains the `svg` tag, as in the original icon files) and with the addition of a tiny bit of style.
 
 ```xml
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
