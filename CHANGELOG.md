@@ -6,16 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [v2.0.0] — 2022–12–21
+
 ### Changed
 
-- The main namespace `xmlns="http://www.w3.org/2000/svg"` has been moved to the map object.
 - Improved namespace processing:
-	- Namespace values are now checked for uniqueness, since they are essential.
-	- Different aliases of the same namespace are now cast to the same name.
-	- The declaration of the deprecated namespace `http://www.w3.org/1999/xlink` and its aliases in `href` attribute prefixes are now removed.
-	- Duplicate aliases of different namespaces are now renamed.
-	- Declarations of only used namespaces are now added to the root `svg` element.
-	- Namespace processing takes into account aliases for both attributes and tag names.
+  - Namespace values are now checked for uniqueness, since they are essential.
+  - Different aliases of the same namespace are now cast to the same name.
+  - The declaration of the deprecated namespace `http://www.w3.org/1999/xlink` and its aliases in `href` attribute prefixes are now removed.
+  - Duplicate aliases of different namespaces are now renamed.
+  - Declarations of only used namespaces are now added to the root `svg` element.
+  - Namespace processing takes into account aliases for both attributes and tag names.
+- The main namespace `xmlns="http://www.w3.org/2000/svg"` has been moved to the map object.
 
 ### Fixed
 
@@ -129,7 +131,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Just forked the [gulp-svgstore](https://github.com/w0rm/gulp-svgstore) project.
 
-[Unreleased]: https://github.com/firefoxic/gulp-stacksvg/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/firefoxic/gulp-stacksvg/compare/v2.0.0...HEAD
+[v2.0.0]: https://github.com/firefoxic/gulp-stacksvg/releases/tag/v2.0.0
 [v1.1.0]: https://github.com/firefoxic/gulp-stacksvg/releases/tag/v1.1.0
 [v1.0.6]: https://github.com/firefoxic/gulp-stacksvg/releases/tag/v1.0.6
 [v1.0.5]: https://github.com/firefoxic/gulp-stacksvg/releases/tag/v1.0.5
