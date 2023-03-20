@@ -29,19 +29,19 @@
 	},
 	"homepage": "https://github.com/firefoxic/gulp-stacksvg",
 	"dependencies": {
-		"node-html-parser": "^6.1.4",
+		"node-html-parser": "^6.1.5",
 		"plugin-error": "^2.0.1",
 		"vinyl": "^3.0.0"
 	},
 	"devDependencies": {
-		"eslint": "^8.30.0",
+		"eslint": "^8.36.0",
 		"fancy-log": "^2.0.0",
 		"finalhandler": "^1.2.0",
 		"gulp": "^4.0.2",
 		"mocha": "^10.2.0",
-		"puppeteer": "^19.4.1",
+		"puppeteer": "^19.7.5",
 		"serve-static": "^1.15.0",
-		"sinon": "^15.0.1"
+		"sinon": "^15.0.2"
 	},
 	"engines": {
 		"node": ">=16"

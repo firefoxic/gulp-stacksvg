@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [v2.0.1] — 2023–03–20
+
+### Updated
+
+- Dependencies.
+
 ## [v2.0.0] — 2022–12–21
 
 ### Changed
@@ -131,7 +137,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Just forked the [gulp-svgstore](https://github.com/w0rm/gulp-svgstore) project.
 
-[Unreleased]: https://github.com/firefoxic/gulp-stacksvg/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/firefoxic/gulp-stacksvg/compare/v2.0.1...HEAD
+[v2.0.1]: https://github.com/firefoxic/gulp-stacksvg/releases/tag/v2.0.1
 [v2.0.0]: https://github.com/firefoxic/gulp-stacksvg/releases/tag/v2.0.0
 [v1.1.0]: https://github.com/firefoxic/gulp-stacksvg/releases/tag/v1.1.0
 [v1.0.6]: https://github.com/firefoxic/gulp-stacksvg/releases/tag/v1.0.6
