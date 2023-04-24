@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- The `npm` lock file has been replaced by the `pnpm` lock file.
+
 ## [v2.0.1] — 2023–03–20
 
 ### Updated
