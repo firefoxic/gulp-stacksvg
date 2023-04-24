@@ -1,16 +1,10 @@
-import { stacksvg } from "./index.js"
+import { stacksvg } from "./lib/index.js"
 import gulp from "gulp"
 
 const { src, dest } = gulp
 
-export function build () {
-	return src(`test/src/icons/**/*.svg`)
+export function createStack () {
+	return src(`./docs/example/icons/**/*.svg`)
 		.pipe(stacksvg())
-		.pipe(dest(`test/`))
-}
-
-export function test () {
-	return src([`test/src/icons/**/*.svg`, `!test/src/icons/**/*-*.svg`])
-		.pipe(stacksvg())
-		.pipe(dest(`test/dest`))
+		.pipe(dest(`./docs/example/`))
 }

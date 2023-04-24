@@ -55,7 +55,7 @@ We can use the stack in all four possible ways:
   - in `url()` properties `background` — static,
   - in `url()` properties `mask` — with the possibility of repainting.
 
-[Demo page](https://firefoxic.github.io/gulp-stacksvg/test/) to prove it.
+[Demo page](https://firefoxic.github.io/gulp-stacksvg/example/) to prove it.
 
 ## Stack under the hood
 
@@ -69,7 +69,7 @@ This can be done much easier. In general, the stack is arranged almost like a sy
 	<style>:root svg:not(:target) { display: none }</style>
 ```
 
-<img align="left" width="90" height="90" title="sun" src="https://raw.githubusercontent.com/firefoxic/gulp-stacksvg/main/test/stack.svg#sun-alpha">
+<img align="left" width="90" height="90" title="sun" src="https://raw.githubusercontent.com/firefoxic/gulp-stacksvg/main/docs/example/stack.svg#sun-alpha">
 
 ```xml
 <svg id="sun" viewBox="0 0 24 24">
@@ -77,7 +77,7 @@ This can be done much easier. In general, the stack is arranged almost like a sy
 </svg>
 ```
 
-<img align="left" width="90" height="90" title="heart" src="https://raw.githubusercontent.com/firefoxic/gulp-stacksvg/main/test/stack.svg#heart-red">
+<img align="left" width="90" height="90" title="heart" src="https://raw.githubusercontent.com/firefoxic/gulp-stacksvg/main/docs/example/stack.svg#heart-red">
 
 ```xml
 <svg id="heart" viewBox="0 0 24 24">
@@ -85,7 +85,7 @@ This can be done much easier. In general, the stack is arranged almost like a sy
 </svg>
 ```
 
-<img align="left" width="90" height="90" title="thumbup" src="https://raw.githubusercontent.com/firefoxic/gulp-stacksvg/main/test/stack.svg#thumbup-alpha">
+<img align="left" width="90" height="90" title="thumbup" src="https://raw.githubusercontent.com/firefoxic/gulp-stacksvg/main/docs/example/stack.svg#thumbup-alpha">
 
 ```xml
 <svg id="thumbup" viewBox="0 0 24 24">
@@ -103,7 +103,7 @@ The magic is in the stack inner style, which shows only the fragment requested b
 :root svg:not(:target) { display: none }
 ```
 
-And now the icons from the external sprite are available in the styles <img width="16" height="16" title="heart" src="https://raw.githubusercontent.com/firefoxic/gulp-stacksvg/main/test/stack.svg#heart-red" alt="heart">
+And now the icons from the external sprite are available in the styles <img width="16" height="16" title="heart" src="https://raw.githubusercontent.com/firefoxic/gulp-stacksvg/main/docs/example/stack.svg#heart-red" alt="heart">
 
 ```html
 <button class="button button--icon_heart" type="button">
@@ -151,7 +151,7 @@ For an icon inserted via `mask`, simply change the `background`. Moreover, unlik
 [test-url]: https://github.com/firefoxic/gulp-stacksvg/actions
 [test-image]: https://github.com/firefoxic/gulp-stacksvg/actions/workflows/test.yml/badge.svg?branch=main
 
-[npm-url]: https://npmjs.org/package/gulp-stacksvg
+[npm-url]: https://www.npmjs.com/package/gulp-stacksvg
 [npm-image]: https://badge.fury.io/js/gulp-stacksvg.svg
 
 [license-url]: https://github.com/firefoxic/gulp-stacksvg/blob/main/LICENSE

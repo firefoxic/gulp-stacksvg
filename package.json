@@ -3,9 +3,9 @@
 	"description": "Combine svg files into one with stack method",
 	"version": "2.0.1",
 	"type": "module",
-	"exports": "./index.js",
+	"exports": "./lib/index.js",
 	"files": [
-		"./index.js"
+		"./lib/index.js"
 	],
 	"dependencies": {
 		"node-html-parser": "^6.1.5",
@@ -37,7 +37,7 @@
 	],
 	"scripts": {
 		"lint": "eslint ./",
-		"test": "gulp test && mocha",
+		"test": "mocha",
 		"pretest": "pnpm lint",
 		"preversion": "pnpm test",
 		"postversion": "pnpm publish",
@@ -46,11 +46,8 @@
 	"devDependencies": {
 		"eslint": "^8.42.0",
 		"fancy-log": "^2.0.0",
-		"finalhandler": "^1.2.0",
 		"gulp": "^4.0.2",
 		"mocha": "^10.2.0",
-		"puppeteer": "^20.7.1",
-		"serve-static": "^1.15.0",
 		"sinon": "^15.1.2"
 	}
 }
