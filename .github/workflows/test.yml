@@ -17,17 +17,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup Volta
-        uses: volta-cli/action@v4
-
       - name: Install Node.js
-        run: volta install node
-
+        uses: actions/setup-node@v3
+        with:
+          cache: pnpm
+          
       - name: Install pnpm
         run: volta install pnpm
 
       - name: Install dependencies
-        run: pnpm i
+        run: pnpm i --frozen-lockfile
 
       - name: Run test
         run: npm t
