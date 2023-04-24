@@ -16,10 +16,12 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v3
-        
+
       - name: Package manager
         uses: pnpm/action-setup@v2
-        
+        with:
+          version: 8
+
       - run: pnpm -v
 
       - name: Install Node.js

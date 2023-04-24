@@ -47,5 +47,8 @@
 		"icon",
 		"stack",
 		"sprite"
-	]
+	],
+	"volta": {
+		"node": "18.16.0"
+	}
 }
