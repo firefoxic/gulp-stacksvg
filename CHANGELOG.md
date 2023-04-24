@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Removed
+
+- The screenshot comparison test. Because the icons are essentially unchanged. It also allowed to reorganize the file structure of the project.
+
 ### Changed
 
 - The `npm` lock file has been replaced by the `pnpm` lock file.
