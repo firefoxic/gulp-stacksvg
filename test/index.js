@@ -23,7 +23,7 @@ describe(`gulp-stacksvg usage test`, () => {
 	})
 
 	before(() => Promise.all([
-		launch()
+		launch({ headless: `new` })
 			.then((b) => { browser = b })
 			.then(() => browser.newPage())
 			.then((p) => { page = p }),

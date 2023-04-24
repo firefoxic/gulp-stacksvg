@@ -10,9 +10,9 @@
 	"scripts": {
 		"lint": "eslint ./",
 		"test": "gulp test && mocha",
-		"pretest": "npm run lint",
-		"preversion": "npm test",
-		"postversion": "npm publish",
+		"pretest": "pnpm lint",
+		"preversion": "pnpm test",
+		"postversion": "pnpm publish",
 		"postpublish": "git push origin --all; git push origin --tags"
 	},
 	"repository": {
@@ -34,17 +34,17 @@
 		"vinyl": "^3.0.0"
 	},
 	"devDependencies": {
-		"eslint": "^8.36.0",
+		"eslint": "^8.42.0",
 		"fancy-log": "^2.0.0",
 		"finalhandler": "^1.2.0",
 		"gulp": "^4.0.2",
 		"mocha": "^10.2.0",
-		"puppeteer": "^19.7.5",
+		"puppeteer": "^20.7.1",
 		"serve-static": "^1.15.0",
-		"sinon": "^15.0.2"
+		"sinon": "^15.1.2"
 	},
 	"engines": {
-		"node": ">=16"
+		"node": "^16.20.0 || ^18.16.0"
 	},
 	"engineStrict": true,
 	"keywords": [
