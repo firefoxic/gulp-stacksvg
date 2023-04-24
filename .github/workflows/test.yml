@@ -17,13 +17,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Package manager
-        uses: pnpm/action-setup@v2
+      - name: Setup Volta
+        uses: volta-cli/action@v4
 
-      - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-          cache: pnpm
+      - name: Install Node.js and pnpm
+        run: volta install node pnpm
 
       - name: Install dependencies
         run: pnpm i --frozen-lockfile
