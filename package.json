@@ -37,7 +37,7 @@
 	],
 	"scripts": {
 		"lint": "eslint ./",
-		"test": "mocha",
+		"test": "node --test",
 		"pretest": "pnpm lint",
 		"preversion": "pnpm test",
 		"postversion": "pnpm publish",
@@ -45,9 +45,6 @@
 	},
 	"devDependencies": {
 		"eslint": "^8.42.0",
-		"fancy-log": "^2.0.0",
-		"gulp": "^4.0.2",
-		"mocha": "^10.2.0",
-		"sinon": "^15.1.2"
+		"gulp": "^4.0.2"
 	}
 }
