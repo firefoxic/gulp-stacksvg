@@ -36,6 +36,7 @@
 		"sprite"
 	],
 	"scripts": {
+		"lint:ec": "ec",
 		"lint:es": "eslint ./",
 		"lint": "pnpm /^lint:/",
 		"test": "node --test",
@@ -45,6 +46,7 @@
 		"postpublish": "git push origin --all; git push origin --tags"
 	},
 	"devDependencies": {
+		"editorconfig-checker": "^5.1.0",
 		"eslint": "^8.42.0",
 		"gulp": "^4.0.2"
 	}

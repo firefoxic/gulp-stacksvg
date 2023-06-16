@@ -1,3 +1,4 @@
+<!-- markdownlint-disable MD007 -->
 # gulp-stacksvg
 
 [![Test Status][test-image]][test-url]
@@ -49,11 +50,14 @@ Unlike all other methods for assembling a sprite, the stack does not limit us in
 We can use the stack in all four possible ways:
 
 - in markup:
-  - in `src` of `img` tag — static,
-  - in the `href` of the `use` tag — with the possibility of repainting,
+
+	- in `src` of `img` tag — static,
+	- in the `href` of the `use` tag — with the possibility of repainting,
+
 - in styles:
-  - in `url()` properties `background` — static,
-  - in `url()` properties `mask` — with the possibility of repainting.
+
+	- in `url()` properties `background` — static,
+	- in `url()` properties `mask` — with the possibility of repainting.
 
 [Demo page](https://firefoxic.github.io/gulp-stacksvg/example/) to prove it.
 
@@ -137,7 +141,7 @@ And now the icons from the external sprite are available in the styles <img widt
 }
 ```
 
-> ⚠️ Note:  
+> ⚠️ Note:
 > We still need the [autoprefixer](https://github.com/postcss/autoprefixer) for the mask property.
 
 For an icon inserted via `mask`, simply change the `background`. Moreover, unlike `use`, you can draw anything in the background under the mask, for example, a gradient.

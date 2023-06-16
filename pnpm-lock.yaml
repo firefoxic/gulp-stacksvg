@@ -16,6 +16,9 @@ dependencies:
     version: 3.0.0
 
 devDependencies:
+  editorconfig-checker:
+    specifier: ^5.1.0
+    version: 5.1.0
   eslint:
     specifier: ^8.42.0
     version: 8.42.0
@@ -705,6 +708,12 @@ packages:
     dependencies:
       is-plain-object: 2.0.4
       object.defaults: 1.1.0
+    dev: true
+
+  /editorconfig-checker@5.1.0:
+    resolution: {integrity: sha512-oC1/DTQm/hEn24nA3HXT4KCLMcKzU9aHNJzfKirHZcTt9nE0rkL26uer1fLrquz4ED4SL/vIFwBhMl8O8JNLdQ==}
+    engines: {node: ^18.0.0}
+    hasBin: true
     dev: true
 
   /end-of-stream@1.4.4:
