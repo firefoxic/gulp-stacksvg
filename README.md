@@ -33,11 +33,11 @@ function makeStack () {
 
 ### Available options
 
-| Option      | Description                                                                          | Default     |
-|-------------|--------------------------------------------------------------------------------------|-------------|
-| `output`    | Sets the stack file name. Accepts values ​both with and without the `.svg` extension. | `stack.svg` |
-| `separator` | Replaces the directory separator for the `id` attribute.                             | `_`         |
-| `spacer`    | Joins space-separated words for the `id` attribute.                                  | `-`         |
+| Option      | Description                                                                          | Default |
+|-------------|--------------------------------------------------------------------------------------|---------|
+| `output`    | Sets the stack file name. Accepts values ​both with and without the `.svg` extension. | `stack` |
+| `separator` | Replaces the directory separator for the `id` attribute.                             | `_`     |
+| `spacer`    | Joins space-separated words for the `id` attribute.                                  | `-`     |
 
 ### Inlining stacksvg result into markup
 
