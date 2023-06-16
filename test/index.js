@@ -30,12 +30,12 @@ test(`Plugin should correctly merge svg files`, () => {
 
 	stream.write(new Vinyl({
 		path: `circle.svg`,
-		contents: Buffer.from(`<svg viewBox="0 0 4 4" preserveAspectRatio="xMinYMid meet"><circle cx="2" cy="2" r="1"/></svg>`)
+		contents: Buffer.from(`<svg viewBox="0 0 4 4" preserveAspectRatio="xMinYMid meet"><circle cx="2" cy="2" r="1"/></svg>`),
 	}))
 
 	stream.write(new Vinyl({
 		path: `square.svg`,
-		contents: Buffer.from(`<svg><rect x="1" y="1" width="2" height="2"/></svg>`)
+		contents: Buffer.from(`<svg><rect x="1" y="1" width="2" height="2"/></svg>`),
 	}))
 
 	stream.end()
@@ -52,12 +52,12 @@ test(`Plugin should not include null`, () => {
 
 	stream.write(new Vinyl({
 		path: `circle.svg`,
-		contents: Buffer.from(`<svg viewBox="0 0 4 4"><circle cx="2" cy="2" r="1"/></svg>`)
+		contents: Buffer.from(`<svg viewBox="0 0 4 4"><circle cx="2" cy="2" r="1"/></svg>`),
 	}))
 
 	stream.write(new Vinyl({
 		path: `square.svg`,
-		contents: null
+		contents: null,
 	}))
 
 	stream.end()
@@ -74,12 +74,12 @@ test(`Plugin should not include invalid files`, () => {
 
 	stream.write(new Vinyl({
 		path: `circle.svg`,
-		contents: Buffer.from(`<svg viewBox="0 0 4 4"><circle cx="2" cy="2" r="1"/></svg>`)
+		contents: Buffer.from(`<svg viewBox="0 0 4 4"><circle cx="2" cy="2" r="1"/></svg>`),
 	}))
 
 	stream.write(new Vinyl({
 		path: `square.svg`,
-		contents: Buffer.from(`not an svg`)
+		contents: Buffer.from(`not an svg`),
 	}))
 
 	stream.end()
@@ -95,11 +95,11 @@ test(`Plugin should emit error if files have the same name`, () => {
 
 	stream.write(new Vinyl({
 		path: `circle.svg`,
-		contents: Buffer.from(`<svg></svg>`)
+		contents: Buffer.from(`<svg></svg>`),
 	}))
 	stream.write(new Vinyl({
 		path: `circle.svg`,
-		contents: Buffer.from(`<svg></svg>`)
+		contents: Buffer.from(`<svg></svg>`),
 	}))
 
 	stream.end()
@@ -114,12 +114,12 @@ test(`Plugin should generate stack.svg if output filename is not passed`, () => 
 
 	stream.write(new Vinyl({
 		path: `circle.svg`,
-		contents: Buffer.from(`<svg/>`)
+		contents: Buffer.from(`<svg/>`),
 	}))
 
 	stream.write(new Vinyl({
 		path: `square.svg`,
-		contents: Buffer.from(`<svg/>`)
+		contents: Buffer.from(`<svg/>`),
 	}))
 
 	stream.end()
@@ -134,12 +134,12 @@ test(`Plugin should add .svg if passed output doesn't end with this`, () => {
 
 	stream.write(new Vinyl({
 		path: `circle.svg`,
-		contents: Buffer.from(`<svg/>`)
+		contents: Buffer.from(`<svg/>`),
 	}))
 
 	stream.write(new Vinyl({
 		path: `square.svg`,
-		contents: Buffer.from(`<svg/>`)
+		contents: Buffer.from(`<svg/>`),
 	}))
 
 	stream.end()
@@ -154,12 +154,12 @@ test(`Plugin should not add .svg if passed output ends with this`, () => {
 
 	stream.write(new Vinyl({
 		path: `circle.svg`,
-		contents: Buffer.from(`<svg/>`)
+		contents: Buffer.from(`<svg/>`),
 	}))
 
 	stream.write(new Vinyl({
 		path: `square.svg`,
-		contents: Buffer.from(`<svg/>`)
+		contents: Buffer.from(`<svg/>`),
 	}))
 
 	stream.end()
@@ -176,7 +176,7 @@ test(`Plugin should replace the space with the hyphen when spacer is not passed`
 
 	stream.write(new Vinyl({
 		path: `icon like.svg`,
-		contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg"/>`)
+		contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg"/>`),
 	}))
 
 	stream.end()
@@ -193,7 +193,7 @@ test(`Plugin should replace the space with the passed spacer option`, () => {
 
 	stream.write(new Vinyl({
 		contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg"/>`),
-		path: `icon like.svg`
+		path: `icon like.svg`,
 	}))
 
 	stream.end()
@@ -210,7 +210,7 @@ test(`Plugin should remove the space if an empty string is passed to spacer opti
 
 	stream.write(new Vinyl({
 		path: `icon like.svg`,
-		contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg"/>`)
+		contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg"/>`),
 	}))
 
 	stream.end()
@@ -227,7 +227,7 @@ test(`Plugin should replace the directory separator with the underscore`, () => 
 
 	stream.write(new Vinyl({
 		path: `icons/like.svg`,
-		contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg"/>`)
+		contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg"/>`),
 	}))
 
 	stream.end()
@@ -244,7 +244,7 @@ test(`Plugin should replace the directory separator with the passed separator op
 
 	stream.write(new Vinyl({
 		path: `icons/like.svg`,
-		contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg"/>`)
+		contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg"/>`),
 	}))
 
 	stream.end()
@@ -261,7 +261,7 @@ test(`Plugin should remove the directory separator if an empty string is passed 
 
 	stream.write(new Vinyl({
 		path: `icons/like.svg`,
-		contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg"/>`)
+		contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg"/>`),
 	}))
 
 	stream.end()
@@ -278,12 +278,12 @@ test(`Plugin should generate unique inner id`, () => {
 
 	stream.write(new Vinyl({
 		path: `one.svg`,
-		contents: Buffer.from(`<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><mask id="a"/><mask id="b"/><g><mask id="c"/></g><path mask="url(#a)"/><g><path mask="url(#b)"/><g><path mask="url(#c)"/></g></g></svg>`)
+		contents: Buffer.from(`<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><mask id="a"/><mask id="b"/><g><mask id="c"/></g><path mask="url(#a)"/><g><path mask="url(#b)"/><g><path mask="url(#c)"/></g></g></svg>`),
 	}))
 
 	stream.write(new Vinyl({
 		path: `two.svg`,
-		contents: Buffer.from(`<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><mask id="a"/><mask id="b"/><g><mask id="c"/></g><path mask="url(#a)"/><g><path mask="url(#b)"/><g><path mask="url(#c)"/></g></g></svg>`)
+		contents: Buffer.from(`<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><mask id="a"/><mask id="b"/><g><mask id="c"/></g><path mask="url(#a)"/><g><path mask="url(#b)"/><g><path mask="url(#c)"/></g></g></svg>`),
 	}))
 
 	stream.end()
@@ -300,12 +300,12 @@ test(`Plugin should include all different namespaces into final svg`, () => {
 
 	stream.write(new Vinyl({
 		path: `rect1.svg`,
-		contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns1="https://example.com/ns/ns1"><rect ns1:width="50" ns1:height="10"/></svg>`)
+		contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns1="https://example.com/ns/ns1"><rect ns1:width="50" ns1:height="10"/></svg>`),
 	}))
 
 	stream.write(new Vinyl({
 		path: `rect2.svg`,
-		contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns2="https://example.com/ns/ns2"><ns2:rect width="50" height="10"/></svg>`)
+		contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns2="https://example.com/ns/ns2"><ns2:rect width="50" height="10"/></svg>`),
 	}))
 
 	stream.end()
@@ -322,12 +322,12 @@ test(`Plugin should replace aliases of existing namespaces`, () => {
 
 	stream.write(new Vinyl({
 		path: `rect1.svg`,
-		contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns1="https://example.com/ns/ns1"><rect ns1:width="50" ns1:height="10"/></svg>`)
+		contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns1="https://example.com/ns/ns1"><rect ns1:width="50" ns1:height="10"/></svg>`),
 	}))
 
 	stream.write(new Vinyl({
 		path: `rect2.svg`,
-		contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns2="https://example.com/ns/ns1"><ns2:rect ns2:width="50" ns2:height="10"/></svg>`)
+		contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns2="https://example.com/ns/ns1"><ns2:rect ns2:width="50" ns2:height="10"/></svg>`),
 	}))
 
 	stream.end()
@@ -344,17 +344,17 @@ test(`Plugin should rename duplicate aliases of different namespaces`, () => {
 
 	stream.write(new Vinyl({
 		path: `rect1.svg`,
-		contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns="https://example.com/ns/ns1"><rect ns:width="50" ns:height="10"/></svg>`)
+		contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns="https://example.com/ns/ns1"><rect ns:width="50" ns:height="10"/></svg>`),
 	}))
 
 	stream.write(new Vinyl({
 		path: `rect2.svg`,
-		contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns="https://example.com/ns/ns2"><rect ns:width="50" ns:height="10"/></svg>`)
+		contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns="https://example.com/ns/ns2"><rect ns:width="50" ns:height="10"/></svg>`),
 	}))
 
 	stream.write(new Vinyl({
 		path: `rect3.svg`,
-		contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns="https://example.com/ns/ns3"><ns:rect width="50" height="10"/></svg>`)
+		contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns="https://example.com/ns/ns3"><ns:rect width="50" height="10"/></svg>`),
 	}))
 
 	stream.end()
@@ -371,12 +371,12 @@ test(`Plugin should remove "http://www.w3.org/1999/xlink" namespace`, () => {
 
 	stream.write(new Vinyl({
 		path: `burger.svg`,
-		contents: Buffer.from(`<svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path id="a" d="m8 8h34" stroke="#000" stroke-width="8"/><use y="17" xlink:href="#a"/><use y="34" xlink:href="#a"/></svg>`)
+		contents: Buffer.from(`<svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path id="a" d="m8 8h34" stroke="#000" stroke-width="8"/><use y="17" xlink:href="#a"/><use y="34" xlink:href="#a"/></svg>`),
 	}))
 
 	stream.write(new Vinyl({
 		path: `sandwich.svg`,
-		contents: Buffer.from(`<svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path id="a" d="m8 8h34" stroke="#000" stroke-width="8"/><use y="17" xlink:href="#a"/><use y="34" xlink:href="#a"/></svg>`)
+		contents: Buffer.from(`<svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path id="a" d="m8 8h34" stroke="#000" stroke-width="8"/><use y="17" xlink:href="#a"/><use y="34" xlink:href="#a"/></svg>`),
 	}))
 
 	stream.end()
@@ -393,12 +393,12 @@ test(`Plugin should not add unused namespaces`, () => {
 
 	stream.write(new Vinyl({
 		path: `rect1.svg`,
-		contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns1="https://example.com/ns/ns1"><rect width="50" height="10"/></svg>`)
+		contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns1="https://example.com/ns/ns1"><rect width="50" height="10"/></svg>`),
 	}))
 
 	stream.write(new Vinyl({
 		path: `rect2.svg`,
-		contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns2="https://example.com/ns/ns2"><rect width="50" height="10"/></svg>`)
+		contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns2="https://example.com/ns/ns2"><rect width="50" height="10"/></svg>`),
 	}))
 
 	stream.end()

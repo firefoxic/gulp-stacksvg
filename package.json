@@ -36,7 +36,8 @@
 		"sprite"
 	],
 	"scripts": {
-		"lint": "eslint ./",
+		"lint:es": "eslint ./",
+		"lint": "pnpm /^lint:/",
 		"test": "node --test",
 		"pretest": "pnpm lint",
 		"preversion": "pnpm test",
