@@ -36,6 +36,7 @@
 		"sprite"
 	],
 	"scripts": {
+		"prepare": "husky install",
 		"lint:ec": "ec",
 		"lint:es": "eslint ./",
 		"lint": "pnpm /^lint:/",
@@ -48,6 +49,7 @@
 	"devDependencies": {
 		"editorconfig-checker": "^5.1.0",
 		"eslint": "^8.42.0",
-		"gulp": "^4.0.2"
+		"gulp": "^4.0.2",
+		"husky": "^8.0.3"
 	}
 }
