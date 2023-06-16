@@ -6,7 +6,7 @@
 [![NPM version][npm-image]][npm-url]
 [![Vulnerabilities count][vulnerabilities-image]][vulnerabilities-url]
 
-Combine SVG icon files into one with the stack method.
+The gulp plugin to combine svg files into one using the stack method.
 
 ## Installation
 
