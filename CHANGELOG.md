@@ -7,6 +7,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.
 
 ## [Unreleased]
 
+### Changed
+
+- The required `node.js` to the latest maintained LTS versions.
+
 ## [2.0.3] — 2023–10–29
 
 ### Updated
