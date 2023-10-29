@@ -8,7 +8,7 @@
 		"./lib/index.js"
 	],
 	"dependencies": {
-		"node-html-parser": "^6.1.5",
+		"node-html-parser": "^6.1.11",
 		"plugin-error": "^2.0.1",
 		"vinyl": "^3.0.0"
 	},
@@ -47,8 +47,8 @@
 		"postpublish": "git push origin --all; git push origin --tags"
 	},
 	"devDependencies": {
-		"editorconfig-checker": "^5.1.0",
-		"eslint": "^8.42.0",
+		"editorconfig-checker": "^5.1.1",
+		"eslint": "^8.52.0",
 		"gulp": "^4.0.2",
 		"husky": "^8.0.3"
 	}
