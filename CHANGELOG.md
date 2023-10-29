@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.
 
 ## [Unreleased]
 
+## [3.0.0] — 2023–10–29
+
 ### Changed
 
 - The required `node.js` to the latest maintained LTS versions.
@@ -135,7 +137,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.
 
 Just forked the [gulp-svgstore](https://github.com/w0rm/gulp-svgstore) project.
 
-[Unreleased]: https://github.com/firefoxic/gulp-stacksvg/compare/v2.0.3...HEAD
+[Unreleased]: https://github.com/firefoxic/gulp-stacksvg/compare/v3.0.0...HEAD
+[3.0.0]: https://github.com/firefoxic/gulp-stacksvg/compare/v2.0.3...v3.0.0
 [2.0.3]: https://github.com/firefoxic/gulp-stacksvg/compare/v2.0.2...v2.0.3
 [2.0.2]: https://github.com/firefoxic/gulp-stacksvg/compare/v2.0.1...v2.0.2
 [2.0.1]: https://github.com/firefoxic/gulp-stacksvg/compare/v2.0.0...v2.0.1
