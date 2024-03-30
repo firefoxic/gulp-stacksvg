@@ -19,10 +19,8 @@ npm install gulp-stacksvg --save-dev
 The following script will combine all SVG sources into a single SVG file with stack method.
 
 ```js
+import { src, dest } from "gulp"
 import { stacksvg } from "gulp-stacksvg"
-import gulp from "gulp"
-
-const { src, dest } = gulp
 
 function makeStack () {
 	return src(`./src/icons/**/*.svg`)

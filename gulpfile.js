@@ -1,7 +1,6 @@
-import { stacksvg } from "./lib/index.js"
-import gulp from "gulp"
+import { src, dest } from "gulp"
 
-const { src, dest } = gulp
+import { stacksvg } from "./lib/index.js"
 
 export function createStack () {
 	return src(`./docs/example/icons/**/*.svg`)
