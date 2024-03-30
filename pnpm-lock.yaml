@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   node-html-parser:
-    specifier: ^6.1.11
-    version: 6.1.11
+    specifier: ^6.1.13
+    version: 6.1.13
   plugin-error:
     specifier: ^2.0.1
     version: 2.0.1
@@ -1845,8 +1845,8 @@ packages:
     resolution: {integrity: sha512-CXdUiJembsNjuToQvxayPZF9Vqht7hewsvy2sOWafLvi2awflj9mOC6bHIg50orX8IJvWKY9wYQ/zB2kogPslQ==}
     dev: true
 
-  /node-html-parser@6.1.11:
-    resolution: {integrity: sha512-FAgwwZ6h0DSDWxfD0Iq1tsDcBCxdJB1nXpLPPxX8YyVWzbfCjKWEzaynF4gZZ/8hziUmp7ZSaKylcn0iKhufUQ==}
+  /node-html-parser@6.1.13:
+    resolution: {integrity: sha512-qIsTMOY4C/dAa5Q5vsobRpOOvPfC4pB61UVW2uSwZNUp0QU/jCekTal1vMmbO0DgdHeLUJpv/ARmDqErVxA3Sg==}
     dependencies:
       css-select: 5.1.0
       he: 1.2.0

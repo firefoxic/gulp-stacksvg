@@ -8,7 +8,7 @@
 		"./lib/index.js"
 	],
 	"dependencies": {
-		"node-html-parser": "^6.1.11",
+		"node-html-parser": "^6.1.13",
 		"plugin-error": "^2.0.1",
 		"vinyl": "^3.0.0"
 	},
