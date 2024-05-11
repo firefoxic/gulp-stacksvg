@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com), and 
 
 ## [Unreleased]
 
+## [4.0.0] — 2024–05–11
+
 ### Changed
 
 - The plugin no longer accepts any options. Previously option defaults are now the only possible values:
@@ -108,7 +110,8 @@ No significant changes.
 
 Just forked the [gulp-svgstore](https://github.com/w0rm/gulp-svgstore) project.
 
-[Unreleased]: https://github.com/firefoxic/gulp-stacksvg/compare/v3.0.0...HEAD
+[Unreleased]: https://github.com/firefoxic/gulp-stacksvg/compare/v4.0.0...HEAD
+[4.0.0]: https://github.com/firefoxic/gulp-stacksvg/compare/v3.0.0...v4.0.0
 [3.0.0]: https://github.com/firefoxic/gulp-stacksvg/compare/v2.0.3...v3.0.0
 [2.0.3]: https://github.com/firefoxic/gulp-stacksvg/compare/v2.0.2...v2.0.3
 [2.0.2]: https://github.com/firefoxic/gulp-stacksvg/compare/v2.0.1...v2.0.2
