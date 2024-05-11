@@ -35,14 +35,6 @@ To combine all icons from `./src/shared/icons/` into the `./dist/shared/icons
 pnpm exec gulp createStack
 ```
 
-### Available options
-
-| Option      | Description                                                                          | Default |
-|-------------|--------------------------------------------------------------------------------------|---------|
-| `output`    | Sets the stack file name. Accepts values ​both with and without the `.svg` extension. | `stack` |
-| `separator` | Replaces the directory separator for the `id` attribute.                             | `_`     |
-| `spacer`    | Joins space-separated words for the `id` attribute.                                  | `-`     |
-
 ## Why a stack?
 
 Unlike all other methods for assembling a sprite, the stack does not limit us in choosing how to insert a vector into a page. Take a look at [the results](https://demos.frontend-design.ru/sprite/src/) of different ways to display fragments of different types of sprites.

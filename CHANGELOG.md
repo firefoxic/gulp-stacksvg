@@ -7,6 +7,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com), and 
 
 ## [Unreleased]
 
+### Changed
+
+- The plugin no longer accepts any options. Previously option defaults are now the only possible values:
+	- subdirectory delimiter substitute — underscore;
+	- space substitute — hyphen;
+	- output file name — `stack.svg`.
+
 ## [3.0.0] — 2023–10–29
 
 ### Changed

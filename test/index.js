@@ -108,7 +108,7 @@ test(`Plugin should emit error if files have the same name`, () => {
 	stream.end()
 })
 
-test(`Plugin should generate stack.svg if output filename is not passed`, () => {
+test(`Plugin should generate stack.svg`, () => {
 	const stream = stacksvg()
 
 	stream.on(`data`, (file) => {
@@ -128,88 +128,12 @@ test(`Plugin should generate stack.svg if output filename is not passed`, () => 
 	stream.end()
 })
 
-test(`Plugin should add .svg if passed output doesn't end with this`, () => {
-	const stream = stacksvg({ output: `test` })
-
-	stream.on(`data`, (file) => {
-		equal(file.relative, `test.svg`)
-	})
-
-	stream.write(new Vinyl({
-		path: `circle.svg`,
-		contents: Buffer.from(`<svg/>`),
-	}))
-
-	stream.write(new Vinyl({
-		path: `square.svg`,
-		contents: Buffer.from(`<svg/>`),
-	}))
-
-	stream.end()
-})
-
-test(`Plugin should not add .svg if passed output ends with this`, () => {
-	const stream = stacksvg({ output: `test.svg` })
-
-	stream.on(`data`, (file) => {
-		equal(file.relative, `test.svg`)
-	})
-
-	stream.write(new Vinyl({
-		path: `circle.svg`,
-		contents: Buffer.from(`<svg/>`),
-	}))
-
-	stream.write(new Vinyl({
-		path: `square.svg`,
-		contents: Buffer.from(`<svg/>`),
-	}))
-
-	stream.end()
-})
-
-test(`Plugin should replace the space with the hyphen when spacer is not passed`, () => {
+test(`Plugin should replace the spaces with the hyphens`, () => {
 	const stream = stacksvg()
 
 	stream.on(`data`, (file) => {
 		const actual = file.contents.toString()
 		const expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg id="icon-like"></svg></svg>`
-
-		equal(actual, expected)
-	})
-
-	stream.write(new Vinyl({
-		path: `icon like.svg`,
-		contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg"/>`),
-	}))
-
-	stream.end()
-})
-
-test(`Plugin should replace the space with the passed spacer option`, () => {
-	const stream = stacksvg({ spacer: `--` })
-
-	stream.on(`data`, (file) => {
-		const actual = file.contents.toString()
-		const expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg id="icon--like"></svg></svg>`
-
-		equal(actual, expected)
-	})
-
-	stream.write(new Vinyl({
-		contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg"/>`),
-		path: `icon like.svg`,
-	}))
-
-	stream.end()
-})
-
-test(`Plugin should remove the space if an empty string is passed to spacer option`, () => {
-	const stream = stacksvg({ spacer: `` })
-
-	stream.on(`data`, (file) => {
-		const actual = file.contents.toString()
-		const expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg id="iconlike"></svg></svg>`
 
 		equal(actual, expected)
 	})
@@ -228,42 +152,6 @@ test(`Plugin should replace the directory separator with the underscore`, () => 
 	stream.on(`data`, (file) => {
 		const actual = file.contents.toString()
 		const expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg id="icons_like"></svg></svg>`
-
-		equal(actual, expected)
-	})
-
-	stream.write(new Vinyl({
-		path: `icons/like.svg`,
-		contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg"/>`),
-	}))
-
-	stream.end()
-})
-
-test(`Plugin should replace the directory separator with the passed separator option`, () => {
-	const stream = stacksvg({ separator: `__` })
-
-	stream.on(`data`, (file) => {
-		const actual = file.contents.toString()
-		const expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg id="icons__like"></svg></svg>`
-
-		equal(actual, expected)
-	})
-
-	stream.write(new Vinyl({
-		path: `icons/like.svg`,
-		contents: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg"/>`),
-	}))
-
-	stream.end()
-})
-
-test(`Plugin should remove the directory separator if an empty string is passed to separator option`, () => {
-	const stream = stacksvg({ separator: `` })
-
-	stream.on(`data`, (file) => {
-		const actual = file.contents.toString()
-		const expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg id="iconslike"></svg></svg>`
 
 		equal(actual, expected)
 	})
