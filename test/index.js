@@ -1,5 +1,5 @@
 import { test } from "node:test"
-import { ok, equal } from "node:assert/strict"
+import { equal, ok } from "node:assert/strict"
 
 import PluginError from "plugin-error"
 import Vinyl from "vinyl"
@@ -25,6 +25,7 @@ test(`Plugin should correctly merge svg files`, () => {
 	stream.on(`data`, (file) => {
 		const actual = file.contents.toString()
 		const expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg viewBox="0 0 4 4" preserveAspectRatio="xMinYMid meet" id="circle"><circle cx="2" cy="2" r="1"></circle></svg><svg id="square"><rect x="1" y="1" width="2" height="2"></rect></svg></svg>`
+
 		equal(actual, expected)
 	})
 
@@ -47,6 +48,7 @@ test(`Plugin should not include null`, () => {
 	stream.on(`data`, (file) => {
 		const actual = file.contents.toString()
 		const expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg viewBox="0 0 4 4" id="circle"><circle cx="2" cy="2" r="1"></circle></svg></svg>`
+
 		equal(actual, expected)
 	})
 
@@ -69,6 +71,7 @@ test(`Plugin should not include invalid files`, () => {
 	stream.on(`data`, (file) => {
 		const actual = file.contents.toString()
 		const expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg viewBox="0 0 4 4" id="circle"><circle cx="2" cy="2" r="1"></circle></svg></svg>`
+
 		equal(actual, expected)
 	})
 
@@ -126,7 +129,7 @@ test(`Plugin should generate stack.svg if output filename is not passed`, () => 
 })
 
 test(`Plugin should add .svg if passed output doesn't end with this`, () => {
-	const stream = stacksvg({ output: `test`})
+	const stream = stacksvg({ output: `test` })
 
 	stream.on(`data`, (file) => {
 		equal(file.relative, `test.svg`)
@@ -146,7 +149,7 @@ test(`Plugin should add .svg if passed output doesn't end with this`, () => {
 })
 
 test(`Plugin should not add .svg if passed output ends with this`, () => {
-	const stream = stacksvg({ output: `test.svg`})
+	const stream = stacksvg({ output: `test.svg` })
 
 	stream.on(`data`, (file) => {
 		equal(file.relative, `test.svg`)
@@ -171,6 +174,7 @@ test(`Plugin should replace the space with the hyphen when spacer is not passed`
 	stream.on(`data`, (file) => {
 		const actual = file.contents.toString()
 		const expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg id="icon-like"></svg></svg>`
+
 		equal(actual, expected)
 	})
 
@@ -188,6 +192,7 @@ test(`Plugin should replace the space with the passed spacer option`, () => {
 	stream.on(`data`, (file) => {
 		const actual = file.contents.toString()
 		const expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg id="icon--like"></svg></svg>`
+
 		equal(actual, expected)
 	})
 
@@ -205,6 +210,7 @@ test(`Plugin should remove the space if an empty string is passed to spacer opti
 	stream.on(`data`, (file) => {
 		const actual = file.contents.toString()
 		const expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg id="iconlike"></svg></svg>`
+
 		equal(actual, expected)
 	})
 
@@ -222,6 +228,7 @@ test(`Plugin should replace the directory separator with the underscore`, () => 
 	stream.on(`data`, (file) => {
 		const actual = file.contents.toString()
 		const expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg id="icons_like"></svg></svg>`
+
 		equal(actual, expected)
 	})
 
@@ -239,6 +246,7 @@ test(`Plugin should replace the directory separator with the passed separator op
 	stream.on(`data`, (file) => {
 		const actual = file.contents.toString()
 		const expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg id="icons__like"></svg></svg>`
+
 		equal(actual, expected)
 	})
 
@@ -256,6 +264,7 @@ test(`Plugin should remove the directory separator if an empty string is passed 
 	stream.on(`data`, (file) => {
 		const actual = file.contents.toString()
 		const expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg id="iconslike"></svg></svg>`
+
 		equal(actual, expected)
 	})
 
@@ -273,6 +282,7 @@ test(`Plugin should generate unique inner id`, () => {
 	stream.on(`data`, (file) => {
 		const actual = file.contents.toString()
 		const expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg viewBox="0 0 40 40" id="one"><mask id="one_0"></mask><mask id="one_1"></mask><g><mask id="one_2"></mask></g><path mask="url(#one_0)"></path><g><path mask="url(#one_1)"></path><g><path mask="url(#one_2)"></path></g></g></svg><svg viewBox="0 0 40 40" id="two"><mask id="two_0"></mask><mask id="two_1"></mask><g><mask id="two_2"></mask></g><path mask="url(#two_0)"></path><g><path mask="url(#two_1)"></path><g><path mask="url(#two_2)"></path></g></g></svg></svg>`
+
 		equal(actual, expected)
 	})
 
@@ -295,6 +305,7 @@ test(`Plugin should include all different namespaces into final svg`, () => {
 	stream.on(`data`, (file) => {
 		const actual = file.contents.toString()
 		const expected = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns1="https://example.com/ns/ns1" xmlns:ns2="https://example.com/ns/ns2"><style>:root svg:not(:target){display:none}</style><svg id="rect1"><rect ns1:width="50" ns1:height="10"></rect></svg><svg id="rect2"><ns2:rect width="50" height="10"></ns2:rect></svg></svg>`
+
 		equal(actual, expected)
 	})
 
@@ -317,6 +328,7 @@ test(`Plugin should replace aliases of existing namespaces`, () => {
 	stream.on(`data`, (file) => {
 		const actual = file.contents.toString()
 		const expected = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns1="https://example.com/ns/ns1"><style>:root svg:not(:target){display:none}</style><svg id="rect1"><rect ns1:width="50" ns1:height="10"></rect></svg><svg id="rect2"><ns1:rect ns1:width="50" ns1:height="10"></ns1:rect></svg></svg>`
+
 		equal(actual, expected)
 	})
 
@@ -339,6 +351,7 @@ test(`Plugin should rename duplicate aliases of different namespaces`, () => {
 	stream.on(`data`, (file) => {
 		const actual = file.contents.toString()
 		const expected = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns="https://example.com/ns/ns1" xmlns:nsf37e589="https://example.com/ns/ns2" xmlns:ns8467673="https://example.com/ns/ns3"><style>:root svg:not(:target){display:none}</style><svg id="rect1"><rect ns:width="50" ns:height="10"></rect></svg><svg id="rect2"><rect nsf37e589:width="50" nsf37e589:height="10"></rect></svg><svg id="rect3"><ns8467673:rect width="50" height="10"></ns8467673:rect></svg></svg>`
+
 		equal(actual, expected)
 	})
 
@@ -366,6 +379,7 @@ test(`Plugin should remove "http://www.w3.org/1999/xlink" namespace`, () => {
 	stream.on(`data`, (file) => {
 		const actual = file.contents.toString()
 		const expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg viewBox="0 0 50 50" id="burger"><path id="burger_0" d="m8 8h34" stroke="#000" stroke-width="8"></path><use y="17" href="#burger_0"></use><use y="34" href="#burger_0"></use></svg><svg viewBox="0 0 50 50" id="sandwich"><path id="sandwich_0" d="m8 8h34" stroke="#000" stroke-width="8"></path><use y="17" href="#sandwich_0"></use><use y="34" href="#sandwich_0"></use></svg></svg>`
+
 		equal(actual, expected)
 	})
 
@@ -388,6 +402,7 @@ test(`Plugin should not add unused namespaces`, () => {
 	stream.on(`data`, (file) => {
 		const actual = file.contents.toString()
 		const expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg id="rect1"><rect width="50" height="10"></rect></svg><svg id="rect2"><rect width="50" height="10"></rect></svg></svg>`
+
 		equal(actual, expected)
 	})
 

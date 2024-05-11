@@ -1,4 +1,4 @@
-import { src, dest } from "gulp"
+import { dest, src } from "gulp"
 
 import { stacksvg } from "./lib/index.js"
 

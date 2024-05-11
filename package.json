@@ -23,6 +23,7 @@
 	"engines": {
 		"node": "^18.18.2 || ^20.9.0"
 	},
+	"packageManager": "pnpm@9.1.0",
 	"dependencies": {
 		"node-html-parser": "^6.1.13",
 		"plugin-error": "^2.0.1",
@@ -30,9 +31,7 @@
 	},
 	"scripts": {
 		"prepare": "husky",
-		"lint:ec": "ec",
-		"lint:es": "eslint ./",
-		"lint": "pnpm /^lint:/",
+		"lint": "eslint",
 		"test": "node --test",
 		"pretest": "pnpm lint",
 		"preversion": "pnpm test",
@@ -40,8 +39,8 @@
 		"postpublish": "git push --follow-tags"
 	},
 	"devDependencies": {
-		"editorconfig-checker": "^5.1.5",
-		"eslint": "^8.57.0",
+		"@firefoxic/eslint-config": "^1.0.0",
+		"eslint": "^9.2.0",
 		"gulp": "^5.0.0",
 		"husky": "^9.0.11"
 	},
