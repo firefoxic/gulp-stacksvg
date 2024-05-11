@@ -35,11 +35,13 @@
 		"test": "node --test",
 		"pretest": "pnpm lint",
 		"preversion": "pnpm test",
+		"version": "update-changelog && git add CHANGELOG.md",
 		"postversion": "pnpm publish",
 		"postpublish": "git push --follow-tags"
 	},
 	"devDependencies": {
 		"@firefoxic/eslint-config": "^1.0.0",
+		"@firefoxic/update-changelog": "^0.1.0",
 		"eslint": "^9.2.0",
 		"gulp": "^5.0.0",
 		"husky": "^9.0.11"
