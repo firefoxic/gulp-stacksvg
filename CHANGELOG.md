@@ -3,7 +3,7 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog](https://keepachangelog.com), and this project adheres to [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
@@ -15,25 +15,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.
 
 ## [2.0.3] — 2023–10–29
 
-### Updated
-
-- Dependencies.
+No significant changes.
 
 ## [2.0.2] — 2023–06–16
 
-### Added
-
-- The jsDoc comments.
-
-### Updated
-
-- This document.
+No significant changes.
 
 ## [2.0.1] — 2023–03–20
 
-### Changed
-
-- No user-visible changes.
+No significant changes.
 
 ## [2.0.0] — 2022–12–21
 
@@ -48,16 +38,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.
 	- Namespace processing takes into account aliases for both attributes and tag names.
 	- The main namespace `xmlns="http://www.w3.org/2000/svg"` has been moved to the map object.
 
-### Fixed
-
-- Removed the deprecated `xlink` namespace from [Readme](README.md#stack-under-the-hood).
-
 ## [1.1.0] — 2022–12–12
 
 ### Added
 
 - Removing whitespace between tags when reading icon code. It will allow even well-optimized icons to be kept in source files in a readable form of formatted code.
-- Useful links section to [Readme](README.md#useful-links).
 
 ## [1.0.6] — 2022–10–28
 
@@ -69,24 +54,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.
 
 ### Fixed
 
-- Support node@16+.
+- Support `node@16`.
 
 ## [1.0.4] — 2022–09–22
 
-### Changed
-
-- No user-visible changes.
+No significant changes.
 
 ## [1.0.3] — 2022–09–04
 
-### Removed
+### Fixed
 
-- Unnecessary XML declaration. Because it turns out that not only the DTD is not needed, but also the XML declaration, since the values ​​used are the default values. Stack works without all this XML prolog. More details can be found in [supplementary material](https://oreillymedia.github.io/Using_SVG/extras/ch01-XML.html) to the book “Using SVG with CSS3 and HTML5”.
+- The unnecessary XML declaration is no longer added. Because it turns out that not only the DTD is not needed, but also the XML declaration, since the values ​​used are the default values. Stack works without all this XML prolog. More details can be found in [supplementary material](https://oreillymedia.github.io/Using_SVG/extras/ch01-XML.html) to the book “Using SVG with CSS3 and HTML5”.
 - File existence check, which became unnecessary after the previous code optimization.
-
-### Added
-
-- Link to [autoprefixer](https://github.com/postcss/autoprefixer).
 
 ## [1.0.2] — 2022–09–01
 
@@ -94,19 +73,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.
 
 - Different icons may contain the same identifiers. Previously, this was not taken into account in any way and could lead to erroneous rendering. This is now fixed, all identifiers on the stack are unique.
 
-### Added
-
-- [Demo page](https://firefoxic.github.io/gulp-stacksvg/test/).
-- Explanations to the Readme.
-
-### Removed
-
-- SVG Superman from the Readme.
-- Unnecessary text from the Readme.
-
 ## [1.0.1] — 2022–08–29
 
-### Changed
+### Fixed
 
 - The contents of `defs` tags are no longer transferring to `defs` of the root element since there is no need for this.
 - Optional namespace `xmlns:xlink` is now added only if it is necessary.
@@ -119,19 +88,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.
 - The project has been renamed to **gulp-stacksvg**.
 - Changed sprite assembly method from _symbol_ to _stack_.
 - Project converted to es-module.
-
-### Removed
-
-- The ability to inline a sprite into markup.
+- The ability to inline a sprite into markup has been removed.
+- Missing `viewBoxes` are now created from icon sizes.
 
 ### Added
 
-- Creation of skipped `viewBox` from icon sizes.
-- `output`, `separator`, and `spacer` [options](./README.md#available-options).
-- [LICENSE](./LICENSE) file.
+- `output`, `separator`, and `spacer` options.
+- [LICENSE](./LICENSE.md) file.
 - [CHANGELOG](./CHANGELOG.md) file.
-- [EditorConfig](./.editorconfig) file.
-- Badges into [README](./README.md) file.
 
 ## [0.0.1] — 2022–08–27
 

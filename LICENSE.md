@@ -1,7 +1,7 @@
 # MIT License
 
-Copyright © 2022-2023 Sergey Artemov <firefoxic.dev@gmail.com>
-Copyright © 2014–2021 Andrey Kuzmin <unsoundscapes@gmail.com>
+Copyright © Sergey Artemov <firefoxic.dev@gmail.com>, 2022
+Copyright © Andrey Kuzmin <unsoundscapes@gmail.com>, 2014
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
