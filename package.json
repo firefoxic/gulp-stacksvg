@@ -1,40 +1,33 @@
 {
 	"name": "gulp-stacksvg",
-	"description": "The gulp plugin to combine svg files into one using the stack method.",
+	"description": "The gulp plugin to combine svg files into one using the stack method.",
 	"version": "3.0.0",
-	"type": "module",
-	"exports": "./lib/index.js",
-	"files": [
-		"./lib/index.js"
-	],
-	"dependencies": {
-		"node-html-parser": "^6.1.13",
-		"plugin-error": "^2.0.1",
-		"vinyl": "^3.0.0"
-	},
-	"engines": {
-		"node": "^18.18.2 || ^20.9.0"
-	},
 	"license": "MIT",
 	"author": {
 		"name": "Sergey Artemov",
 		"email": "firefoxic.dev@gmail.com"
 	},
-	"homepage": "https://github.com/firefoxic/gulp-stacksvg",
+	"homepage": "https://github.com/firefoxic/gulp-stacksvg#readme",
 	"bugs": {
 		"url": "https://github.com/firefoxic/gulp-stacksvg/issues"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git://github.com/firefoxic/gulp-stacksvg"
+		"url": "git://github.com/firefoxic/gulp-stacksvg.git"
 	},
-	"keywords": [
-		"gulpplugin",
-		"svg",
-		"icon",
-		"stack",
-		"sprite"
+	"type": "module",
+	"exports": "./lib/index.js",
+	"files": [
+		"./lib/"
 	],
+	"engines": {
+		"node": "^18.18.2 || ^20.9.0"
+	},
+	"dependencies": {
+		"node-html-parser": "^6.1.13",
+		"plugin-error": "^2.0.1",
+		"vinyl": "^3.0.0"
+	},
 	"scripts": {
 		"prepare": "husky",
 		"lint:ec": "ec",
@@ -44,12 +37,21 @@
 		"pretest": "pnpm lint",
 		"preversion": "pnpm test",
 		"postversion": "pnpm publish",
-		"postpublish": "git push origin --all; git push origin --tags"
+		"postpublish": "git push --follow-tags"
 	},
 	"devDependencies": {
 		"editorconfig-checker": "^5.1.5",
 		"eslint": "^8.57.0",
 		"gulp": "^5.0.0",
 		"husky": "^9.0.11"
-	}
+	},
+	"keywords": [
+		"gulp",
+		"gulpplugin",
+		"svg",
+		"icon",
+		"sprite",
+		"stack",
+		"vector"
+	]
 }
