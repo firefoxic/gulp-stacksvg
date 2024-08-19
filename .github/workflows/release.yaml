@@ -1,0 +1,48 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - release
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: package.json
+          cache: pnpm
+      - run: pnpm install
+      - run: |
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> ~/.npmrc
+          git config --global user.email "actions@users.noreply.github.com"
+          git config --global user.name "GitHub Actions"
+          RELEASE_DESCRIPTION=$(awk '/## \[Unreleased\]/{flag=1; next} /## \[/{flag=0} flag' ./CHANGELOG.md | sed '/^[[:space:]]*$/d')
+          if echo "$RELEASE_DESCRIPTION" | grep -q '### Changed'; then
+              pnpm version major
+          elif echo "$RELEASE_DESCRIPTION" | grep -q '### Added'; then
+              pnpm version minor
+          elif echo "$RELEASE_DESCRIPTION" | grep -q '### Fixed'; then
+              pnpm version patch
+          fi
+          echo "TAG_NAME=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
+          echo "RELEASE_DESCRIPTION<<EOF" >> $GITHUB_ENV
+          echo "$RELEASE_DESCRIPTION" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+      - uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.TAG_NAME }}
+          name: "Release ${{ env.TAG_NAME }}"
+          body: ${{ env.RELEASE_DESCRIPTION }}
+          draft: false
+          prerelease: false
+      - run: git fetch --all && git switch main && git rebase release && git push origin main
