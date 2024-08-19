@@ -30,7 +30,7 @@
 		"vinyl": "^3.0.0"
 	},
 	"scripts": {
-		"prepare": "husky",
+		"prepare": "git config core.hooksPath .git-hooks || echo 'Not in a git repo'",
 		"lint": "eslint",
 		"test": "node --test",
 		"pretest": "pnpm lint",
@@ -43,8 +43,7 @@
 		"@firefoxic/eslint-config": "^1.0.0",
 		"@firefoxic/update-changelog": "^0.1.0",
 		"eslint": "^9.2.0",
-		"gulp": "^5.0.0",
-		"husky": "^9.0.11"
+		"gulp": "^5.0.0"
 	},
 	"keywords": [
 		"gulp",
