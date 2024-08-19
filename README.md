@@ -149,4 +149,4 @@ For an icon inserted via `mask`, simply change the `background`. Moreover, u
 [npm-image]: https://badge.fury.io/js/gulp-stacksvg.svg
 
 [test-url]: https://github.com/firefoxic/gulp-stacksvg/actions
-[test-image]: https://github.com/firefoxic/gulp-stacksvg/actions/workflows/test.yml/badge.svg?branch=main
+[test-image]: https://github.com/firefoxic/gulp-stacksvg/actions/workflows/test.yaml/badge.svg?branch=main
