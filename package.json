@@ -36,7 +36,7 @@
 		"pretest": "pnpm lint",
 		"preversion": "pnpm test",
 		"version": "update-changelog",
-		"postversion": "pnpm publish",
+		"postversion": "pnpm publish --provenance --access public --no-git-checks",
 		"postpublish": "git push --follow-tags"
 	},
 	"devDependencies": {
