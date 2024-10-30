@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com), and 
 
 ## [Unreleased]
 
+## [5.0.0] — 2024–10–30
+
 ### Changed
 
 - The minimum required `node.js` version has been increased to `20.12.0`, except for version `21`.
@@ -114,7 +116,8 @@ No significant changes.
 
 Just forked the [gulp-svgstore](https://github.com/w0rm/gulp-svgstore) project.
 
-[Unreleased]: https://github.com/firefoxic/gulp-stacksvg/compare/v4.0.0...HEAD
+[Unreleased]: https://github.com/firefoxic/gulp-stacksvg/compare/v5.0.0...HEAD
+[5.0.0]: https://github.com/firefoxic/gulp-stacksvg/compare/v4.0.0...v5.0.0
 [4.0.0]: https://github.com/firefoxic/gulp-stacksvg/compare/v3.0.0...v4.0.0
 [3.0.0]: https://github.com/firefoxic/gulp-stacksvg/compare/v2.0.3...v3.0.0
 [2.0.3]: https://github.com/firefoxic/gulp-stacksvg/compare/v2.0.2...v2.0.3
