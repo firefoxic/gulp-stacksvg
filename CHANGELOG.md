@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com), and 
 
 ## [Unreleased]
 
+## [5.0.1] — 2024–11–01
+
 ### Fixed
 
 - The deprecation warning for the `fs.Stats` constructor no longer litters the output in the terminal.
@@ -120,7 +122,8 @@ No significant changes.
 
 Just forked the [gulp-svgstore](https://github.com/w0rm/gulp-svgstore) project.
 
-[Unreleased]: https://github.com/firefoxic/gulp-stacksvg/compare/v5.0.0...HEAD
+[Unreleased]: https://github.com/firefoxic/gulp-stacksvg/compare/v5.0.1...HEAD
+[5.0.1]: https://github.com/firefoxic/gulp-stacksvg/compare/v5.0.0...v5.0.1
 [5.0.0]: https://github.com/firefoxic/gulp-stacksvg/compare/v4.0.0...v5.0.0
 [4.0.0]: https://github.com/firefoxic/gulp-stacksvg/compare/v3.0.0...v4.0.0
 [3.0.0]: https://github.com/firefoxic/gulp-stacksvg/compare/v2.0.3...v3.0.0
