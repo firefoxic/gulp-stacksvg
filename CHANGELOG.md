@@ -7,6 +7,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com), and 
 
 ## [Unreleased]
 
+### Fixed
+
+- The deprecation warning for the `fs.Stats` constructor no longer litters the output in the terminal.
+
 ## [5.0.0] — 2024–10–30
 
 ### Changed
