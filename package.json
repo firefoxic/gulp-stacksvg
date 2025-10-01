@@ -27,7 +27,7 @@
 	"dependencies": {
 		"node-html-parser": "^6.1.13",
 		"plugin-error": "^2.0.1",
-		"vinyl": "^3.0.0"
+		"vinyl": "^3.0.1"
 	},
 	"scripts": {
 		"prepare": "git config core.hooksPath .git-hooks || true",
