@@ -7,6 +7,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com), and 
 
 ## [Unreleased]
 
+### Changed
+
+- The plugin now requires:
+	- `node.js` version `22.22.0` or higher,
+	- `gulp` version `5.0.1` or higher (as peer dependency).
+
 ## [5.0.1] — 2024–11–01
 
 ### Fixed

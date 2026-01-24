@@ -21,21 +21,24 @@
 		"./lib/"
 	],
 	"engines": {
-		"node": "^20.12 || >=22.11"
+		"node": ">=22.22"
 	},
 	"dependencies": {
-		"node-html-parser": "^6.1.13",
+		"node-html-parser": "^7.0.2",
 		"plugin-error": "^2.0.1",
-		"vinyl": "^3.0.0"
+		"vinyl": "^3.0.1"
 	},
 	"scripts": {
 		"help": "make help",
 		"eslint": "eslint"
 	},
+	"peerDependencies": {
+		"gulp": "^5.0.1"
+	},
 	"devDependencies": {
-		"@firefoxic/eslint-config": "^4.0.0",
-		"eslint": "^9.13.0",
-		"gulp": "^5.0.0"
+		"@firefoxic/eslint-config": "^6.0.1",
+		"eslint": "^9.39.2",
+		"gulp": "^5.0.1"
 	},
 	"keywords": [
 		"gulp",

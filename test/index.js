@@ -1,5 +1,5 @@
-import { test } from "node:test"
 import { equal, ok } from "node:assert/strict"
+import { test } from "node:test"
 
 import PluginError from "plugin-error"
 import Vinyl from "vinyl"
