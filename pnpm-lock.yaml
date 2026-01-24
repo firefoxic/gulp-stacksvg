@@ -21,9 +21,6 @@ importers:
       '@firefoxic/eslint-config':
         specifier: ^4.0.0
         version: 4.0.0(eslint@9.13.0)
-      '@firefoxic/update-changelog':
-        specifier: ^1.0.0
-        version: 1.0.0
       eslint:
         specifier: ^9.13.0
         version: 9.13.0
@@ -72,11 +69,6 @@ packages:
     engines: {node: ^20.12 || >=22.11}
     peerDependencies:
       eslint: ^9.13.0
-
-  '@firefoxic/update-changelog@1.0.0':
-    resolution: {integrity: sha512-vfT3FNjbF11l3ZbFPrVGgyk7RIF7USvS/e/JCqSsDDB8AxD9cT0/dmII27YX6mpQdK4E0bm2UDSY/TN8l6AKtw==}
-    engines: {node: ^20.12 || >=22.11}
-    hasBin: true
 
   '@gulpjs/messages@1.1.0':
     resolution: {integrity: sha512-Ys9sazDatyTgZVb4xPlDufLweJ/Os2uHWOv+Caxvy2O85JcnT4M3vc73bi8pdLWlv3fdWQz3pdI9tVwo8rQQSg==}
@@ -993,8 +985,6 @@ snapshots:
       eslint: 9.13.0
       eslint-plugin-prefer-let: 4.0.0
       globals: 15.11.0
-
-  '@firefoxic/update-changelog@1.0.0': {}
 
   '@gulpjs/messages@1.1.0': {}
 

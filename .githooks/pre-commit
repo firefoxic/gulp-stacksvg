@@ -1,0 +1,11 @@
+#!/bin/sh
+
+git stash -ku
+
+trap "git stash pop" EXIT
+
+staged=$(git --no-pager diff --staged --name-only | grep -E '\.js$')
+
+if [ -n "$staged" ]; then
+	node --run eslint -- `echo $staged` && node --test
+fi

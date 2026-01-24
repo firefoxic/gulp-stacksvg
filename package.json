@@ -29,18 +29,11 @@
 		"vinyl": "^3.0.0"
 	},
 	"scripts": {
-		"prepare": "git config core.hooksPath .git-hooks || true",
-		"lint": "eslint",
-		"test": "node --test",
-		"pretest": "pnpm lint",
-		"preversion": "pnpm test",
-		"version": "update-changelog",
-		"postversion": "pnpm publish --provenance --access public --no-git-checks",
-		"postpublish": "git push --follow-tags"
+		"help": "make help",
+		"eslint": "eslint"
 	},
 	"devDependencies": {
 		"@firefoxic/eslint-config": "^4.0.0",
-		"@firefoxic/update-changelog": "^1.0.0",
 		"eslint": "^9.13.0",
 		"gulp": "^5.0.0"
 	},
