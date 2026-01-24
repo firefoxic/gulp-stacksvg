@@ -23,7 +23,6 @@
 	"engines": {
 		"node": "^20.12 || >=22.11"
 	},
-	"packageManager": "pnpm@9.12.3",
 	"dependencies": {
 		"node-html-parser": "^6.1.13",
 		"plugin-error": "^2.0.1",
