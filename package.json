@@ -31,15 +31,15 @@
 	},
 	"scripts": {
 		"help": "make help",
-		"eslint": "eslint"
+		"oxlint": "oxlint"
 	},
 	"peerDependencies": {
 		"gulp": "^5.0.1"
 	},
 	"devDependencies": {
-		"@firefoxic/eslint-config": "^6.0.1",
-		"eslint": "^9.39.2",
-		"gulp": "^5.0.1"
+		"@firefoxic/oxlint-config": "^0.1.2",
+		"gulp": "^5.0.1",
+		"oxlint": "^1.50.0"
 	},
 	"keywords": [
 		"gulp",

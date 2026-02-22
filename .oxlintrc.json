@@ -1,0 +1,21 @@
+{
+	"$schema": "./node_modules/oxlint/configuration_schema.json",
+	"extends": [
+		"./node_modules/@firefoxic/oxlint-config/lib/syntactic.jsonc",
+		"./node_modules/@firefoxic/oxlint-config/lib/stylistic.jsonc"
+	],
+	"env": {
+		"node": true,
+	},
+	"overrides": [
+		{
+			"files": [
+				"./test/**/*.{js,ts}"
+			],
+			"rules": {
+				"max-lines": "off",
+				"max-lines-per-function": "off",
+			}
+		}
+	]
+}
