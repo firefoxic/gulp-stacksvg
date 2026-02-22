@@ -38,8 +38,6 @@ help: ## 🧾 Print this message
 	}'
 .PHONY: help
 
-REQUIRED_PNPM := ^10.28.0
-
 ANSI_RESET := \033[0m
 ANSI_BOLD := \033[1m
 ANSI_BOLD_CYAN := \033[1;36m
@@ -53,7 +51,8 @@ define install_pnpm
 endef
 
 define update_pnpm
-	@pnpm dlx semver -- $$(pnpm -v) -r $(REQUIRED_PNPM) >/dev/null 2>&1 || pnpm self-update
+	@REQUIRED_PNPM=$$(jq -r '.engines.pnpm' package.json) ; \
+	pnpm dlx semver -- $$(pnpm -v) -r "$$REQUIRED_PNPM" >/dev/null 2>&1 || pnpm self-update
 endef
 
 define install_dependencies

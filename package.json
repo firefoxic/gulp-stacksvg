@@ -21,7 +21,8 @@
 		"./lib/"
 	],
 	"engines": {
-		"node": ">=22.22"
+		"node": ">=22.22",
+		"pnpm": ">=10.30"
 	},
 	"dependencies": {
 		"node-html-parser": "^7.0.2",
