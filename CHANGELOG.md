@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com), and 
 
 ## [Unreleased]
 
+## [6.1.0] — 2026–07–11
+
 ### Added
 
 - The package now provides type declarations.
@@ -134,7 +136,8 @@ No significant changes.
 
 Just forked the [gulp-svgstore](https://github.com/w0rm/gulp-svgstore) project.
 
-[Unreleased]: https://github.com/firefoxic/gulp-stacksvg/compare/v6.0.0...HEAD
+[Unreleased]: https://github.com/firefoxic/gulp-stacksvg/compare/v6.1.0...HEAD
+[6.1.0]: https://github.com/firefoxic/gulp-stacksvg/compare/v6.0.0...v6.1.0
 [6.0.0]: https://github.com/firefoxic/gulp-stacksvg/compare/v5.0.1...v6.0.0
 [5.0.1]: https://github.com/firefoxic/gulp-stacksvg/compare/v5.0.0...v5.0.1
 [5.0.0]: https://github.com/firefoxic/gulp-stacksvg/compare/v4.0.0...v5.0.0

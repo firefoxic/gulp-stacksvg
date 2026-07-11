@@ -1,7 +1,7 @@
 {
 	"name": "gulp-stacksvg",
 	"description": "The gulp plugin to combine svg files into one using the stack method.",
-	"version": "6.0.0",
+	"version": "6.1.0",
 	"license": "MIT",
 	"author": {
 		"name": "Sergey Artemov",
