@@ -7,6 +7,18 @@
 	"env": {
 		"node": true,
 	},
+	"rules": {
+		"no-underscore-dangle": [
+			"error",
+			{
+				"allow": [
+					"_attrs",
+					"_flush",
+					"_transform",
+				]
+			}
+		]
+	},
 	"overrides": [
 		{
 			"files": [

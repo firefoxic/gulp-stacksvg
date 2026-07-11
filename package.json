@@ -21,25 +21,35 @@
 		"./lib/"
 	],
 	"engines": {
-		"node": ">=22.22",
-		"pnpm": ">=10.30"
+		"node": ">=22.22"
+	},
+	"devEngines": {
+		"runtime": {
+			"name": "node",
+			"version": ">=26.5",
+			"onFail": "download"
+		},
+		"packageManager": {
+			"name": "pnpm",
+			"version": ">=11.11",
+			"onFail": "download"
+		}
 	},
 	"dependencies": {
-		"node-html-parser": "^7.0.2",
+		"node-html-parser": "^9.0.0",
 		"plugin-error": "^2.0.1",
 		"vinyl": "^3.0.1"
 	},
 	"scripts": {
-		"help": "make help",
-		"oxlint": "oxlint"
+		"help": "make help"
 	},
 	"peerDependencies": {
 		"gulp": "^5.0.1"
 	},
 	"devDependencies": {
-		"@firefoxic/oxlint-config": "^0.1.2",
+		"@firefoxic/oxlint-config": "^0.4.0",
 		"gulp": "^5.0.1",
-		"oxlint": "^1.50.0"
+		"oxlint": "^1.73.0"
 	},
 	"keywords": [
 		"gulp",

@@ -32,7 +32,7 @@ export function createStack () {
 To combine all icons from `./src/shared/icons/` into the `./dist/shared/icons/stack.svg` run:
 
 ```shell
-pnpm exec gulp createStack
+pnpm gulp createStack
 ```
 
 ## Why a stack?

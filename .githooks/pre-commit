@@ -1,5 +1,7 @@
 #!/bin/sh
 
+export PATH="./node_modules/.bin:$PATH"
+
 git stash -ku
 
 trap "git stash pop" EXIT
@@ -7,5 +9,5 @@ trap "git stash pop" EXIT
 staged=$(git --no-pager diff --staged --name-only | grep -E '\.js$')
 
 if [ -n "$staged" ]; then
-	node --run oxlint -- $staged && node --test
+	oxlint $staged && node --test
 fi

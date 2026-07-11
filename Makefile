@@ -1,3 +1,9 @@
+export PATH := ./node_modules/.bin:$(PATH)
+
+help: ## 🧾 Print this message
+	$(call print_help)
+.PHONY: help
+
 setup: ## 🛠️  Setup the project environment
 	$(call remove_wrong_installation)
 	$(call install_pnpm)
@@ -7,11 +13,11 @@ setup: ## 🛠️  Setup the project environment
 .PHONY: setup
 
 lint: ## 🧬 Lint code by oxlint
-	@node --run oxlint
+	@oxlint
 .PHONY: lint
 
 fix: ## 🩹 Fix code by oxlint
-	@node --run oxlint -- --fix
+	@oxlint --fix
 .PHONY: fix
 
 test: ## 🧪 Run tests
@@ -22,7 +28,11 @@ release: lint test ## 🚀 Release a new version
 	@pnpm dlx @firefoxic/release-it
 .PHONY: release
 
-help: ## 🧾 Print this message
+ANSI_RESET := \033[0m
+ANSI_BOLD := \033[1m
+ANSI_BOLD_CYAN := \033[1;36m
+
+define print_help
 	@printf "\n\t📜 $(ANSI_BOLD)Available targets:$(ANSI_RESET)\n\n"
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## ' $(MAKEFILE_LIST) \
 	| awk -F ':|##' '\
@@ -40,11 +50,7 @@ help: ## 🧾 Print this message
 		} \
 		printf "\n" \
 	}'
-.PHONY: help
-
-ANSI_RESET := \033[0m
-ANSI_BOLD := \033[1m
-ANSI_BOLD_CYAN := \033[1;36m
+endef
 
 define remove_wrong_installation
     @test ! -f package-lock.json -o -f yarn.lock || rm -rf package-lock.json yarn.lock node_modules
@@ -55,12 +61,12 @@ define install_pnpm
 endef
 
 define update_pnpm
-	@REQUIRED_PNPM=$$(jq -r '.engines.pnpm' package.json) ; \
+	@REQUIRED_PNPM=$$(jq -r '.devEngines.packageManager.version' package.json) ; \
 	pnpm dlx semver -- $$(pnpm -v) -r "$$REQUIRED_PNPM" >/dev/null 2>&1 || pnpm self-update
 endef
 
 define install_dependencies
-	@test -d node_modules || pnpm install
+	@test -d node_modules || pnpm ci
 endef
 
 define setup_githooks
