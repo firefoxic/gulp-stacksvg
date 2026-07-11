@@ -21,7 +21,7 @@ fix: ## 🩹 Fix code by oxlint
 .PHONY: fix
 
 test: ## 🧪 Run tests
-	@node --test
+	@vitest run
 .PHONY: test
 
 release: lint test ## 🚀 Release a new version
