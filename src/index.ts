@@ -11,27 +11,19 @@ import { StackSvgCreator } from "./svg-processor.js"
  * @param {StackSvgCreator} processor - StackSvgCreator instance.
  * @returns {function} Transform function.
  */
-function createTransform (processor) {
-	/**
-	 * Transform function for the plugin.
-	 *
-	 * @param {Vinyl} file - Gulp file object.
-	 * @param {string} [_] - Encoding to use when writing the file.
-	 * @param {function} cb - Callback function.
-	 * @returns {void}
-	 */
-	return function transform (file, _, cb) {
+function createTransform (processor: StackSvgCreator) {
+	return function transform (file: Vinyl, _: BufferEncoding, cb: (error?: Error | null) => void): void {
 		if (file.isStream()) return cb(new PluginError(`gulp-stacksvg`, `Streams are not supported!`))
 
 		if (file.isNull()) return cb()
 
-		let content = file.contents.toString()
+		let content = file.contents?.toString() ?? ``
 
 		try {
 			processor.add(content, file.relative)
 		}
 		catch (error) {
-			return cb(new PluginError(`gulp-stacksvg`, error.message))
+			return cb(new PluginError(`gulp-stacksvg`, (error as Error).message))
 		}
 
 		cb()
@@ -45,14 +37,8 @@ function createTransform (processor) {
  * @param {Transform} stream - Gulp transform stream.
  * @returns {function} Flush function.
  */
-function createFlush (processor, stream) {
-	/**
-	 * Flush function for the plugin.
-	 *
-	 * @param {function} cb - Callback function.
-	 * @returns {void}
-	 */
-	return function flush (cb) {
+function createFlush (processor: StackSvgCreator, stream: Transform) {
+	return function flush (cb: (error?: Error | null) => void): void {
 		let stackSprite = processor.getStackSprite()
 
 		if (!stackSprite) return cb()
@@ -65,13 +51,7 @@ function createFlush (processor, stream) {
 	}
 }
 
-/**
- * Gulp plugin for combining SVG icons into a single file.
- *
- * @exports {function} stacksvg - Gulp plugin.
- * @returns {Transform} Gulp transform stream.
- */
-export function stacksvg () {
+export function stacksvg (): Transform {
 	let processor = new StackSvgCreator()
 	let stream = new Transform({ objectMode: true })
 

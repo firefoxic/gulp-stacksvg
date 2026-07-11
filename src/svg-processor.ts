@@ -1,7 +1,7 @@
 import { createHmac } from "node:crypto"
 import path from "node:path"
 
-import { parse } from "node-html-parser"
+import { type HTMLElement, parse } from "node-html-parser"
 
 let excessAttrs = [
 	`enable-background`,
@@ -21,7 +21,7 @@ const XLINK = `http://www.w3.org/1999/xlink`
  * @param {string} str - String to hash.
  * @returns {string} Hash of the string.
  */
-function getHash (str) {
+function getHash (str: string): string {
 	return createHmac(`sha1`, `xmlns`)
 		.update(str)
 		.digest(`hex`)
@@ -35,15 +35,15 @@ function getHash (str) {
  * @param {string} oldAlias - Old namespace alias to replace.
  * @param {string} newAlias - New namespace alias.
  */
-function changeNsAlias (iconDom, oldAlias, newAlias) {
+function changeNsAlias (iconDom: HTMLElement, oldAlias: string, newAlias: string): void {
 	for (let elem of iconDom.querySelectorAll(`*`)) {
 		let prefix = newAlias === `` ? `` : `${newAlias}:`
 
 		if (elem.rawTagName.startsWith(`${oldAlias}:`)) elem.rawTagName = `${prefix}${elem.rawTagName.slice((oldAlias.length + 1))}`
 
-		for (let name of Object.keys(elem._attrs)) {
+		for (let name of Object.keys(elem.attrs)) {
 			if (name.startsWith(`${oldAlias}:`)) {
-				elem.setAttribute(`${prefix}${name.slice((oldAlias.length + 1))}`, elem._attrs[name])
+				elem.setAttribute(`${prefix}${name.slice((oldAlias.length + 1))}`, elem.attrs[name])
 				elem.removeAttribute(name)
 			}
 		}
@@ -54,15 +54,59 @@ function changeNsAlias (iconDom, oldAlias, newAlias) {
  * SVG processor for combining icons into a stack sprite.
  */
 export class StackSvgCreator {
+	public isEmpty: boolean
+
+	public ids: Record<string, boolean>
+
+	public namespaces: Map<string, string>
+
+	public stack: HTMLElement
+
+	public rootSvg: HTMLElement
+
+	/**
+	 * Update the id of a child element if it has the same id.
+	 *
+	 * @param {Element} targetElem - Child element to update.
+	 * @param {string} suffix - Suffix to append to the id.
+	 * @param {Element} iconSvg - Root SVG element.
+	 * @param {string} iconId - Icon ID to use as prefix.
+	 */
+	static #changeInnerId (targetElem: HTMLElement, suffix: number, iconSvg: HTMLElement, iconId: string): void {
+		let oldId = targetElem.id
+		let newId = `${iconId}_${suffix}`
+
+		targetElem.setAttribute(`id`, newId)
+		for (let element of iconSvg.querySelectorAll(`*`)) StackSvgCreator.#updateUsingId(element, oldId, newId)
+	}
+
+	/**
+	 * Update references to the old id with the new id.
+	 *
+	 * @param {Element} elem - Element to update.
+	 * @param {string} oldId - Old id.
+	 * @param {string} newId - New id.
+	 */
+	static #updateUsingId (elem: HTMLElement, oldId: string, newId: string): void {
+		if (elem.rawAttrs.search(`#${oldId}`) === -1) return
+
+		for (let attr in elem.attrs) {
+			if (!Object.hasOwn(elem.attrs, attr)) continue
+
+			let attrValue = elem.attrs[attr].replace(`#${oldId}`, `#${newId}`)
+			elem.setAttribute(attr, attrValue)
+		}
+	}
+
 	/**
 	 * Create SVG processor.
 	 */
-	constructor () {
+	public constructor () {
 		this.isEmpty = true
 		this.ids = {}
 		this.namespaces = new Map([[`http://www.w3.org/2000/svg`, `xmlns`]])
 		this.stack = parse(`<svg><style>:root svg:not(:target){display:none}</style></svg>`)
-		this.rootSvg = this.stack.querySelector(`svg`)
+		this.rootSvg = this.stack.querySelector(`svg`) ?? parse(`<svg/>`)
 	}
 
 	/**
@@ -72,7 +116,7 @@ export class StackSvgCreator {
 	 * @param {string} relativePath - Relative path of the file.
 	 * @returns {boolean} True if added successfully, false if skipped.
 	 */
-	add (content, relativePath) {
+	public add (content: string, relativePath: string): boolean {
 		let iconDom = parse(content).removeWhitespace()
 		let iconSvg = iconDom.querySelector(`svg`)
 
@@ -111,7 +155,7 @@ export class StackSvgCreator {
 	 *
 	 * @returns {string|null} Stack sprite content or null if empty.
 	 */
-	getStackSprite () {
+	public getStackSprite (): string | null {
 		if (this.isEmpty) return null
 
 		for (let [nsId, nsAttr] of this.namespaces) this.rootSvg.setAttribute(nsAttr, nsId)
@@ -120,47 +164,13 @@ export class StackSvgCreator {
 	}
 
 	/**
-	 * Update the id of a child element if it has the same id.
-	 *
-	 * @param {Element} targetElem - Child element to update.
-	 * @param {string} suffix - Suffix to append to the id.
-	 * @param {Element} iconSvg - Root SVG element.
-	 * @param {string} iconId - Icon ID to use as prefix.
-	 */
-	static #changeInnerId (targetElem, suffix, iconSvg, iconId) {
-		let oldId = targetElem.id
-		let newId = `${iconId}_${suffix}`
-
-		targetElem.setAttribute(`id`, newId)
-		for (let element of iconSvg.querySelectorAll(`*`)) StackSvgCreator.#updateUsingId(element, oldId, newId)
-	}
-
-	/**
-	 * Update references to the old id with the new id.
-	 *
-	 * @param {Element} elem - Element to update.
-	 * @param {string} oldId - Old id.
-	 * @param {string} newId - New id.
-	 */
-	static #updateUsingId (elem, oldId, newId) {
-		if (elem.rawAttrs.search(`#${oldId}`) === -1) return
-
-		for (let attr in elem._attrs) {
-			if (!Object.hasOwn(elem._attrs, attr)) continue
-
-			let attrValue = elem._attrs[attr].replace(`#${oldId}`, `#${newId}`)
-			elem.setAttribute(attr, attrValue)
-		}
-	}
-
-	/**
 	 * Process namespaces in the icon.
 	 *
 	 * @param {Element} iconDom - Icon DOM root.
 	 * @param {Element} iconSvg - Icon SVG element.
 	 */
-	#processNamespaces (iconDom, iconSvg) {
-		let attrs = iconSvg._attrs
+	#processNamespaces (iconDom: HTMLElement, iconSvg: HTMLElement): void {
+		let attrs = iconSvg.attrs
 
 		for (let attrName in attrs) {
 			if (!attrName.startsWith(`xmlns`)) continue
@@ -170,7 +180,7 @@ export class StackSvgCreator {
 			let newNsAlias = oldNsAlias
 
 			if (this.namespaces.has(nsId) && this.namespaces.get(nsId) !== attrName) {
-				newNsAlias = this.namespaces.get(nsId).slice(6)
+				newNsAlias = (this.namespaces.get(nsId) ?? ``).slice(6)
 				changeNsAlias(iconDom, oldNsAlias, newNsAlias)
 			}
 			else if (nsId === XLINK) {
@@ -189,7 +199,7 @@ export class StackSvgCreator {
 				let hasNsUsage = iconDom.querySelectorAll(`*`).some((elem) => {
 					if (
 						elem.rawTagName.startsWith(`${newNsAlias}:`)
-						|| Object.keys(elem._attrs).some((attr) => attr.startsWith(`${newNsAlias}:`))
+						|| Object.keys(elem.attrs).some((attr) => attr.startsWith(`${newNsAlias}:`))
 					) return true
 
 					return false

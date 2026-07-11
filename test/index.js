@@ -2,7 +2,7 @@ import PluginError from "plugin-error"
 import Vinyl from "vinyl"
 import { describe, expect, test } from "vitest"
 
-import { stacksvg } from "../lib/index.js"
+import { stacksvg } from "../dist/index.js"
 
 function collect (stream) {
 	return new Promise((resolve) => {

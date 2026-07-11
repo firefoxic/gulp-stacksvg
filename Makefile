@@ -12,6 +12,10 @@ setup: ## 🛠️  Setup the project environment
 	$(call setup_githooks)
 .PHONY: setup
 
+check: ## ✅ Type-check the project
+	@tsc --noEmit
+.PHONY: check
+
 lint: ## 🧬 Lint code by oxlint
 	@oxlint
 .PHONY: lint
@@ -20,11 +24,15 @@ fix: ## 🩹 Fix code by oxlint
 	@oxlint --fix
 .PHONY: fix
 
-test: ## 🧪 Run tests
+test: build ## 🧪 Run tests
 	@vitest run
 .PHONY: test
 
-release: lint test ## 🚀 Release a new version
+build: ## 🔨 Build the project
+	@tsdown
+.PHONY: build
+
+release: test ## 🚀 Release a new version
 	@pnpm dlx @firefoxic/release-it
 .PHONY: release
 

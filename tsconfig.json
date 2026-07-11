@@ -1,0 +1,22 @@
+{
+	"$schema": "https://www.schemastore.org/tsconfig",
+	"compilerOptions": {
+		"target": "esnext",
+		"module": "nodenext",
+		"moduleResolution": "nodenext",
+		"declaration": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"outDir": "dist",
+		"rootDir": "src",
+		"noEmitOnError": true,
+		"exactOptionalPropertyTypes": true,
+		"isolatedDeclarations": true,
+		"types": [
+			"node"
+		],
+	},
+	"include": [
+		"src"
+	],
+}
