@@ -3,7 +3,6 @@
 
 [![License: MIT][license-image]][license-url]
 [![Changelog][changelog-image]][changelog-url]
-[![NPM version][npm-image]][npm-url]
 [![Test Status][test-image]][test-url]
 
 The gulp plugin to combine svg files into one using the stack method.
@@ -144,9 +143,6 @@ For an icon inserted via `mask`, simply change the `background`. Moreover, u
 
 [changelog-url]: https://github.com/firefoxic/gulp-stacksvg/blob/main/CHANGELOG.md
 [changelog-image]: https://img.shields.io/badge/CHANGELOG-md-limegreen
-
-[npm-url]: https://npmjs.com/package/gulp-stacksvg
-[npm-image]: https://badge.fury.io/js/gulp-stacksvg.svg
 
 [test-url]: https://github.com/firefoxic/gulp-stacksvg/actions
 [test-image]: https://github.com/firefoxic/gulp-stacksvg/actions/workflows/test.yaml/badge.svg?branch=main
