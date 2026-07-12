@@ -28,7 +28,7 @@ test: build ## 🧪 Run tests
 	@vitest run
 .PHONY: test
 
-build: ## 🔨 Build the project
+build: check lint ## 🔨 Build the project
 	@tsdown
 .PHONY: build
 
