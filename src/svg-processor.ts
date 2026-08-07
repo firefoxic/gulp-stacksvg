@@ -29,6 +29,18 @@ function getHash (str: string): string {
 }
 
 /**
+ * Parse a length expressed in user units.
+ *
+ * Only unitless values and pixels map onto the user coordinate system that the `viewBox` describes. Anything else (`em`, `%`, …) resolves against the rendering context and cannot be turned into a `viewBox` ahead of time.
+ *
+ * @param {string|undefined} value - Attribute value to parse.
+ * @returns {string|null} The length in user units, or null if it is not one.
+ */
+function parseUserUnits (value: string | undefined): string | null {
+	return (/^\s*(?<length>\d*\.?\d+)(?:px)?\s*$/u).exec(value ?? ``)?.groups?.length ?? null
+}
+
+/**
  * Changes the namespace alias of an element and all its children.
  *
  * @param {Element} iconDom - Element to modify.
@@ -135,8 +147,8 @@ export class StackSvgCreator {
 		iconSvg.setAttribute(`id`, iconId)
 
 		let viewBoxAttr = iconSvg.getAttribute(`viewBox`)
-		let widthAttr = iconSvg.getAttribute(`width`)?.replaceAll(/[^0-9]/gu, ``)
-		let heightAttr = iconSvg.getAttribute(`height`)?.replaceAll(/[^0-9]/gu, ``)
+		let widthAttr = parseUserUnits(iconSvg.getAttribute(`width`))
+		let heightAttr = parseUserUnits(iconSvg.getAttribute(`height`))
 
 		if (!viewBoxAttr && widthAttr && heightAttr) iconSvg.setAttribute(`viewBox`, `0 0 ${widthAttr} ${heightAttr}`)
 

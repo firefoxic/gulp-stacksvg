@@ -7,6 +7,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com), and 
 
 ## [Unreleased]
 
+### Fixed
+
+- An icon sized in fractional units now keeps its proportions. The `viewBox` synthesized from `width` and `height` no longer loses the fractional part, so a `24.5`×`12.5` icon is no longer stretched to `245`×`125`. And an icon sized in context dependent units, such as `em` or `%`, now gets no synthesized `viewBox` at all instead of a meaningless one.
+
 ## [6.1.0] — 2026–07–11
 
 ### Added

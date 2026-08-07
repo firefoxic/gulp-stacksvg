@@ -310,6 +310,51 @@ describe(`gulp-stacksvg`, () => {
 		expect(actual).toBe(expected)
 	})
 
+	test(`Plugin should keep the fractional part of the width and the height`, async () => {
+		let stream = stacksvg()
+
+		stream.write(new Vinyl({
+			path: `circle.svg`,
+			contents: Buffer.from(`<svg width="24.5" height="12.5"><circle cx="2" cy="2" r="1"/></svg>`),
+		}))
+
+		let { files } = await collect(stream)
+		let actual = files[0].contents.toString()
+		let expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg id="circle" viewBox="0 0 24.5 12.5"><circle cx="2" cy="2" r="1"></circle></svg></svg>`
+
+		expect(actual).toBe(expected)
+	})
+
+	test(`Plugin should synthesize the viewBox from the pixel width and height`, async () => {
+		let stream = stacksvg()
+
+		stream.write(new Vinyl({
+			path: `circle.svg`,
+			contents: Buffer.from(`<svg width="24px" height="12px"><circle cx="2" cy="2" r="1"/></svg>`),
+		}))
+
+		let { files } = await collect(stream)
+		let actual = files[0].contents.toString()
+		let expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg id="circle" viewBox="0 0 24 12"><circle cx="2" cy="2" r="1"></circle></svg></svg>`
+
+		expect(actual).toBe(expected)
+	})
+
+	test(`Plugin should not synthesize the viewBox from context dependent units`, async () => {
+		let stream = stacksvg()
+
+		stream.write(new Vinyl({
+			path: `circle.svg`,
+			contents: Buffer.from(`<svg width="1em" height="100%"><circle cx="2" cy="2" r="1"/></svg>`),
+		}))
+
+		let { files } = await collect(stream)
+		let actual = files[0].contents.toString()
+		let expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg id="circle"><circle cx="2" cy="2" r="1"></circle></svg></svg>`
+
+		expect(actual).toBe(expected)
+	})
+
 	test(`Plugin should keep the existing viewBox and drop the width and the height`, async () => {
 		let stream = stacksvg()
 
