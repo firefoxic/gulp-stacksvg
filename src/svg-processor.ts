@@ -29,6 +29,26 @@ function getHash (str: string): string {
 }
 
 /**
+ * Escape a string so that it matches itself literally inside a regular expression.
+ *
+ * @param {string} str - String to escape.
+ * @returns {string} Escaped string.
+ */
+function escapeRegExp (str: string): string {
+	return str.replaceAll(/[.*+?^${}()|[\]\\]/gu, `\\$&`)
+}
+
+/**
+ * Build a pattern matching the references to the given id.
+ *
+ * @param {string} id - Id to match the references to.
+ * @returns {RegExp} Pattern matching every reference to the id.
+ */
+function getReferencePattern (id: string): RegExp {
+	return new RegExp(`#${escapeRegExp(id)}`, `gu`)
+}
+
+/**
  * Parse a length expressed in user units.
  *
  * Only unitless values and pixels map onto the user coordinate system that the `viewBox` describes. Anything else (`em`, `%`, …) resolves against the rendering context and cannot be turned into a `viewBox` ahead of time.
@@ -100,12 +120,14 @@ export class StackSvgCreator {
 	 * @param {string} newId - New id.
 	 */
 	static #updateUsingId (elem: HTMLElement, oldId: string, newId: string): void {
-		if (elem.rawAttrs.search(`#${oldId}`) === -1) return
+		let pattern = getReferencePattern(oldId)
+
+		if (!pattern.test(elem.rawAttrs)) return
 
 		for (let attr in elem.attrs) {
 			if (!Object.hasOwn(elem.attrs, attr)) continue
 
-			let attrValue = elem.attrs[attr].replace(`#${oldId}`, `#${newId}`)
+			let attrValue = elem.attrs[attr].replaceAll(pattern, () => `#${newId}`)
 			elem.setAttribute(attr, attrValue)
 		}
 	}
