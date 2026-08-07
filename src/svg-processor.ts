@@ -18,6 +18,8 @@ const XLINK = `http://www.w3.org/1999/xlink`
 /**
  * Get a hash for a given string.
  *
+ * The hash is not used for anything cryptographic — an hmac keyed with a constant is just a convoluted digest here. The `xmlns` key is nonetheless part of the output contract: it decides the suffix appended to a duplicate namespace alias, so changing it, or moving to a plain digest, renames every such alias in every stack built so far.
+ *
  * @param {string} str - String to hash.
  * @returns {string} Hash of the string.
  */
