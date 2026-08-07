@@ -176,6 +176,21 @@ describe(`gulp-stacksvg`, () => {
 		expect(actual).toBe(expected)
 	})
 
+	test(`Plugin should not rename an identifier twice`, async () => {
+		let stream = stacksvg()
+
+		stream.write(new Vinyl({
+			path: `icon.svg`,
+			contents: Buffer.from(`<svg viewBox="0 0 10 10"><mask id="a"/><mask id="b"/><mask id="icon_1"/><path mask="url(#b)"/><path mask="url(#icon_1)"/></svg>`),
+		}))
+
+		let { files } = await collect(stream)
+		let actual = files[0].contents.toString()
+		let expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg viewBox="0 0 10 10" id="icon"><mask id="icon_0"></mask><mask id="icon_1"></mask><mask id="icon_2"></mask><path mask="url(#icon_1)"></path><path mask="url(#icon_2)"></path></svg></svg>`
+
+		expect(actual).toBe(expected)
+	})
+
 	test(`Plugin should update the references from the root svg of an icon`, async () => {
 		let stream = stacksvg()
 

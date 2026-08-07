@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com), and 
 
 ### Fixed
 
+- An icon already containing a name that the renaming itself produces, such as `icon_1` inside `icon.svg`, no longer has its references rewritten twice and left pointing at the wrong element.
 - A reference made by the root `svg` element of an icon, such as `clip-path="url(#c)"`, is now rewritten together with the rest. Icons clipped or masked as a whole are no longer rendered unclipped in the stack.
 - An icon whose inner identifiers are prefixes of one another, such as `a` and `ab`, no longer gets its references corrupted: `url(#ab)` used to be rewritten into a name that points nowhere. Such identifiers are common in the output of vector editors, so this could silently break any icon exported from one.
 - An attribute holding several references to the same element, such as `style="fill:url(#a);mask:url(#a)"`, now has all of them rewritten instead of only the first one. Icons relying on this no longer lose their fills or masks once they are stacked.

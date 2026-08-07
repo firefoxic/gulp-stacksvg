@@ -39,15 +39,17 @@ function escapeRegExp (str: string): string {
 }
 
 /**
- * Build a pattern matching the references to the given id.
+ * Build a pattern matching the references to any of the given ids.
  *
  * The lookahead keeps `#a` from matching inside `#ab`: a reference ends where the name does, so any character that can continue an xml name means a different id.
  *
- * @param {string} id - Id to match the references to.
- * @returns {RegExp} Pattern matching every reference to the id.
+ * @param {string[]} ids - Ids to match the references to.
+ * @returns {RegExp} Pattern capturing the id of every reference to any of them.
  */
-function getReferencePattern (id: string): RegExp {
-	return new RegExp(`#${escapeRegExp(id)}(?![\\p{L}\\p{N}._:-])`, `gu`)
+function getReferencePattern (ids: string[]): RegExp {
+	let names = ids.map((id) => escapeRegExp(id)).join(`|`)
+
+	return new RegExp(`#(${names})(?![\\p{L}\\p{N}._:-])`, `gu`)
 }
 
 /**
@@ -99,38 +101,36 @@ export class StackSvgCreator {
 	public rootSvg: HTMLElement
 
 	/**
-	 * Update the id of a child element if it has the same id.
+	 * Prefix the id of every identified element with the icon id, so that icons sharing a name for their inner parts stay independent once stacked.
 	 *
-	 * @param {Element} targetElem - Child element to update.
-	 * @param {string} suffix - Suffix to append to the id.
-	 * @param {Element} iconSvg - Root SVG element.
-	 * @param {string} iconId - Icon ID to use as prefix.
-	 */
-	static #changeInnerId (targetElem: HTMLElement, suffix: number, iconSvg: HTMLElement, iconId: string): void {
-		let oldId = targetElem.id
-		let newId = `${iconId}_${suffix}`
-
-		targetElem.setAttribute(`id`, newId)
-		for (let element of [iconSvg, ...iconSvg.querySelectorAll(`*`)]) StackSvgCreator.#updateUsingId(element, oldId, newId)
-	}
-
-	/**
-	 * Update references to the old id with the new id.
+	 * The renaming happens in two passes. Rewriting a reference right after each rename would let a later rename catch the result of an earlier one, whenever an icon already contains a name the renaming itself produces.
 	 *
-	 * @param {Element} elem - Element to update.
-	 * @param {string} oldId - Old id.
-	 * @param {string} newId - New id.
+	 * @param {Element} iconSvg - Root SVG element of the icon.
+	 * @param {string} iconId - Icon id to use as prefix.
 	 */
-	static #updateUsingId (elem: HTMLElement, oldId: string, newId: string): void {
-		let pattern = getReferencePattern(oldId)
+	static #changeInnerIds (iconSvg: HTMLElement, iconId: string): void {
+		let renames = new Map<string, string>()
 
-		if (!pattern.test(elem.rawAttrs)) return
+		for (let [i, elem] of iconSvg.querySelectorAll(`[id]`).entries()) {
+			let newId = `${iconId}_${i}`
 
-		for (let attr in elem.attrs) {
-			if (!Object.hasOwn(elem.attrs, attr)) continue
+			renames.set(elem.id, newId)
+			elem.setAttribute(`id`, newId)
+		}
 
-			let attrValue = elem.attrs[attr].replaceAll(pattern, () => `#${newId}`)
-			elem.setAttribute(attr, attrValue)
+		if (renames.size === 0) return
+
+		let pattern = getReferencePattern([...renames.keys()])
+
+		for (let elem of [iconSvg, ...iconSvg.querySelectorAll(`*`)]) {
+			if (elem.rawAttrs.search(pattern) === -1) continue
+
+			for (let attr in elem.attrs) {
+				if (!Object.hasOwn(elem.attrs, attr)) continue
+
+				let attrValue = elem.attrs[attr].replaceAll(pattern, (reference, oldId) => `#${renames.get(oldId) ?? oldId}`)
+				elem.setAttribute(attr, attrValue)
+			}
 		}
 	}
 
@@ -177,7 +177,8 @@ export class StackSvgCreator {
 		if (!viewBoxAttr && widthAttr && heightAttr) iconSvg.setAttribute(`viewBox`, `0 0 ${widthAttr} ${heightAttr}`)
 
 		for (let attr of excessAttrs) iconSvg.removeAttribute(attr)
-		for (let [i, elem] of iconSvg.querySelectorAll(`[id]`).entries()) StackSvgCreator.#changeInnerId(elem, i, iconSvg, iconId)
+
+		StackSvgCreator.#changeInnerIds(iconSvg, iconId)
 
 		this.#processNamespaces(iconDom, iconSvg)
 
