@@ -34,6 +34,20 @@ To combine all icons from `./src/shared/icons/` into the `./dist/shared/icons
 pnpm gulp createStack
 ```
 
+## Fragment names
+
+Every icon keeps its own `svg` element inside the stack, named after the path of the source file relative to the directory the icons were read from:
+
+- the extension is dropped,
+- the directory separators become underscores,
+- the whitespace characters become hyphens.
+
+So `./src/shared/icons/social/like me.svg` becomes `social_like-me`, and the fragment is referenced as `./dist/shared/icons/stack.svg#social_like-me`.
+
+Two icons whose paths collapse to the same name — `social/like.svg` and `social_like.svg`, for instance — abort the build, since the stack has no way to tell such fragments apart.
+
+Identifiers used inside an icon are renamed to `<fragment name>_<number>`, so that icons declaring the same gradient, mask or filter stay independent once stacked. Do not rely on these from the outside: the numbering follows the document order of the icon and shifts whenever the icon changes.
+
 ## Why a stack?
 
 Unlike all other methods for assembling a sprite, the stack does not limit us in choosing how to insert a vector into a page. Take a look at [the results](https://demos.frontend-design.ru/sprite/src/) of different ways to display fragments of different types of sprites.

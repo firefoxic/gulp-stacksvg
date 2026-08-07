@@ -78,6 +78,10 @@ An optional sentence after that says what it means for the user — for a breaki
 
 Purely internal changes — build tooling, test layout, CI — get no entry at all, since any entry forces a release.
 
+## Prose typography
+
+[README.md](README.md) binds short function words to the word that follows with a non-breaking space (`U+00A0`) — articles, prepositions and short conjunctions: `a`, `an`, `the`, `in`, `of`, `to`, `into`, `for`, `from`, `at`, `on`, `by`, `with`, `under`, `via`, `and`, `but`, `do`, `does`. An em dash is bound to the word *before* it, so that it never starts a line. Words like `is`, `not`, `no` and `can` are left alone. Match this when editing prose there; [CHANGELOG.md](CHANGELOG.md) does not follow the convention.
+
 ## Commit messages
 
 The subject line is one imperative sentence, capitalized, with no trailing period and **no conventional-commits prefix** — write `Fix the build target`, never `fix:`, `chore(build):` or the like. Wrap code identifiers in backticks (`` Migrate from `node:test` to `vitest` ``). Explain the why in the body when the subject cannot carry it.
