@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com), and 
 
 ## [Unreleased]
 
+## [6.1.1] — 2026–08–07
+
 ### Fixed
 
 - An icon already containing a name that the renaming itself produces, such as `icon_1` inside `icon.svg`, no longer has its references rewritten twice and left pointing at the wrong element.
@@ -144,7 +146,8 @@ No significant changes.
 
 Just forked the [gulp-svgstore](https://github.com/w0rm/gulp-svgstore) project.
 
-[Unreleased]: https://github.com/firefoxic/gulp-stacksvg/compare/v6.1.0...HEAD
+[Unreleased]: https://github.com/firefoxic/gulp-stacksvg/compare/v6.1.1...HEAD
+[6.1.1]: https://github.com/firefoxic/gulp-stacksvg/compare/v6.1.0...v6.1.1
 [6.1.0]: https://github.com/firefoxic/gulp-stacksvg/compare/v6.0.0...v6.1.0
 [6.0.0]: https://github.com/firefoxic/gulp-stacksvg/compare/v5.0.1...v6.0.0
 [5.0.1]: https://github.com/firefoxic/gulp-stacksvg/compare/v5.0.0...v5.0.1
