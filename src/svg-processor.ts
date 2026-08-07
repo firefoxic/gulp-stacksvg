@@ -125,11 +125,8 @@ export class StackSvgCreator {
 		for (let elem of [iconSvg, ...iconSvg.querySelectorAll(`*`)]) {
 			if (elem.rawAttrs.search(pattern) === -1) continue
 
-			for (let attr in elem.attrs) {
-				if (!Object.hasOwn(elem.attrs, attr)) continue
-
-				let attrValue = elem.attrs[attr].replaceAll(pattern, (reference, oldId) => `#${renames.get(oldId) ?? oldId}`)
-				elem.setAttribute(attr, attrValue)
+			for (let [attr, value] of Object.entries(elem.attrs)) {
+				elem.setAttribute(attr, value.replaceAll(pattern, (reference, oldId) => `#${renames.get(oldId) ?? oldId}`))
 			}
 		}
 	}
@@ -216,8 +213,10 @@ export class StackSvgCreator {
 			let oldNsAlias = attrName.slice(6)
 			let newNsAlias = oldNsAlias
 
-			if (this.namespaces.has(nsId) && this.namespaces.get(nsId) !== attrName) {
-				newNsAlias = (this.namespaces.get(nsId) ?? ``).slice(6)
+			let registeredNsAttr = this.namespaces.get(nsId)
+
+			if (registeredNsAttr && registeredNsAttr !== attrName) {
+				newNsAlias = registeredNsAttr.slice(6)
 				changeNsAlias(iconDom, oldNsAlias, newNsAlias)
 			}
 			else if (nsId === XLINK) {

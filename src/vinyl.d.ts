@@ -22,7 +22,7 @@ declare module "vinyl" {
 
 		public isNull (): boolean
 
-		public isBuffer (): boolean
+		public isBuffer (): this is Vinyl & { contents: Buffer }
 	}
 
 	export = Vinyl

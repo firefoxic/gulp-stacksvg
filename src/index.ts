@@ -15,12 +15,10 @@ function createTransform (processor: StackSvgCreator) {
 	return function transform (file: Vinyl, _: BufferEncoding, cb: (error?: Error | null) => void): void {
 		if (file.isStream()) return cb(new PluginError(`gulp-stacksvg`, `Streams are not supported!`))
 
-		if (file.isNull()) return cb()
-
-		let content = file.contents?.toString() ?? ``
+		if (!file.isBuffer()) return cb()
 
 		try {
-			processor.add(content, file.relative)
+			processor.add(file.contents.toString(), file.relative)
 		}
 		catch (error) {
 			return cb(new PluginError(`gulp-stacksvg`, (error as Error).message))
