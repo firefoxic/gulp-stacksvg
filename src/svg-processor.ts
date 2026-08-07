@@ -41,11 +41,13 @@ function escapeRegExp (str: string): string {
 /**
  * Build a pattern matching the references to the given id.
  *
+ * The lookahead keeps `#a` from matching inside `#ab`: a reference ends where the name does, so any character that can continue an xml name means a different id.
+ *
  * @param {string} id - Id to match the references to.
  * @returns {RegExp} Pattern matching every reference to the id.
  */
 function getReferencePattern (id: string): RegExp {
-	return new RegExp(`#${escapeRegExp(id)}`, `gu`)
+	return new RegExp(`#${escapeRegExp(id)}(?![\\p{L}\\p{N}._:-])`, `gu`)
 }
 
 /**

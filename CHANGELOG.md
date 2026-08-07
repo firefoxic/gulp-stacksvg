@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com), and 
 
 ### Fixed
 
+- An icon whose inner identifiers are prefixes of one another, such as `a` and `ab`, no longer gets its references corrupted: `url(#ab)` used to be rewritten into a name that points nowhere. Such identifiers are common in the output of vector editors, so this could silently break any icon exported from one.
 - An attribute holding several references to the same element, such as `style="fill:url(#a);mask:url(#a)"`, now has all of them rewritten instead of only the first one. Icons relying on this no longer lose their fills or masks once they are stacked.
 - An icon sized in fractional units now keeps its proportions. The `viewBox` synthesized from `width` and `height` no longer loses the fractional part, so a `24.5`×`12.5` icon is no longer stretched to `245`×`125`. And an icon sized in context dependent units, such as `em` or `%`, now gets no synthesized `viewBox` at all instead of a meaningless one.
 

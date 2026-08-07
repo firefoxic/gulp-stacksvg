@@ -176,6 +176,21 @@ describe(`gulp-stacksvg`, () => {
 		expect(actual).toBe(expected)
 	})
 
+	test(`Plugin should not match an identifier inside a longer one`, async () => {
+		let stream = stacksvg()
+
+		stream.write(new Vinyl({
+			path: `icon.svg`,
+			contents: Buffer.from(`<svg viewBox="0 0 10 10"><mask id="a"/><mask id="ab"/><mask id="a-b"/><path mask="url(#ab)"/><path mask="url(#a-b)"/><path mask="url(#a)"/></svg>`),
+		}))
+
+		let { files } = await collect(stream)
+		let actual = files[0].contents.toString()
+		let expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg viewBox="0 0 10 10" id="icon"><mask id="icon_0"></mask><mask id="icon_1"></mask><mask id="icon_2"></mask><path mask="url(#icon_1)"></path><path mask="url(#icon_2)"></path><path mask="url(#icon_0)"></path></svg></svg>`
+
+		expect(actual).toBe(expected)
+	})
+
 	test(`Plugin should update every reference within one attribute`, async () => {
 		let stream = stacksvg()
 
