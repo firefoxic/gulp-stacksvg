@@ -1,48 +1,56 @@
-export PATH := ./node_modules/.bin:$(PATH)
+SHELL := bash
+.SHELLFLAGS := -euo pipefail -c
+.ONESHELL:
+
+export PATH := $(CURDIR)/node_modules/.bin:$(PATH)
+
+ANSI_RESET := \033[0m
+ANSI_BOLD := \033[1m
+ANSI_BOLD_CYAN := \033[1;36m
 
 help: ## 🧾 Print this message
 	$(call print_help)
 .PHONY: help
 
 setup: ## 🛠️  Setup the project environment
-	$(call remove_wrong_installation)
-	$(call install_pnpm)
-	$(call update_pnpm)
-	$(call install_dependencies)
-	$(call setup_githooks)
+	@command -v pnpm >/dev/null 2>&1 || \
+	(
+		printf "\t❌ $(ANSI_BOLD)pnpm not found in PATH$(ANSI_RESET)\n" && \
+		printf "\tPlease install pnpm first — https://pnpm.io/installation\n\n" && \
+		exit 1
+	)
+	set -x
+	pnpm ci
+	git config --local core.hooksPath .githooks
 .PHONY: setup
 
 check: ## ✅ Type-check the project
-	@tsc --noEmit
+	tsc --noEmit
 .PHONY: check
 
 lint: ## 🧬 Lint code by oxlint
-	@oxlint
+	oxlint
 .PHONY: lint
 
 fix: ## 🩹 Fix code by oxlint
-	@oxlint --fix
+	oxlint --fix
 .PHONY: fix
 
 test: build ## 🧪 Run tests
-	@vitest run
+	vitest run
 .PHONY: test
 
 build: check lint ## 🔨 Build the project
-	@tsdown
+	tsdown
 .PHONY: build
 
 release: test ## 🚀 Release a new version
-	@pnpm dlx @firefoxic/release-it
+	pnpm dlx @firefoxic/release-it
 .PHONY: release
-
-ANSI_RESET := \033[0m
-ANSI_BOLD := \033[1m
-ANSI_BOLD_CYAN := \033[1;36m
 
 define print_help
 	@printf "\n\t📜 $(ANSI_BOLD)Available targets:$(ANSI_RESET)\n\n"
-	@grep -E '^[a-zA-Z0-9_-]+:.*?## ' $(MAKEFILE_LIST) \
+	grep -E '^[a-zA-Z0-9_-]+:.*?## ' $(MAKEFILE_LIST) \
 	| awk -F ':|##' '\
 	BEGIN { \
 		ANSI_BOLD_CYAN = "$(ANSI_BOLD_CYAN)"; \
@@ -58,25 +66,4 @@ define print_help
 		} \
 		printf "\n" \
 	}'
-endef
-
-define remove_wrong_installation
-    @test ! -f package-lock.json -o -f yarn.lock || rm -rf package-lock.json yarn.lock node_modules
-endef
-
-define install_pnpm
-	@command -v pnpm >/dev/null 2>&1 || curl -fsSL https://get.pnpm.io/install.sh | sh -
-endef
-
-define update_pnpm
-	@REQUIRED_PNPM=$$(jq -r '.devEngines.packageManager.version' package.json) ; \
-	pnpm dlx semver -- $$(pnpm -v) -r "$$REQUIRED_PNPM" >/dev/null 2>&1 || pnpm self-update
-endef
-
-define install_dependencies
-	@test -d node_modules || pnpm ci
-endef
-
-define setup_githooks
-	@git config --local core.hooksPath .githooks
 endef
