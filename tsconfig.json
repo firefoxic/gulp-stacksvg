@@ -11,6 +11,7 @@
 		"rootDir": "src",
 		"noEmitOnError": true,
 		"exactOptionalPropertyTypes": true,
+		"noUncheckedIndexedAccess": true,
 		"isolatedDeclarations": true,
 		"types": [
 			"node"

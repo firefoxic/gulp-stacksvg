@@ -77,9 +77,9 @@ function changeNsAlias (iconDom: HTMLElement, oldAlias: string, newAlias: string
 
 		if (elem.rawTagName.startsWith(`${oldAlias}:`)) elem.rawTagName = `${prefix}${elem.rawTagName.slice((oldAlias.length + 1))}`
 
-		for (let name of Object.keys(elem.attrs)) {
+		for (let [name, value] of Object.entries(elem.attrs)) {
 			if (name.startsWith(`${oldAlias}:`)) {
-				elem.setAttribute(`${prefix}${name.slice((oldAlias.length + 1))}`, elem.attrs[name])
+				elem.setAttribute(`${prefix}${name.slice((oldAlias.length + 1))}`, value)
 				elem.removeAttribute(name)
 			}
 		}
@@ -206,10 +206,9 @@ export class StackSvgCreator {
 	#processNamespaces (iconDom: HTMLElement, iconSvg: HTMLElement): void {
 		let attrs = iconSvg.attrs
 
-		for (let attrName in attrs) {
+		for (let [attrName, nsId] of Object.entries(attrs)) {
 			if (!attrName.startsWith(`xmlns`)) continue
 
-			let nsId = attrs[attrName]
 			let oldNsAlias = attrName.slice(6)
 			let newNsAlias = oldNsAlias
 
