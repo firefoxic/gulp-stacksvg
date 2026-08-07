@@ -176,6 +176,21 @@ describe(`gulp-stacksvg`, () => {
 		expect(actual).toBe(expected)
 	})
 
+	test(`Plugin should update the references from the root svg of an icon`, async () => {
+		let stream = stacksvg()
+
+		stream.write(new Vinyl({
+			path: `icon.svg`,
+			contents: Buffer.from(`<svg viewBox="0 0 10 10" clip-path="url(#c)"><clipPath id="c"><rect/></clipPath></svg>`),
+		}))
+
+		let { files } = await collect(stream)
+		let actual = files[0].contents.toString()
+		let expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg viewBox="0 0 10 10" clip-path="url(#icon_0)" id="icon"><clipPath id="icon_0"><rect></rect></clipPath></svg></svg>`
+
+		expect(actual).toBe(expected)
+	})
+
 	test(`Plugin should not match an identifier inside a longer one`, async () => {
 		let stream = stacksvg()
 

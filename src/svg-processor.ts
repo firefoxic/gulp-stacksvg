@@ -111,7 +111,7 @@ export class StackSvgCreator {
 		let newId = `${iconId}_${suffix}`
 
 		targetElem.setAttribute(`id`, newId)
-		for (let element of iconSvg.querySelectorAll(`*`)) StackSvgCreator.#updateUsingId(element, oldId, newId)
+		for (let element of [iconSvg, ...iconSvg.querySelectorAll(`*`)]) StackSvgCreator.#updateUsingId(element, oldId, newId)
 	}
 
 	/**
