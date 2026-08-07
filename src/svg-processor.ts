@@ -147,15 +147,16 @@ export class StackSvgCreator {
 	/**
 	 * Add an SVG file to the stack sprite.
 	 *
+	 * Content holding no `svg` element is skipped silently, the way a file the plugin was never given would be.
+	 *
 	 * @param {string} content - SVG file content.
 	 * @param {string} relativePath - Relative path of the file.
-	 * @returns {boolean} True if added successfully, false if skipped.
 	 */
-	public add (content: string, relativePath: string): boolean {
+	public add (content: string, relativePath: string): void {
 		let iconDom = parse(content).removeWhitespace()
 		let iconSvg = iconDom.querySelector(`svg`)
 
-		if (!iconSvg) return false
+		if (!iconSvg) return
 
 		this.isEmpty = false
 
@@ -182,8 +183,6 @@ export class StackSvgCreator {
 		this.#processNamespaces(iconDom, iconSvg)
 
 		this.rootSvg.append(iconSvg)
-
-		return true
 	}
 
 	/**
