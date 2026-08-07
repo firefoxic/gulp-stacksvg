@@ -3,7 +3,7 @@ import path from "node:path"
 
 import { type HTMLElement, parse } from "node-html-parser"
 
-let excessAttrs = [
+const EXCESS_ATTRS = [
 	`enable-background`,
 	`height`,
 	`version`,
@@ -11,7 +11,7 @@ let excessAttrs = [
 	`x`,
 	`xml:space`,
 	`y`,
-]
+] as const
 
 const XLINK = `http://www.w3.org/1999/xlink`
 
@@ -173,7 +173,7 @@ export class StackSvgCreator {
 
 		if (!viewBoxAttr && widthAttr && heightAttr) iconSvg.setAttribute(`viewBox`, `0 0 ${widthAttr} ${heightAttr}`)
 
-		for (let attr of excessAttrs) iconSvg.removeAttribute(attr)
+		for (let attr of EXCESS_ATTRS) iconSvg.removeAttribute(attr)
 
 		StackSvgCreator.#changeInnerIds(iconSvg, iconId)
 
