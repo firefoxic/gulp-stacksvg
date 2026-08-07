@@ -36,15 +36,30 @@ fix: ## 🩹 Fix code by oxlint
 	oxlint --fix
 .PHONY: fix
 
-test: build ## 🧪 Run tests
-	vitest run
+test: ## 🧪 Run unit tests against the source
+	vitest run --project unit
 .PHONY: test
+
+watch: ## 👀 Rerun unit tests on every change
+	vitest --project unit
+.PHONY: watch
+
+coverage: ## 📊 Report the unit test coverage of the source
+	vitest run --project unit --coverage
+.PHONY: coverage
 
 build: check lint ## 🔨 Build the project
 	tsdown
 .PHONY: build
 
-release: test ## 🚀 Release a new version
+test-package: build ## 📦 Test the built package
+	vitest run --project package
+.PHONY: test-package
+
+verify: check lint test test-package ## ✅ Run every check the CI runs
+.PHONY: verify
+
+release: verify ## 🚀 Release a new version
 	pnpm dlx @firefoxic/release-it
 .PHONY: release
 

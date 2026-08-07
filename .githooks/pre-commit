@@ -9,5 +9,5 @@ trap "git stash pop" EXIT
 staged=$(git --no-pager diff --staged --name-only | grep -E '\.(js|ts)$')
 
 if [ -n "$staged" ]
-	then oxlint $staged && make test
+	then make verify
 fi

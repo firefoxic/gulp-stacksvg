@@ -1,8 +1,10 @@
+import { Readable } from "node:stream"
+
 import PluginError from "plugin-error"
 import Vinyl from "vinyl"
 import { describe, expect, test } from "vitest"
 
-import { stacksvg } from "../dist/index.js"
+import { stacksvg } from "../../src/index.js"
 
 function collect (stream) {
 	return new Promise((resolve) => {
@@ -275,6 +277,65 @@ describe(`gulp-stacksvg`, () => {
 		let { files } = await collect(stream)
 		let actual = files[0].contents.toString()
 		let expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg id="rect1"><rect width="50" height="10"></rect></svg><svg id="rect2"><rect width="50" height="10"></rect></svg></svg>`
+
+		expect(actual).toBe(expected)
+	})
+
+	test(`Plugin should emit error for streamed files`, async () => {
+		let stream = stacksvg()
+
+		stream.write(new Vinyl({
+			path: `circle.svg`,
+			contents: Readable.from([`<svg/>`]),
+		}))
+
+		let { error } = await collect(stream)
+
+		expect(error).toBeInstanceOf(PluginError)
+		expect(error.message).toBe(`Streams are not supported!`)
+	})
+
+	test(`Plugin should synthesize the viewBox from the width and the height`, async () => {
+		let stream = stacksvg()
+
+		stream.write(new Vinyl({
+			path: `circle.svg`,
+			contents: Buffer.from(`<svg width="24" height="12"><circle cx="2" cy="2" r="1"/></svg>`),
+		}))
+
+		let { files } = await collect(stream)
+		let actual = files[0].contents.toString()
+		let expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg id="circle" viewBox="0 0 24 12"><circle cx="2" cy="2" r="1"></circle></svg></svg>`
+
+		expect(actual).toBe(expected)
+	})
+
+	test(`Plugin should keep the existing viewBox and drop the width and the height`, async () => {
+		let stream = stacksvg()
+
+		stream.write(new Vinyl({
+			path: `circle.svg`,
+			contents: Buffer.from(`<svg viewBox="0 0 4 4" width="24" height="12"><circle cx="2" cy="2" r="1"/></svg>`),
+		}))
+
+		let { files } = await collect(stream)
+		let actual = files[0].contents.toString()
+		let expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg viewBox="0 0 4 4" id="circle"><circle cx="2" cy="2" r="1"></circle></svg></svg>`
+
+		expect(actual).toBe(expected)
+	})
+
+	test(`Plugin should drop the xml prolog and the comments`, async () => {
+		let stream = stacksvg()
+
+		stream.write(new Vinyl({
+			path: `circle.svg`,
+			contents: Buffer.from(`<?xml version="1.0" encoding="UTF-8"?>\n<!-- Generator -->\n<svg viewBox="0 0 4 4"><circle cx="2" cy="2" r="1"/></svg>`),
+		}))
+
+		let { files } = await collect(stream)
+		let actual = files[0].contents.toString()
+		let expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg viewBox="0 0 4 4" id="circle"><circle cx="2" cy="2" r="1"></circle></svg></svg>`
 
 		expect(actual).toBe(expected)
 	})

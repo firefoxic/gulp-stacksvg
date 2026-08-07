@@ -11,17 +11,24 @@ All tasks go through the `Makefile` (targets add `node_modules/.bin` to `PATH`, 
 | `make setup` | Check that pnpm is on `PATH`, `pnpm ci`, point `core.hooksPath` at `.githooks` |
 | `make check` | `tsc --noEmit` |
 | `make lint` / `make fix` | `oxlint` / `oxlint --fix` |
+| `make test` | `vitest run --project unit` — the fast loop, no build needed |
+| `make watch` | The same suite in watch mode |
+| `make coverage` | Unit suite with a v8 coverage report over `src/` |
 | `make build` | Runs `check` + `lint`, then bundles with `tsdown` into `dist/` |
-| `make test` | Runs `build` first, then `vitest run` |
-| `make release` | Runs `test`, then `pnpm dlx @firefoxic/release-it` |
+| `make test-package` | Runs `build` first, then `vitest run --project package` |
+| `make verify` | `check` + `lint` + `test` + `test-package` — the full gate, what CI and the pre-commit hook run |
+| `make release` | Runs `verify`, then `pnpm dlx @firefoxic/release-it` |
 
-**Tests import from `dist/`, not `src/`.** [test/index.js](test/index.js) does `import { stacksvg } from "../dist/index.js"`, which is why `test` depends on `build`. Editing `src/` and running `vitest` directly will silently test stale output — always go through `make test`, or rebuild manually first.
+Two vitest projects, split by what they import (see [vitest.config.js](vitest.config.js)):
 
-Single test: `make build` once, then `vitest run -t "part of the test name"`.
+- **`unit`** — [test/unit/](test/unit/) imports `../../src/index.js`, which vitest resolves to the TypeScript source. This is where behaviour is covered, and it needs no build step.
+- **`package`** — [test/package/smoke.js](test/package/smoke.js) imports `../../dist/index.js`. It only proves the published artifact is wired up: importable through `exports`, still correct after minification, and shipping `index.d.ts`. Keep it thin — behavioural assertions belong in `unit`.
 
-Manual smoke check: `gulp createStack` regenerates [docs/example/stack.svg](docs/example/stack.svg) from [docs/example/icons/](docs/example/icons) using the built `dist/`.
+Single test: `vitest run --project unit -t "part of the test name"`.
 
-The pre-commit hook stashes unstaged work, lints staged `.js`/`.ts` files, and runs `make test`.
+Manual smoke check: `make build`, then `gulp createStack` regenerates [docs/example/stack.svg](docs/example/stack.svg) from [docs/example/icons/](docs/example/icons) using the built `dist/`.
+
+The pre-commit hook stashes unstaged work and runs `make verify` when any `.js`/`.ts` file is staged.
 
 ## Architecture
 
@@ -54,4 +61,4 @@ The `xmlns*` attribute is always removed from the icon element; declarations liv
 - Tabs, no semicolons, `let` over `const`, space before function parameter parens (`function transform (…)`).
 - `isolatedDeclarations: true` — every exported binding needs an explicit type annotation; `exactOptionalPropertyTypes` is on too.
 - JSDoc blocks on exported and private methods, even in TypeScript.
-- Tests are plain `.js` under `test/` and assert on exact serialized sprite strings, so any output change (attribute order, whitespace, self-closing form) requires updating those literals.
+- Tests are plain `.js` under `test/` and assert on exact serialized sprite strings, so any output change (attribute order, whitespace, self-closing form) requires updating those literals. Attribute order follows mutation order — `id` is appended after the attributes an icon already had, but before a synthesized `viewBox`.
