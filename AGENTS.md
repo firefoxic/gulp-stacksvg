@@ -62,3 +62,7 @@ The `xmlns*` attribute is always removed from the icon element; declarations liv
 - `isolatedDeclarations: true` — every exported binding needs an explicit type annotation; `exactOptionalPropertyTypes` is on too.
 - JSDoc blocks on exported and private methods, even in TypeScript.
 - Tests are plain `.js` under `test/` and assert on exact serialized sprite strings, so any output change (attribute order, whitespace, self-closing form) requires updating those literals. Attribute order follows mutation order — `id` is appended after the attributes an icon already had, but before a synthesized `viewBox`.
+
+## Commit messages
+
+The subject line is one imperative sentence, capitalized, with no trailing period and **no conventional-commits prefix** — write `Fix the build target`, never `fix:`, `chore(build):` or the like. Wrap code identifiers in backticks (`` Migrate from `node:test` to `vitest` ``). Explain the why in the body when the subject cannot carry it.
