@@ -6,13 +6,13 @@ export default defineConfig({
 			{
 				test: {
 					name: `unit`,
-					include: [`test/unit/**/*.js`],
+					include: [`test/unit/**/*.ts`],
 				},
 			},
 			{
 				test: {
 					name: `package`,
-					include: [`test/package/**/*.js`],
+					include: [`test/package/**/*.ts`],
 				},
 			},
 		],

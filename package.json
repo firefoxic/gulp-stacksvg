@@ -54,7 +54,9 @@
 	},
 	"devDependencies": {
 		"@firefoxic/oxlint-config": "~0.6",
+		"@types/gulp": "^4.0.18",
 		"@types/node": "^26",
+		"@types/vinyl": "^2.0.12",
 		"@vitest/coverage-v8": "^4.1.10",
 		"gulp": "^5.0.1",
 		"oxlint": "^1.93",

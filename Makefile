@@ -44,6 +44,10 @@ watch: ## 👀 Rerun unit tests on every change
 	vitest --project unit
 .PHONY: watch
 
+smoke: ## 🚬 Manual smoke check via gulp (no build required)
+	gulp --gulpfile gulpfile.ts createStack
+.PHONY: smoke
+
 coverage: ## 📊 Report the unit test coverage of the source
 	vitest run --project unit --coverage
 .PHONY: coverage
@@ -53,11 +57,11 @@ build: ## 🔨 Build the project
 	tsrs -p tsconfig.build.json
 .PHONY: build
 
-test-package: build ## 📦 Test the built package
+test-package: ## 📦 Test the package
 	vitest run --project package
 .PHONY: test-package
 
-verify: check lint test test-package ## ✅ Run every check the CI runs
+verify: check lint test test-package build ## ✅ Run every check the CI runs
 .PHONY: verify
 
 release: verify ## 🚀 Release a new version

@@ -22,11 +22,11 @@ All tasks go through the `Makefile` (targets add `node_modules/.bin` to `PATH`, 
 Two vitest projects, split by what they import (see [vitest.config.js](vitest.config.js)):
 
 - **`unit`** — [test/unit/](test/unit/) imports `../../src/index.js`, which vitest resolves to the TypeScript source. This is where behaviour is covered, and it needs no build step.
-- **`package`** — [test/package/smoke.js](test/package/smoke.js) imports `../../dist/index.js`. It only proves the published artifact is wired up: importable through `exports`, still correct after minification, and shipping `index.d.ts`. Keep it thin — behavioural assertions belong in `unit`.
+- **`package`** — [test/package/smoke.ts](test/package/smoke.ts) imports `../../src/index.ts`. It proves the plugin works end to end against the TypeScript source directly, with no build step: type stripping runs the `.ts` files as-is. Keep it thin — behavioural assertions belong in `unit`.
 
 Single test: `vitest run --project unit -t "part of the test name"`.
 
-Manual smoke check: `make build`, then `gulp createStack` regenerates [docs/example/stack.svg](docs/example/stack.svg) from [docs/example/icons/](docs/example/icons) using the built `dist/`.
+Manual smoke check: `make smoke` runs `gulp createStack` directly against the TypeScript source (no build needed) and regenerates [docs/example/stack.svg](docs/example/stack.svg) from [docs/example/icons/](docs/example/icons).
 
 The pre-commit hook stashes unstaged work and runs `make verify` when any `.js`/`.ts` file is staged.
 

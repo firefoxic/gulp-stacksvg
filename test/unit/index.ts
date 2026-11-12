@@ -1,4 +1,4 @@
-import { Readable } from "node:stream"
+import { Readable, Transform } from "node:stream"
 
 import PluginError from "plugin-error"
 import Vinyl from "vinyl"
@@ -6,13 +6,13 @@ import { describe, expect, test } from "vitest"
 
 import { stacksvg } from "../../src/index.js"
 
-function collect (stream) {
+function collect (stream: Transform): Promise<{ files: Vinyl[], error: Error | null }> {
 	return new Promise((resolve) => {
-		let files = []
-		let error = null
+		let files: Vinyl[] = []
+		let error: Error | null = null
 
-		stream.on(`data`, (file) => { files.push(file) })
-		stream.on(`error`, (err) => {
+		stream.on(`data`, (file: Vinyl) => { files.push(file) })
+		stream.on(`error`, (err: Error) => {
 			error = err
 			resolve({ files, error })
 		})
@@ -20,6 +20,18 @@ function collect (stream) {
 
 		stream.end()
 	})
+}
+
+function contentsOf (file: Vinyl): string {
+	if (!file.isBuffer()) throw new Error(`expected a buffer file`)
+
+	return file.contents.toString()
+}
+
+function errorMessageOf (error: Error | null): string {
+	if (!error) throw new Error(`expected an error`)
+
+	return error.message
 }
 
 describe(`gulp-stacksvg`, () => {
@@ -44,7 +56,7 @@ describe(`gulp-stacksvg`, () => {
 		}))
 
 		let { files } = await collect(stream)
-		let actual = files[0].contents.toString()
+		let actual = contentsOf(files[0])
 		let expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg viewBox="0 0 4 4" preserveAspectRatio="xMinYMid meet" id="circle"><circle cx="2" cy="2" r="1"></circle></svg><svg id="square"><rect x="1" y="1" width="2" height="2"></rect></svg></svg>`
 
 		expect(actual).toBe(expected)
@@ -64,7 +76,7 @@ describe(`gulp-stacksvg`, () => {
 		}))
 
 		let { files } = await collect(stream)
-		let actual = files[0].contents.toString()
+		let actual = contentsOf(files[0])
 		let expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg viewBox="0 0 4 4" id="circle"><circle cx="2" cy="2" r="1"></circle></svg></svg>`
 
 		expect(actual).toBe(expected)
@@ -84,7 +96,7 @@ describe(`gulp-stacksvg`, () => {
 		}))
 
 		let { files } = await collect(stream)
-		let actual = files[0].contents.toString()
+		let actual = contentsOf(files[0])
 		let expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg viewBox="0 0 4 4" id="circle"><circle cx="2" cy="2" r="1"></circle></svg></svg>`
 
 		expect(actual).toBe(expected)
@@ -105,7 +117,7 @@ describe(`gulp-stacksvg`, () => {
 		let { error } = await collect(stream)
 
 		expect(error).toBeInstanceOf(PluginError)
-		expect(error.message).toBe(`File name should be unique: circle`)
+		expect(errorMessageOf(error)).toBe(`File name should be unique: circle`)
 	})
 
 	test(`Plugin should generate stack.svg`, async () => {
@@ -135,7 +147,7 @@ describe(`gulp-stacksvg`, () => {
 		}))
 
 		let { files } = await collect(stream)
-		let actual = files[0].contents.toString()
+		let actual = contentsOf(files[0])
 		let expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg id="icon-like"></svg></svg>`
 
 		expect(actual).toBe(expected)
@@ -150,7 +162,7 @@ describe(`gulp-stacksvg`, () => {
 		}))
 
 		let { files } = await collect(stream)
-		let actual = files[0].contents.toString()
+		let actual = contentsOf(files[0])
 		let expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg id="icons_like"></svg></svg>`
 
 		expect(actual).toBe(expected)
@@ -170,7 +182,7 @@ describe(`gulp-stacksvg`, () => {
 		}))
 
 		let { files } = await collect(stream)
-		let actual = files[0].contents.toString()
+		let actual = contentsOf(files[0])
 		let expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg viewBox="0 0 40 40" id="one"><mask id="one_0"></mask><mask id="one_1"></mask><g><mask id="one_2"></mask></g><path mask="url(#one_0)"></path><g><path mask="url(#one_1)"></path><g><path mask="url(#one_2)"></path></g></g></svg><svg viewBox="0 0 40 40" id="two"><mask id="two_0"></mask><mask id="two_1"></mask><g><mask id="two_2"></mask></g><path mask="url(#two_0)"></path><g><path mask="url(#two_1)"></path><g><path mask="url(#two_2)"></path></g></g></svg></svg>`
 
 		expect(actual).toBe(expected)
@@ -185,7 +197,7 @@ describe(`gulp-stacksvg`, () => {
 		}))
 
 		let { files } = await collect(stream)
-		let actual = files[0].contents.toString()
+		let actual = contentsOf(files[0])
 		let expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg viewBox="0 0 10 10" id="icon"><mask id="icon_0"></mask><mask id="icon_1"></mask><mask id="icon_2"></mask><path mask="url(#icon_1)"></path><path mask="url(#icon_2)"></path></svg></svg>`
 
 		expect(actual).toBe(expected)
@@ -200,7 +212,7 @@ describe(`gulp-stacksvg`, () => {
 		}))
 
 		let { files } = await collect(stream)
-		let actual = files[0].contents.toString()
+		let actual = contentsOf(files[0])
 		let expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg viewBox="0 0 10 10" clip-path="url(#icon_0)" id="icon"><clipPath id="icon_0"><rect></rect></clipPath></svg></svg>`
 
 		expect(actual).toBe(expected)
@@ -215,7 +227,7 @@ describe(`gulp-stacksvg`, () => {
 		}))
 
 		let { files } = await collect(stream)
-		let actual = files[0].contents.toString()
+		let actual = contentsOf(files[0])
 		let expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg viewBox="0 0 10 10" id="icon"><mask id="icon_0"></mask><mask id="icon_1"></mask><mask id="icon_2"></mask><path mask="url(#icon_1)"></path><path mask="url(#icon_2)"></path><path mask="url(#icon_0)"></path></svg></svg>`
 
 		expect(actual).toBe(expected)
@@ -230,7 +242,7 @@ describe(`gulp-stacksvg`, () => {
 		}))
 
 		let { files } = await collect(stream)
-		let actual = files[0].contents.toString()
+		let actual = contentsOf(files[0])
 		let expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg viewBox="0 0 10 10" id="icon"><mask id="icon_0"></mask><path style="fill:url(#icon_0);mask:url(#icon_0)"></path></svg></svg>`
 
 		expect(actual).toBe(expected)
@@ -250,7 +262,7 @@ describe(`gulp-stacksvg`, () => {
 		}))
 
 		let { files } = await collect(stream)
-		let actual = files[0].contents.toString()
+		let actual = contentsOf(files[0])
 		let expected = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns1="https://example.com/ns/ns1" xmlns:ns2="https://example.com/ns/ns2"><style>:root svg:not(:target){display:none}</style><svg id="rect1"><rect ns1:width="50" ns1:height="10"></rect></svg><svg id="rect2"><ns2:rect width="50" height="10"></ns2:rect></svg></svg>`
 
 		expect(actual).toBe(expected)
@@ -270,7 +282,7 @@ describe(`gulp-stacksvg`, () => {
 		}))
 
 		let { files } = await collect(stream)
-		let actual = files[0].contents.toString()
+		let actual = contentsOf(files[0])
 		let expected = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns1="https://example.com/ns/ns1"><style>:root svg:not(:target){display:none}</style><svg id="rect1"><rect ns1:width="50" ns1:height="10"></rect></svg><svg id="rect2"><ns1:rect ns1:width="50" ns1:height="10"></ns1:rect></svg></svg>`
 
 		expect(actual).toBe(expected)
@@ -295,7 +307,7 @@ describe(`gulp-stacksvg`, () => {
 		}))
 
 		let { files } = await collect(stream)
-		let actual = files[0].contents.toString()
+		let actual = contentsOf(files[0])
 		let expected = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns="https://example.com/ns/ns1" xmlns:nsf37e589="https://example.com/ns/ns2" xmlns:ns8467673="https://example.com/ns/ns3"><style>:root svg:not(:target){display:none}</style><svg id="rect1"><rect ns:width="50" ns:height="10"></rect></svg><svg id="rect2"><rect nsf37e589:width="50" nsf37e589:height="10"></rect></svg><svg id="rect3"><ns8467673:rect width="50" height="10"></ns8467673:rect></svg></svg>`
 
 		expect(actual).toBe(expected)
@@ -315,7 +327,7 @@ describe(`gulp-stacksvg`, () => {
 		}))
 
 		let { files } = await collect(stream)
-		let actual = files[0].contents.toString()
+		let actual = contentsOf(files[0])
 		let expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg viewBox="0 0 50 50" id="burger"><path id="burger_0" d="m8 8h34" stroke="#000" stroke-width="8"></path><use y="17" href="#burger_0"></use><use y="34" href="#burger_0"></use></svg><svg viewBox="0 0 50 50" id="sandwich"><path id="sandwich_0" d="m8 8h34" stroke="#000" stroke-width="8"></path><use y="17" href="#sandwich_0"></use><use y="34" href="#sandwich_0"></use></svg></svg>`
 
 		expect(actual).toBe(expected)
@@ -335,7 +347,7 @@ describe(`gulp-stacksvg`, () => {
 		}))
 
 		let { files } = await collect(stream)
-		let actual = files[0].contents.toString()
+		let actual = contentsOf(files[0])
 		let expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg id="rect1"><rect width="50" height="10"></rect></svg><svg id="rect2"><rect width="50" height="10"></rect></svg></svg>`
 
 		expect(actual).toBe(expected)
@@ -352,7 +364,7 @@ describe(`gulp-stacksvg`, () => {
 		let { error } = await collect(stream)
 
 		expect(error).toBeInstanceOf(PluginError)
-		expect(error.message).toBe(`Streams are not supported!`)
+		expect(errorMessageOf(error)).toBe(`Streams are not supported!`)
 	})
 
 	test(`Plugin should synthesize the viewBox from the width and the height`, async () => {
@@ -364,7 +376,7 @@ describe(`gulp-stacksvg`, () => {
 		}))
 
 		let { files } = await collect(stream)
-		let actual = files[0].contents.toString()
+		let actual = contentsOf(files[0])
 		let expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg id="circle" viewBox="0 0 24 12"><circle cx="2" cy="2" r="1"></circle></svg></svg>`
 
 		expect(actual).toBe(expected)
@@ -379,7 +391,7 @@ describe(`gulp-stacksvg`, () => {
 		}))
 
 		let { files } = await collect(stream)
-		let actual = files[0].contents.toString()
+		let actual = contentsOf(files[0])
 		let expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg id="circle" viewBox="0 0 24.5 12.5"><circle cx="2" cy="2" r="1"></circle></svg></svg>`
 
 		expect(actual).toBe(expected)
@@ -394,7 +406,7 @@ describe(`gulp-stacksvg`, () => {
 		}))
 
 		let { files } = await collect(stream)
-		let actual = files[0].contents.toString()
+		let actual = contentsOf(files[0])
 		let expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg id="circle" viewBox="0 0 24 12"><circle cx="2" cy="2" r="1"></circle></svg></svg>`
 
 		expect(actual).toBe(expected)
@@ -409,7 +421,7 @@ describe(`gulp-stacksvg`, () => {
 		}))
 
 		let { files } = await collect(stream)
-		let actual = files[0].contents.toString()
+		let actual = contentsOf(files[0])
 		let expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg id="circle"><circle cx="2" cy="2" r="1"></circle></svg></svg>`
 
 		expect(actual).toBe(expected)
@@ -424,7 +436,7 @@ describe(`gulp-stacksvg`, () => {
 		}))
 
 		let { files } = await collect(stream)
-		let actual = files[0].contents.toString()
+		let actual = contentsOf(files[0])
 		let expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg viewBox="0 0 4 4" id="circle"><circle cx="2" cy="2" r="1"></circle></svg></svg>`
 
 		expect(actual).toBe(expected)
@@ -439,7 +451,7 @@ describe(`gulp-stacksvg`, () => {
 		}))
 
 		let { files } = await collect(stream)
-		let actual = files[0].contents.toString()
+		let actual = contentsOf(files[0])
 		let expected = `<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg viewBox="0 0 4 4" id="circle"><circle cx="2" cy="2" r="1"></circle></svg></svg>`
 
 		expect(actual).toBe(expected)
