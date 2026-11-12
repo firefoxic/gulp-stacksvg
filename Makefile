@@ -25,7 +25,7 @@ setup: ## 🛠️  Setup the project environment
 .PHONY: setup
 
 check: ## ✅ Type-check the project
-	tsc --noEmit
+	tsrs
 .PHONY: check
 
 lint: ## 🧬 Lint code by oxlint
@@ -48,8 +48,9 @@ coverage: ## 📊 Report the unit test coverage of the source
 	vitest run --project unit --coverage
 .PHONY: coverage
 
-build: check lint ## 🔨 Build the project
-	tsdown
+build: ## 🔨 Build the project
+	rm -rf dist
+	tsrs -p tsconfig.build.json
 .PHONY: build
 
 test-package: build ## 📦 Test the built package

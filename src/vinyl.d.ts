@@ -25,5 +25,5 @@ declare module "vinyl" {
 		public isBuffer (): this is Vinyl & { contents: Buffer }
 	}
 
-	export = Vinyl
+	export default Vinyl
 }
