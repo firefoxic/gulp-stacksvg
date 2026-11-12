@@ -52,11 +52,11 @@
 		"gulp": "^5.0.1"
 	},
 	"devDependencies": {
-		"@firefoxic/oxlint-config": "^0.4.0",
+		"@firefoxic/oxlint-config": "~0.6",
 		"@types/node": "^26.1.2",
 		"@vitest/coverage-v8": "^4.1.10",
 		"gulp": "^5.0.1",
-		"oxlint": "^1.77.0",
+		"oxlint": "^1.93",
 		"tsdown": "^0.22.14",
 		"typescript": "^7.0.2",
 		"vitest": "^4.1.10"

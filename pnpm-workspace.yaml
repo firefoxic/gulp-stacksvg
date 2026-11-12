@@ -3,5 +3,8 @@ allowBuilds:
 
 gitChecks: false
 
+minimumReleaseAgeExclude:
+  - '@firefoxic/*'
+
 registries:
   default: https://registry.npmjs.org/
