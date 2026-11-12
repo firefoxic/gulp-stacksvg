@@ -3,22 +3,38 @@ name: Test
 on:
   push:
     branches:
-    - main
+      - main
   pull_request:
     branches:
-    - '*'
+      - '**'
 
 env:
   FORCE_COLOR: 2
 
 jobs:
-  test:
+  discover:
     runs-on: ubuntu-latest
+    outputs:
+      node_versions: ${{ steps.matrix.outputs.node_versions }}
     steps:
-      - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v6
+      - uses: actions/checkout@v7
+      - uses: pnpm/setup@v3
         with:
           cache: true
-          version: latest
-      - run: make setup
+      - id: matrix
+        run: pnpm dlx --package @firefoxic/utils get-node-matrix
+  test:
+    needs: discover
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ${{ fromJSON(needs.discover.outputs.node_versions) }}
+    name: Node.js ${{ matrix.node }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/setup@v3
+        with:
+          cache: true
+          runtime: node@${{ matrix.node }}
       - run: make verify

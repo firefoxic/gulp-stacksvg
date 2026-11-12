@@ -27,7 +27,7 @@
 		"./dist/"
 	],
 	"engines": {
-		"node": ">=22.22"
+		"node": "^22.22 || ^24.15 || >=26.13"
 	},
 	"devEngines": {
 		"runtime": {
