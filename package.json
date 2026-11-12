@@ -37,14 +37,14 @@
 		},
 		"packageManager": {
 			"name": "pnpm",
-			"version": ">=12.19",
+			"version": ">=12.23",
 			"onFail": "download"
 		}
 	},
 	"dependencies": {
-		"node-html-parser": "^9.0.1",
-		"plugin-error": "^2.0.1",
-		"vinyl": "^3.0.1"
+		"node-html-parser": "^9",
+		"plugin-error": "^2",
+		"vinyl": "^3"
 	},
 	"scripts": {
 		"help": "make help"
@@ -53,15 +53,15 @@
 		"gulp": "^5.0.1"
 	},
 	"devDependencies": {
-		"@firefoxic/oxlint-config": "~0.6",
-		"@types/gulp": "^4.0.18",
+		"@firefoxic/oxlint-config": "~0.7",
+		"@types/gulp": "^4",
 		"@types/node": "^26",
-		"@types/vinyl": "^2.0.12",
-		"@vitest/coverage-v8": "^4.1.10",
-		"gulp": "^5.0.1",
-		"oxlint": "^1.93",
-		"tsrs": "~0.25.0-ts7",
-		"vitest": "^4.1.10"
+		"@types/vinyl": "^2",
+		"@vitest/coverage-v8": "^5",
+		"gulp": "^5",
+		"oxlint": "^1",
+		"tsrs": "latest",
+		"vitest": "^5"
 	},
 	"keywords": [
 		"gulp",
