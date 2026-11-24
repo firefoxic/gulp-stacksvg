@@ -48,7 +48,8 @@
 		"vinyl": "^3"
 	},
 	"scripts": {
-		"help": "make help"
+		"help": "make help",
+		"prepare": "git config --local core.hooksPath .githooks || true"
 	},
 	"peerDependencies": {
 		"gulp": "^5.0.1"

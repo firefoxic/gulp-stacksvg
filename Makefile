@@ -12,18 +12,6 @@ help: ## 🧾 Print this message
 	$(call print_help)
 .PHONY: help
 
-setup: ## 🛠️  Setup the project environment
-	@command -v pnpm >/dev/null 2>&1 || \
-	(
-		printf "\t❌ $(ANSI_BOLD)pnpm not found in PATH$(ANSI_RESET)\n" && \
-		printf "\tPlease install pnpm first — https://pnpm.io/installation\n\n" && \
-		exit 1
-	)
-	set -x
-	pnpm ci
-	git config --local core.hooksPath .githooks
-.PHONY: setup
-
 check: ## ✅ Type-check the project
 	tsrs
 .PHONY: check
