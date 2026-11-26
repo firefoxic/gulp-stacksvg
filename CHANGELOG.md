@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com), and 
 ### Fixed
 
 - The package now provides type declarations correctly.
+- The protocol in the repository's metadata URL now meets current requirements.
 
 ## [6.1.1] — 2026–08–07
 
