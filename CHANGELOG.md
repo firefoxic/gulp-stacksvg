@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com), and 
 
 ## [Unreleased]
 
+## [7.0.0] — 2026–11–27
+
 ### Changed
 
 - Empty elements in the generated sprite are now self-closing, so the stack no longer carries closing tags it does not need.
@@ -157,7 +159,8 @@ No significant changes.
 
 Just forked the [gulp-svgstore](https://github.com/w0rm/gulp-svgstore) project.
 
-[Unreleased]: https://github.com/firefoxic/gulp-stacksvg/compare/v6.1.2...HEAD
+[Unreleased]: https://github.com/firefoxic/gulp-stacksvg/compare/v7.0.0...HEAD
+[7.0.0]: https://github.com/firefoxic/gulp-stacksvg/compare/v6.1.2...v7.0.0
 [6.1.2]: https://github.com/firefoxic/gulp-stacksvg/compare/v6.1.1...v6.1.2
 [6.1.1]: https://github.com/firefoxic/gulp-stacksvg/compare/v6.1.0...v6.1.1
 [6.1.0]: https://github.com/firefoxic/gulp-stacksvg/compare/v6.0.0...v6.1.0
