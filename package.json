@@ -43,7 +43,7 @@
 		}
 	},
 	"dependencies": {
-		"node-html-parser": "^9",
+		"@firefoxic/stacksvg": "^1",
 		"plugin-error": "^2",
 		"vinyl": "^3"
 	},

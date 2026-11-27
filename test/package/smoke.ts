@@ -30,7 +30,7 @@ describe(`package`, () => {
 
 		expect(files).toHaveLength(1)
 		expect(files[0].relative).toBe(`stack.svg`)
-		expect(contentsOf(files[0])).toBe(`<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg viewBox="0 0 4 4" id="circle"><circle cx="2" cy="2" r="1"></circle></svg></svg>`)
+		expect(contentsOf(files[0])).toBe(`<svg xmlns="http://www.w3.org/2000/svg"><style>:root svg:not(:target){display:none}</style><svg viewBox="0 0 4 4" id="circle"><circle cx="2" cy="2" r="1"/></svg></svg>`)
 	})
 })
 

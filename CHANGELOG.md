@@ -7,6 +7,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com), and 
 
 ## [Unreleased]
 
+### Changed
+
+- Empty elements in the generated sprite are now self-closing, so the stack no longer carries closing tags it does not need.
+
 ## [6.1.2] — 2026–11–26
 
 ### Fixed

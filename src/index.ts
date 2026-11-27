@@ -1,9 +1,8 @@
 import { Transform } from "node:stream"
 
+import { StackSvgCreator } from "@firefoxic/stacksvg"
 import PluginError from "plugin-error"
 import Vinyl from "vinyl"
-
-import { StackSvgCreator } from "./svg-processor.ts"
 
 /**
  * Create transform function for the plugin.

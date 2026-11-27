@@ -32,28 +32,11 @@ The pre-commit hook stashes unstaged work and runs `make verify` when any `.js`/
 
 ## Architecture
 
-The plugin is a gulp (Vinyl) transform stream that accumulates icons in memory and emits exactly one file, `stack.svg`, on flush.
+This is a thin gulp (Vinyl) wrapper around the standalone engine [`@firefoxic/stacksvg`](https://github.com/firefoxic/stacksvg). All SVG logic — id derivation, inner-id rewriting, namespace reconciliation, `viewBox` synthesis, serialization — lives in that package and is tested there. This repository keeps only the plugin layer.
 
-- [src/index.ts](src/index.ts) — the gulp adapter layer only. `stacksvg()` builds a `node:stream` `Transform` in object mode and assigns `_transform` / `_flush`. `_transform` skips null files, rejects streamed files, and feeds buffer contents to the processor; thrown processor errors become `PluginError`s. `_flush` asks the processor for the sprite and pushes a single `Vinyl` named `stack.svg` — or nothing at all if no valid SVG was seen.
-- [src/svg-processor.ts](src/svg-processor.ts) — all SVG logic, framework-agnostic. `StackSvgCreator` holds the growing DOM (`node-html-parser`), seeded with `<svg><style>:root svg:not(:target){display:none}</style></svg>`. That style rule is the entire stack technique: only the `:target` fragment renders.
+- [src/index.ts](src/index.ts) — the entire plugin. `stacksvg()` builds a `node:stream` `Transform` in object mode and assigns `_transform` / `_flush`. `_transform` skips null files, rejects streamed files, and feeds buffer contents to a `StackSvgCreator` from `@firefoxic/stacksvg` (one `add()` per file, with `file.relative` as the fragment path); thrown processor errors become `PluginError`s. `_flush` asks the processor for the sprite and pushes a single `Vinyl` named `stack.svg` — or nothing at all if no valid SVG was seen.
 
-`StackSvgCreator.add()` per icon:
-
-1. Derives the fragment id from the file's relative path — directory separators become `_`, whitespace becomes `-`, extension dropped. Duplicate ids throw (`File name should be unique: …`), which surfaces as a stream error.
-2. Synthesizes `viewBox` from `width`/`height` when absent, then strips presentation attributes that would leak into the sprite (`excessAttrs`: `width`, `height`, `x`, `y`, `version`, `enable-background`, `xml:space`).
-3. Rewrites every inner `id` to `<iconId>_<index>` and patches all `#oldId` references across the icon's attributes — this is what keeps masks/gradients from colliding between icons in a shared document.
-4. Reconciles namespaces (see below), then appends the icon's root `<svg>` into the stack root.
-
-Namespace reconciliation (`#processNamespaces`) is the subtlest part. A `Map<nsURI, attrName>` accumulates namespaces on the root, seeded with the SVG namespace. Per `xmlns*` attribute on an icon:
-
-- Same URI already registered under a different alias → the icon's alias is rewritten to the registered one.
-- `http://www.w3.org/1999/xlink` → alias dropped entirely (`xlink:href` becomes `href`).
-- Alias collides with a different URI → the alias gets a 7-char HMAC-SHA1 suffix of the URI (deterministic, so test expectations are stable).
-- A namespace is hoisted onto the root only if the icon actually uses it after renaming — unused declarations are dropped.
-
-The `xmlns*` attribute is always removed from the icon element; declarations live only on the stack root, written in `getStackSprite()`.
-
-[src/vinyl.d.ts](src/vinyl.d.ts) is a hand-written ambient module declaration for `vinyl` (no bundled types); extend it rather than reaching for `any`.
+The processor is consumed incrementally (`add()` per file, `getStackSprite()` at flush) rather than through the one-shot `stacksvg(sources)` helper, because gulp delivers files one at a time.
 
 ## Conventions
 
@@ -61,7 +44,7 @@ The `xmlns*` attribute is always removed from the icon element; declarations liv
 - Tabs, no semicolons, `let` over `const`, space before function parameter parens (`function transform (…)`).
 - `isolatedDeclarations: true` — every exported binding needs an explicit type annotation; `exactOptionalPropertyTypes` is on too.
 - JSDoc blocks on exported and private methods, even in TypeScript.
-- Tests are plain `.js` under `test/` and assert on exact serialized sprite strings, so any output change (attribute order, whitespace, self-closing form) requires updating those literals. Attribute order follows mutation order — `id` is appended after the attributes an icon already had, but before a synthesized `viewBox`.
+- Tests are plain `.js` under `test/` and assert on exact serialized sprite strings, so any output change (attribute order, whitespace, self-closing form) requires updating those literals. The serialization format is owned by `@firefoxic/stacksvg` — empty elements are self-closing — so a bump of that dependency may change the literals here.
 
 ## Changelog
 

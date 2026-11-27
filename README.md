@@ -5,7 +5,7 @@
 [![Changelog][changelog-image]][changelog-url]
 [![Test Status][test-image]][test-url]
 
-The gulp plugin to combine svg files into one using the stack method.
+The gulp plugin is a thin wrapper around [`@firefoxic/stacksvg`](https://github.com/firefoxic/stacksvg), the standalone engine that combines svg files into one using the stack method.
 
 ## Installation
 
