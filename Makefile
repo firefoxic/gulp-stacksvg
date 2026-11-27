@@ -34,6 +34,7 @@ watch: ## 👀 Rerun unit tests on every change
 
 smoke: ## 🚬 Manual smoke check via gulp (no build required)
 	gulp --gulpfile gulpfile.ts createStack
+	git diff --exit-code HEAD -- ./docs/example/stack.svg
 .PHONY: smoke
 
 coverage: ## 📊 Report the unit test coverage of the source
@@ -49,7 +50,7 @@ test-package: ## 📦 Test the package
 	vitest run --project package
 .PHONY: test-package
 
-verify: check lint test test-package build ## ✅ Run every check the CI runs
+verify: check lint test test-package smoke build ## ✅ Run every check the CI runs
 .PHONY: verify
 
 release: verify ## 🚀 Release a new version
